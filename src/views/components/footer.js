@@ -1,5 +1,7 @@
+import { getNode } from "../useful-functions.js";
+
 const renderFooter = () => {
-  const $footer = document.querySelector(".footer");
+  const $footer = getNode(".footer");
 
   $footer.innerHTML = `
     <div class="content has-text-centered">

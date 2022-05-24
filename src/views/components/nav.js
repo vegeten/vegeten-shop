@@ -1,5 +1,7 @@
+import { getNode } from "../useful-functions.js";
+
 const renderNav = (checkAdminFlag) => {
-  const $nav = document.querySelector(".navbar");
+  const $navbar = getNode(".navbar");
   const template = `
   <div class="container mt-3">
     <div class="navbar-brand">
@@ -48,7 +50,7 @@ const renderNav = (checkAdminFlag) => {
     </div>
   </div>`;
 
-  $nav.innerHTML = template;
+  $navbar.innerHTML = template;
 };
 
 export default renderNav;
