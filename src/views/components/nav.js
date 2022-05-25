@@ -14,6 +14,7 @@ const addLogOutEvent = (isLogin) => {
 
 const nav = (isLogin, isAdmin) => {
   const $navbar = getNode(".navbar");
+  $navbar.style.cssText = 'position:fixed;top:0;width:100%';
   const template = `
   <div class="container mt-3">
     <div class="navbar-brand">
