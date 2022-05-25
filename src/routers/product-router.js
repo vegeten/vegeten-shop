@@ -76,4 +76,67 @@ productRouter.get('/products/:productId', async function (req, res, next) {
   }
 });
 
+// 상품 정보 수정
+productRouter.patch('/products/:productId', async function (req, res, next) {
+  try {
+    // content-type 을 application/json 로 프론트에서
+    // 설정 안 하고 요청하면, body가 비어 있게 됨.
+    if (is.emptyObject(req.body)) {
+      throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
+    }
+
+    // params로부터 id를 가져옴
+    const productId = req.params.productId;
+
+    // body data 로부터 업데이트할 사용자 정보를 추출함.
+    const productName = req.body.productName;
+    const price = req.body.price;
+    const description = req.body.description;
+    const company = req.body.company;
+    const category = req.body.category;
+
+    // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
+    // 보내주었다면, 업데이트용 객체에 삽입함.
+    const toUpdate = {
+      ...(productName && { productName }),
+      ...(price && { price }),
+      ...(description && { description }),
+      ...(company && { company }),
+      ...(category && { category }),
+    };
+
+    // 상품 정보를 업데이트함.
+    const updatedProductInfo = await productService.setProduct(productId, toUpdate);
+
+    // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
+    res.status(200).json({
+      statusCode: 200,
+      message: '상품 정보 수정 성공',
+      data: updatedProductInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 상품 정보 삭제
+productRouter.delete('/products/:productId', async function (req, res, next) {
+  try {
+    const productId = req.params.productId;
+    // 특정 id에 맞는 상품을 삭제함
+    await productService.deleteProduct(req.params.productId);
+
+    // 사용자 정보를 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      statusCode: 200,
+      message: '상품 삭제 성공',
+      data: {
+        productId: productId,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export { productRouter };

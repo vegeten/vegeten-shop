@@ -38,6 +38,31 @@ class ProductService {
     const product = await this.productModel.findById(productId);
     return product;
   }
+
+  // 상품 정보 수정
+  async setProduct(productId, toUpdate) {
+    // 우선 해당 id의 상품이 db에 있는지 확인
+    let product = await this.productModel.findById(productId);
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!product) {
+      throw new Error('상품 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    }
+
+    // 상품 업데이트 진행
+    product = await this.productModel.update({
+      productId,
+      update: toUpdate,
+    });
+
+    return product;
+  }
+
+  // 특정 상품 삭제
+  async deleteProduct(productId) {
+    await this.productModel.delete(productId);
+    return;
+  }
 }
 
 const productService = new ProductService(productModel);

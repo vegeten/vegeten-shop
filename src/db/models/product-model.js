@@ -14,6 +14,16 @@ export class ProductModel {
     const product = await Product.findOne({ _id: productId });
     return product;
   }
+  async update({ productId, update }) {
+    const filter = { _id: productId };
+    const option = { returnOriginal: false };
+    const updatedProduct = await Product.findOneAndUpdate(filter, update, option);
+    return updatedProduct;
+  }
+  async delete(productId) {
+    await Product.findOneAndDelete({ _id: productId });
+    return;
+  }
 }
 const productModel = new ProductModel();
 export { productModel };
