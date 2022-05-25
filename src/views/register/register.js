@@ -13,7 +13,10 @@ const submitButton = document.querySelector('#submitButton');
 addAllElements();
 addAllEvents();
 
-renderNav(false);
+renderNav({
+  isLogin: false,
+  isAdmin: false
+});
 renderFooter();
 
 // html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
