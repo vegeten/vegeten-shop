@@ -5,19 +5,15 @@ const logOut = () => {
   window.location.href = '/';
 };
 
-const addLogOutEvent = () => {
-  const { isLogin } = getAuthorizationObj();
-
+const addLogOutEvent = (isLogin) => {
   if (isLogin) {
     const $logout = getNode(".logout");
     $logout.addEventListener('click', logOut);
   }
 };
 
-const nav = () => {
+const nav = (isLogin, isAdmin) => {
   const $navbar = getNode(".navbar");
-  const { isLogin, isAdmin } = getAuthorizationObj();
-
   const template = `
   <div class="container mt-3">
     <div class="navbar-brand">
@@ -87,8 +83,9 @@ const nav = () => {
 };
 
 const renderNav = () => {
-  nav();
-  addLogOutEvent();
+  const { isLogin, isAdmin } = getAuthorizationObj();
+  nav(isLogin, isAdmin);
+  addLogOutEvent(isLogin);
 };
 
 export { renderNav, logOut };
