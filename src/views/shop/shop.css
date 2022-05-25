@@ -20,10 +20,10 @@ main {
 .category-nav .all {
   margin-bottom: 10%;
 }
-.category-nav div.active {
+.category-nav #category-list div.active {
   font-weight: 700;
 }
-.category-nav div:hover {
+.category-nav #category-list div:hover {
   font-weight: 700;
 }
 .category-nav button {

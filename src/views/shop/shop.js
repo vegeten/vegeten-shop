@@ -18,11 +18,22 @@ const mockUserAPI = {
 };
 renderNav(mockUserAPI.role === 'basic-user' ? false : true);
 renderFooter();
+const mocCategoryAPI = [
+  {category: "outer"},
+  {category: "상의"},
+  {category: "하의"},
+  {category: "신발&가방"},
+  {category: "Accesory"},
+];
 
-// 카테고리 활성화를 위해 'active' 클래스 동적추가
-const categories = document.querySelectorAll('.category');
+// 카테고리 렌더링하기
+const categoryList = document.querySelector('#category-list');
 const categoryTitle = document.querySelector('.category-name');
-
+for(let i=0; i<mocCategoryAPI.length; i++){
+  categoryList.innerHTML += `<div class="category">${mocCategoryAPI[i].category}</div>`;
+}
+// 카테고리 클릭시 상단 title 변경하기
+const categories = document.querySelectorAll('.category');
 for (let i = 0; i < categories.length; i++) {
   categories[i].onclick = function () {
     if (!categories[i].classList.contains('active')) {
