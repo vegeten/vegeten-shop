@@ -1,7 +1,7 @@
-import { userModel } from '../db';
+import { userModel } from "../db";
 
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 class UserService {
   // 본 파일의 맨 아래에서, new UserService(userModel) 하면, 이 함수의 인자로 전달됨
@@ -18,7 +18,7 @@ class UserService {
     const user = await this.userModel.findByEmail(email);
     if (user) {
       throw new Error(
-        '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.'
+        "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요."
       );
     }
 
@@ -44,7 +44,7 @@ class UserService {
     const user = await this.userModel.findByEmail(email);
     if (!user) {
       throw new Error(
-        '해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.'
+        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요."
       );
     }
 
@@ -61,12 +61,12 @@ class UserService {
 
     if (!isPasswordCorrect) {
       throw new Error(
-        '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
+        "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요."
       );
     }
 
     // 로그인 성공 -> JWT 웹 토큰 생성
-    const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
+    const secretKey = process.env.JWT_SECRET_KEY || "secret-key";
 
     // 2개 프로퍼티를 jwt 토큰에 담음
     const token = jwt.sign({ userId: user._id, role: user.role }, secretKey);
@@ -80,6 +80,12 @@ class UserService {
     return users;
   }
 
+  // 특정 사용자 정보를 받음
+  async getUser(userId) {
+    const user = await this.userModel.findById(userId);
+    return user;
+  }
+
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.
   async setUser(userInfoRequired, toUpdate) {
     // 객체 destructuring
@@ -90,7 +96,7 @@ class UserService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
-      throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      throw new Error("가입 내역이 없습니다. 다시 한 번 확인해 주세요.");
     }
 
     // 이제, 정보 수정을 위해 사용자가 입력한 비밀번호가 올바른 값인지 확인해야 함
@@ -104,7 +110,7 @@ class UserService {
 
     if (!isPasswordCorrect) {
       throw new Error(
-        '현재 비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
+        "현재 비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요."
       );
     }
 
@@ -125,6 +131,12 @@ class UserService {
     });
 
     return user;
+  }
+
+  // 특정 사용자 정보 삭제
+  async deleteUser(userId) {
+    await this.userModel.delete(userId);
+    return;
   }
 }
 
