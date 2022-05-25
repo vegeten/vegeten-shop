@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema } from 'mongoose';
 
 const ProductSchema = new Schema(
   {
@@ -26,7 +26,8 @@ const ProductSchema = new Schema(
     },
   },
   {
-    collection: "products",
+    collection: 'products',
+    timestamps: true,
   }
 );
 

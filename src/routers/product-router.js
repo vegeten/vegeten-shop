@@ -1,12 +1,11 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-// import { loginRequired } from "../middlewares";
 import { productService } from '../services';
 
 const productRouter = Router();
 
-// 전체 상품 목록을 가져옴 (배열 형태임)
+// 전체 상품 목록을 가져옴
 productRouter.get('/products', async function (req, res, next) {
   try {
     // 전체 상품 목록을 얻음
@@ -38,21 +37,20 @@ productRouter.get('/products/:productId', async function (req, res, next) {
       data: product,
     });
   } catch (error) {
-    if (error.kind === 'ObjectId') {
-      res.status(404).send({
+    if (error.status === 404) {
+      return res.status(404).send({
         status: 404,
-        message: `Not found Product with id ${req.params.productId}.`,
-      });
-    } else {
-      res.status(500).send({
-        status: 500,
-        message: error.message || `Error retrieving Product with id ${req.params.productId}`,
+        message: error.message || 'Some error occurred while retrieving Product.',
       });
     }
+    res.status(500).send({
+      status: 500,
+      message: error.message || 'Some error occurred while retrieving Product.',
+    });
   }
 });
 
-// 상품등록 api (아래는 /register이지만, 실제로는 /api/products 로 요청해야 함.)
+// 상품등록 api (아래는 /products이지만, 실제로는 /api/products 로 요청해야 함.)
 productRouter.post('/products', async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
@@ -130,6 +128,12 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
       data: updatedProductInfo,
     });
   } catch (error) {
+    if (error.status === 404) {
+      return res.status(404).send({
+        status: 404,
+        message: error.message || 'Some error occurred while retrieving Product.',
+      });
+    }
     res.status(500).send({
       status: 500,
       message: error.message || 'Some error occurred while retrieving Product.',
@@ -141,23 +145,27 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
 productRouter.delete('/products/:productId', async function (req, res, next) {
   try {
     const productId = req.params.productId;
-    // 특정 id에 맞는 상품을 삭제함
-    await productService.deleteProduct(req.params.productId);
+    // id에 맞는 상품을 삭제함
+    const deleteProduct = await productService.deleteProduct(productId);
 
-    // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
       statusCode: 200,
       message: '상품 삭제 성공',
       data: {
-        productId: productId,
+        deleteProduct,
       },
     });
   } catch (error) {
+    if (error.status === 404) {
+      return res.status(404).send({
+        status: 404,
+        message: error.message || 'Some error occurred while retrieving Product.',
+      });
+    }
     res.status(500).send({
       status: 500,
       message: error.message || 'Some error occurred while retrieving Product.',
     });
   }
 });
-
 export { productRouter };

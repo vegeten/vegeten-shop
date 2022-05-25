@@ -27,16 +27,18 @@ class ProductService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!product) {
-      throw new Error('상품 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
     }
 
     return product;
   }
 
   // 상품 등록
-  async addProduct(ProductInfo) {
+  async addProduct(productInfo) {
     // 객체 destructuring
-    const { productName, price, description, company, category } = ProductInfo;
+    const { productName, price, description, company, category } = productInfo;
 
     const newProductInfo = {
       productName,
@@ -58,7 +60,9 @@ class ProductService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!product) {
-      throw new Error('상품 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
     }
 
     // 상품 업데이트 진행
@@ -72,8 +76,14 @@ class ProductService {
 
   // 특정 상품 삭제
   async deleteProduct(productId) {
-    await this.productModel.delete(productId);
-    return;
+    let product = await productModel.delete(productId);
+    if (!product) {
+      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
+    }
+
+    return product;
   }
 }
 
