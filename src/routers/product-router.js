@@ -37,16 +37,11 @@ productRouter.get('/products/:productId', async function (req, res, next) {
       data: product,
     });
   } catch (error) {
-    if (error.status === 404) {
-      return res.status(404).send({
-        status: 404,
-        message: error.message || 'Some error occurred while retrieving Product.',
-      });
-    }
     res.status(500).send({
       status: 500,
       message: error.message || 'Some error occurred while retrieving Product.',
     });
+    next(error);
   }
 });
 
@@ -86,6 +81,7 @@ productRouter.post('/products', async (req, res, next) => {
       status: 500,
       message: error.message || 'Some error occured while creating th Product.',
     });
+    next(error);
   }
 });
 
@@ -128,16 +124,11 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
       data: updatedProductInfo,
     });
   } catch (error) {
-    if (error.status === 404) {
-      return res.status(404).send({
-        status: 404,
-        message: error.message || 'Some error occurred while retrieving Product.',
-      });
-    }
     res.status(500).send({
       status: 500,
       message: error.message || 'Some error occurred while retrieving Product.',
     });
+    next(error);
   }
 });
 
@@ -156,16 +147,7 @@ productRouter.delete('/products/:productId', async function (req, res, next) {
       },
     });
   } catch (error) {
-    if (error.status === 404) {
-      return res.status(404).send({
-        status: 404,
-        message: error.message || 'Some error occurred while retrieving Product.',
-      });
-    }
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occurred while retrieving Product.',
-    });
+    next(error);
   }
 });
 export { productRouter };
