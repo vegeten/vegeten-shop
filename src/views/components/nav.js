@@ -1,15 +1,22 @@
-import { getNode } from "../useful-functions.js";
+import { getAuthorizationObj, getNode } from "../useful-functions.js";
 
-const getLoginInfo = () => {
-  return {
-    isLogin: localStorage.getItem("token") ? true : false,
-    isAdmin: false,
-  };
+const logOut = () => {
+  localStorage.removeItem("token");
+  window.location.href = '/';
 };
 
-const renderNav = () => {
+const addLogOutEvent = () => {
+  const { isLogin } = getAuthorizationObj();
+
+  if (isLogin) {
+    const $logout = getNode(".logout");
+    $logout.addEventListener('click', logOut);
+  }
+};
+
+const nav = () => {
   const $navbar = getNode(".navbar");
-  const { isLogin, isAdmin } = getLoginInfo();
+  const { isLogin, isAdmin } = getAuthorizationObj();
 
   const template = `
   <div class="container mt-3">
@@ -40,7 +47,7 @@ const renderNav = () => {
           </span>
           <div class="navbar-dropdown">
             <a class="navbar-item" href="/orderlist">Order list</a>
-            <a class="navbar-item">Log out</a>
+            <a class="navbar-item logout">Log out</a>
           </div>
         </div>` :
         `
@@ -50,7 +57,7 @@ const renderNav = () => {
               </span>
               <div class="navbar-dropdown">
                 <a class="navbar-item" href="/mypage">My Page</a>
-                <a class="navbar-item" >Log out</a>
+                <a class="navbar-item logout" >Log out</a>
               </div>
             </div>
           
@@ -79,6 +86,11 @@ const renderNav = () => {
   $navbar.innerHTML = template;
 };
 
-export default renderNav;
+const renderNav = () => {
+  nav();
+  addLogOutEvent();
+};
+
+export { renderNav, logOut };
 
 
