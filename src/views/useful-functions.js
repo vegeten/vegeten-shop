@@ -27,3 +27,8 @@ export const convertToNumber = (string) => {
 export const wait = (ms) => {
   return new Promise((r) => setTimeout(r, ms));
 };
+
+// selector의 DOM node요소를 가져옴.
+export const getNode = (selector) => {
+  return document.querySelector(selector);
+};
