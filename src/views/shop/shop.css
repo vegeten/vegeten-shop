@@ -76,3 +76,36 @@ article #list{
   height: 14%;
   font-weight: 700;
 }
+article {
+  display: flex;
+  /* height: 1200px; */
+}
+
+#category {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+  width: 30%;
+  font-size: large;
+}
+#category a {
+  color: black;
+  margin: .2em .5em 0 2em;
+}
+#category a:first-child {
+  margin: 3em .5em .5em 2em;
+  font-weight: 700;
+}
+main #list{
+  width: 90%;
+  border: 1px solid black;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#list div.box {
+  margin: 2%;
+  margin-bottom: 0;
+  width: 300px;
+  height: 400px;
+}

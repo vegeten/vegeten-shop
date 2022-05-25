@@ -1,3 +1,4 @@
+
 // import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
 import renderNav from '../components/nav.js';
@@ -77,3 +78,4 @@ subFileInput.onchange = () => {
 //   const data =await Api.get('/api/shop/list');
 
 // }
+
