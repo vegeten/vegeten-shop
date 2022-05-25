@@ -9,8 +9,8 @@ const viewsRouter = express.Router();
 viewsRouter.use('/', serveStatic('home'));
 viewsRouter.use('/register', serveStatic('register'));
 viewsRouter.use('/login', serveStatic('login'));
-
-// views 폴더의 최상단 파일인 rabbit.png, api.js 등을 쓸 수 있게 함
+viewsRouter.use('/order', serveStatic('order'));
+// views 폴더의 최상단 파일인 rabbit.png, api.js 등을ㅇ 쓸 수 있게 함
 viewsRouter.use('/', serveStatic(''));
 
 // views폴더 내의 ${resource} 폴더 내의 모든 파일을 웹에 띄우며,
