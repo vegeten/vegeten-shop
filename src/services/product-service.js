@@ -9,6 +9,30 @@ class ProductService {
     this.productModel = productModel;
   }
 
+  // 상품 목록을 받음.
+  async getProducts() {
+    const products = await this.productModel.findAll();
+
+    // // db에 등록된 상품이 하나도 없을 때, 에러 메시지 반환
+    // if (products.length === 0) {
+    //   throw new Error('등록된 상품 내역이 없습니다. 새 상품을 등록해주세요.');
+    // }
+
+    return products;
+  }
+
+  // 특정 상품의 상세정보를 받음
+  async getProduct(productId) {
+    const product = await this.productModel.findById(productId);
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!product) {
+      throw new Error('상품 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    }
+
+    return product;
+  }
+
   // 상품 등록
   async addProduct(ProductInfo) {
     // 객체 destructuring
@@ -25,18 +49,6 @@ class ProductService {
     const createdNewProduct = await this.productModel.create(newProductInfo);
 
     return createdNewProduct;
-  }
-
-  // 상품 목록을 받음.
-  async getProducts() {
-    const products = await this.productModel.findAll();
-    return products;
-  }
-
-  // 특정 상품의 상세정보를 받음
-  async getProduct(productId) {
-    const product = await this.productModel.findById(productId);
-    return product;
   }
 
   // 상품 정보 수정

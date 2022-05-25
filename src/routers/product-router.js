@@ -6,6 +6,52 @@ import { productService } from '../services';
 
 const productRouter = Router();
 
+// 전체 상품 목록을 가져옴 (배열 형태임)
+productRouter.get('/products', async function (req, res, next) {
+  try {
+    // 전체 상품 목록을 얻음
+    const products = await productService.getProducts();
+
+    // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      statusCode: 200,
+      message: '전체 상품 목록 조회 성공',
+      data: products,
+    });
+  } catch (error) {
+    res.status(500).send({
+      status: 500,
+      message: error.message || 'Some error occurred while retrieving Product.',
+    });
+  }
+});
+
+// 특정 상품의 상세정보 조회
+productRouter.get('/products/:productId', async function (req, res, next) {
+  try {
+    // 특정 id에 맞는 상품 상세정보를 얻음
+    const product = await productService.getProduct(req.params.productId);
+    // 상품상세정보를 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      statusCode: 200,
+      message: '상품 정보 조회 성공',
+      data: product,
+    });
+  } catch (error) {
+    if (error.kind === 'ObjectId') {
+      res.status(404).send({
+        status: 404,
+        message: `Not found Product with id ${req.params.productId}.`,
+      });
+    } else {
+      res.status(500).send({
+        status: 500,
+        message: error.message || `Error retrieving Product with id ${req.params.productId}`,
+      });
+    }
+  }
+});
+
 // 상품등록 api (아래는 /register이지만, 실제로는 /api/products 로 요청해야 함.)
 productRouter.post('/products', async (req, res, next) => {
   try {
@@ -38,41 +84,10 @@ productRouter.post('/products', async (req, res, next) => {
       data: newProduct,
     });
   } catch (error) {
-    next(error);
-  }
-});
-
-// 전체 상품 목록을 가져옴 (배열 형태임)
-productRouter.get('/products', async function (req, res, next) {
-  try {
-    // 전체 상품 목록을 얻음
-    const products = await productService.getProducts();
-
-    // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
-    res.status(200).json({
-      statusCode: 200,
-      message: '전체 상품 목록 조회 성공',
-      data: products,
+    res.status(500).send({
+      status: 500,
+      message: error.message || 'Some error occured while creating th Product.',
     });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// 특정 상품의 상세정보 조회
-productRouter.get('/products/:productId', async function (req, res, next) {
-  try {
-    // 특정 id에 맞는 상품 상세정보를 얻음
-    const product = await productService.getProduct(req.params.productId);
-
-    // 상품상세정보를 JSON 형태로 프론트에 보냄
-    res.status(200).json({
-      statusCode: 200,
-      message: '상품 정보 조회 성공',
-      data: product,
-    });
-  } catch (error) {
-    next(error);
   }
 });
 
@@ -115,7 +130,10 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
       data: updatedProductInfo,
     });
   } catch (error) {
-    next(error);
+    res.status(500).send({
+      status: 500,
+      message: error.message || 'Some error occurred while retrieving Product.',
+    });
   }
 });
 
@@ -135,7 +153,10 @@ productRouter.delete('/products/:productId', async function (req, res, next) {
       },
     });
   } catch (error) {
-    next(error);
+    res.status(500).send({
+      status: 500,
+      message: error.message || 'Some error occurred while retrieving Product.',
+    });
   }
 });
 
