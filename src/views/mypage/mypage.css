@@ -1,0 +1,83 @@
+.main-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  height: 85vh;
+  width: 85vw;
+  margin: 0 auto;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.order-list-form-container {
+  width: 40%;
+}
+
+.container-title {
+  font-size: 1.4rem;
+}
+
+.order-list-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.order-list-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 80%;
+}
+
+.box {
+  margin-top: 1.5rem;
+}
+
+.order-list-image {
+  width: 20%;
+}
+
+.content-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.content-title {
+  font-size: 1rem;
+}
+
+.content-content {
+  font-size: 0.9rem;
+}
+
+
+.order-list-image img {
+  border-radius: 20px;
+}
+
+
+
+.register-user-form-container {
+  width: 40%;
+}
+
+.input[type="tel"] {
+  width: 32.7%;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.input[id="address-search"] {
+  width: 79%;
+}
