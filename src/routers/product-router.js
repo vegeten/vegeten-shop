@@ -22,10 +22,10 @@ productRouter.get('/products', async function (req, res, next) {
   }
 });
 
-// 전체 상품 목록을 가져옴
-productRouter.get('/products/:category', async function (req, res, next) {
+// 카테고리별 상품 목록을 가져옴
+productRouter.get('/category/:category', async function (req, res, next) {
   try {
-    // 전체 상품 목록을 얻음
+    // 카테고리별 상품 목록을 얻음
     const products = await productService.getCategoryProducts(req.params.category);
 
     // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
@@ -40,7 +40,7 @@ productRouter.get('/products/:category', async function (req, res, next) {
 });
 
 // 특정 상품의 상세정보 조회
-productRouter.get('/product/:productId', async function (req, res, next) {
+productRouter.get('/products/:productId', async function (req, res, next) {
   try {
     // 특정 id에 맞는 상품 상세정보를 얻음
     const product = await productService.getProduct(req.params.productId);
@@ -56,7 +56,7 @@ productRouter.get('/product/:productId', async function (req, res, next) {
 });
 
 // 상품등록 api (아래는 /product이지만, 실제로는 /api/product 로 요청해야 함.)
-productRouter.post('/product', async (req, res, next) => {
+productRouter.post('/products', async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -96,7 +96,7 @@ productRouter.post('/product', async (req, res, next) => {
 });
 
 // 상품 정보 수정
-productRouter.patch('/product/:productId', async function (req, res, next) {
+productRouter.patch('/products/:productId', async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -143,7 +143,7 @@ productRouter.patch('/product/:productId', async function (req, res, next) {
 });
 
 // 상품 정보 삭제
-productRouter.delete('/product/:productId', async function (req, res, next) {
+productRouter.delete('/products/:productId', async function (req, res, next) {
   try {
     const productId = req.params.productId;
     // id에 맞는 상품을 삭제함

@@ -13,11 +13,6 @@ class ProductService {
   async getProducts() {
     const products = await this.productModel.findAll();
 
-    // // db에 등록된 상품이 하나도 없을 때, 에러 메시지 반환
-    // if (products.length === 0) {
-    //   throw new Error('등록된 상품 내역이 없습니다. 새 상품을 등록해주세요.');
-    // }
-
     return products;
   }
 
