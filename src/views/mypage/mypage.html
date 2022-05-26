@@ -28,7 +28,11 @@
 
   <main class="main-wrapper" aria-label="main contents">
     <div class="order-list-form-container ">
-      <span class="container-title">주문 내역</span>
+      <div class="title-wrapper">
+        <span class="container-title">주문 내역</span>
+        <a class="list-link-order" href="/order"><span>상세 주문 </span></a>
+      </div>
+
       <ul>
         <li>
           <div class="box order-list has-background-light">
@@ -80,6 +84,7 @@
                   </div>
                 </dl>
               </div>
+
             </div>
           </div>
         </li>
@@ -143,21 +148,21 @@
       <span span class="container-title">회원 정보</span>
       <form class="box register-user-form-box has-background-light" id="modifyUserForm">
         <div class="field">
-          <label class="label" for="fullNameInput">이름</label>
+          <label class="label-input" for="fullNameInput">이름</label>
           <div class="control">
             <input class="input" id="fullNameInput" type="text" placeholder="홍길동" autocomplete="on" />
           </div>
         </div>
 
         <div class="field">
-          <label class="label" for="emailInput">이메일</label>
+          <label class="label-input" for="emailInput">이메일</label>
           <div class="control">
             <input class="input" id="emailInput" type="email" placeholder="abc@example.com" autocomplete="on" />
           </div>
         </div>
 
         <div class="field">
-          <label class="label" for="phoneNumber">휴대폰번호</label>
+          <label class="label-input" for="phoneNumber">휴대폰번호</label>
           <div class="control">
             <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="3" />
             <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="4" />
@@ -166,7 +171,7 @@
         </div>
 
         <div class="field">
-          <label class="label" for="address-search">우편번호</label>
+          <label class="label-input" for="address-search">우편번호</label>
           <div class="control">
             <input class="input" id="address-search" type="text" autocomplete="off" readonly />
             <button class="button is-midium">검색하기</button>
@@ -174,7 +179,7 @@
         </div>
 
         <div class="field">
-          <label class="label" for="address">주소</label>
+          <label class="label-input" for="address">주소</label>
           <div class="control">
             <input class="input mb-3" id="address" type="text" autocomplete="off" readonly />
             <input class="input" id="address" type="text" autocomplete="off" readonly />
