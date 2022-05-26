@@ -1,12 +1,12 @@
 // api 로 GET 요청 (/endpoint/params 형태로 요청함)
-async function get(endpoint, params = "") {
+async function get(endpoint, params = '') {
   const apiUrl = `${endpoint}/${params}`;
-  console.log(`%cGET 요청: ${apiUrl} `, "color: #a25cd1;");
+  console.log(`%cGET 요청: ${apiUrl} `, 'color: #a25cd1;');
 
   const res = await fetch(apiUrl, {
     // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
     headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
   });
 
@@ -29,14 +29,14 @@ async function post(endpoint, data) {
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);
-  console.log(`%cPOST 요청: ${apiUrl}`, "color: #296aba;");
-  console.log(`%cPOST 요청 데이터: ${bodyData}`, "color: #296aba;");
+  console.log(`%cPOST 요청: ${apiUrl}`, 'color: #296aba;');
+  console.log(`%cPOST 요청 데이터: ${bodyData}`, 'color: #296aba;');
 
   const res = await fetch(apiUrl, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: bodyData,
   });
@@ -55,20 +55,20 @@ async function post(endpoint, data) {
 }
 
 // api 로 PATCH 요청 (/endpoint/params 로, JSON 데이터 형태로 요청함)
-async function patch(endpoint, params = "", data) {
+async function patch(endpoint, params = '', data) {
   const apiUrl = `${endpoint}/${params}`;
 
   // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
   // 예시: {name: "Kim"} => {"name": "Kim"}
   const bodyData = JSON.stringify(data);
-  console.log(`%cPATCH 요청: ${apiUrl}`, "color: #059c4b;");
-  console.log(`%cPATCH 요청 데이터: ${bodyData}`, "color: #059c4b;");
+  console.log(`%cPATCH 요청: ${apiUrl}`, 'color: #059c4b;');
+  console.log(`%cPATCH 요청 데이터: ${bodyData}`, 'color: #059c4b;');
 
   const res = await fetch(apiUrl, {
-    method: "PATCH",
+    method: 'PATCH',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: bodyData,
   });
@@ -88,7 +88,7 @@ async function patch(endpoint, params = "", data) {
 
 // 아래 함수명에 관해, delete 단어는 자바스크립트의 reserved 단어이기에,
 // 여기서는 우선 delete 대신 del로 쓰고 아래 export 시에 delete로 alias 함.
-async function del(endpoint, params = "", data = {}) {
+async function del(endpoint, params = '', data = {}) {
   const apiUrl = `${endpoint}/${params}`;
   const bodyData = JSON.stringify(data);
 
@@ -96,10 +96,10 @@ async function del(endpoint, params = "", data = {}) {
   console.log(`DELETE 요청 데이터: ${bodyData}`);
 
   const res = await fetch(apiUrl, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
     body: bodyData,
   });

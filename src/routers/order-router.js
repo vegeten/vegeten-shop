@@ -1,24 +1,28 @@
-import { Router } from "express";
-import is from "@sindresorhus/is";
+import { Router } from 'express';
+import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired } from "../middlewares";
-import { orderService } from "../services/order-service";
-import { userService } from "../services";
+import { loginRequired } from '../middlewares';
+import { orderService } from '../services/order-service';
+import { userService } from '../services';
 const orderRouter = Router();
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 
 // 전체 주문내역 조회(미들웨어에 admin 인증 넣어야 함)
-orderRouter.get("/orderlist", async (req, res, next) => {
+orderRouter.get('/orders', async (req, res, next) => {
   try {
     const orders = await orderService.getOrderlist();
-    res.status(200).json(orders);
+    res.status(200).json({
+      statusCode: 200,
+      message: '전체 주문 목록 조회 성공',
+      data: orders,
+    });
   } catch (err) {
     next(err);
   }
 });
 
 // 주문번호로 조회
-orderRouter.get("/orders/:orderId", async (req, res, next) => {
+orderRouter.get('/orders/:orderId', async (req, res, next) => {
   const { orderId } = req.params;
   try {
     const order = await orderService.getOrder(orderId);
@@ -29,7 +33,7 @@ orderRouter.get("/orders/:orderId", async (req, res, next) => {
 });
 
 // 이메일로 주문내역 조회
-orderRouter.get("/orders/email/:email", async (req, res, next) => {
+orderRouter.get('/orders/email/:email', async (req, res, next) => {
   const { email } = req.params;
   try {
     const orders = await orderService.getOrdersByEmail(email);
@@ -40,7 +44,7 @@ orderRouter.get("/orders/email/:email", async (req, res, next) => {
 });
 
 // 주문 등록
-orderRouter.post("/orders/add", async (req, res, next) => {
+orderRouter.post('/orders', async (req, res, next) => {
   try {
     const { email, phoneNumber, address, price } = req.body;
     const newOrder = await orderService.addOrder({
@@ -55,7 +59,7 @@ orderRouter.post("/orders/add", async (req, res, next) => {
   }
 });
 
-orderRouter.delete("/orders/:orderId", async function (req, res, next) {
+orderRouter.delete('/orders/:orderId', async function (req, res, next) {
   try {
     const orderId = req.params.orderId;
     // 특정 id에 맞는 사용자 정보를 얻음
@@ -63,7 +67,7 @@ orderRouter.delete("/orders/:orderId", async function (req, res, next) {
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
       statusCode: 200,
-      message: "주문 정보 삭제 성공",
+      message: '주문 정보 삭제 성공',
       data: {
         orderId: orderId,
       },
