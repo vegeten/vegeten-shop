@@ -1,5 +1,23 @@
 import * as Api from '/api.js';
-import { validateEmail } from '/useful-functions.js';
+import { validateEmail, getAuthorizationObj, getNode } from '/useful-functions.js';
+import renderFooter from '../components/footer.js';
+import { renderNav } from "../components/nav.js";
+
+window.onpageshow = function (event) {
+  if (event.persisted) {
+    window.location.reload();
+  }
+};
+
+const { isLogin } = getAuthorizationObj();
+
+if (isLogin) {
+  alert('이미 로그인 되어 있습니다.');
+  window.location.href = '/';
+}
+
+renderNav();
+renderFooter();
 
 // 요소(element), input 혹은 상수
 const fullNameInput = document.querySelector('#fullNameInput');
@@ -11,8 +29,10 @@ const submitButton = document.querySelector('#submitButton');
 addAllElements();
 addAllEvents();
 
+
+
 // html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() {}
+async function addAllElements() { }
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
@@ -21,6 +41,9 @@ function addAllEvents() {
 
 // 회원가입 진행
 async function handleSubmit(e) {
+  const $modal = getNode('.modal');
+
+  $modal.style.display = 'block';
   e.preventDefault();
 
   const fullName = fullNameInput.value;
@@ -36,6 +59,7 @@ async function handleSubmit(e) {
 
   if (!isFullNameValid || !isPasswordValid) {
     return alert('이름은 2글자 이상, 비밀번호는 4글자 이상이어야 합니다.');
+
   }
 
   if (!isEmailValid) {
@@ -52,7 +76,7 @@ async function handleSubmit(e) {
 
     await Api.post('/api/register', data);
 
-    alert(`정상적으로 회원가입되었습니다.`);
+
 
     // 로그인 페이지 이동
     window.location.href = '/login';

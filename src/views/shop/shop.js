@@ -1,38 +1,28 @@
 
 // import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
-import renderNav from '../components/nav.js';
+import { renderNav } from '../components/nav.js';
 import renderFooter from '../components/footer.js';
 
-const mockUserAPI = {
-  email: 'test@test.com',
-  fullName: '김정현',
-  password: '12341234',
-  phoneNumber: '010-5628-9304',
-  address: {
-    postalCode: '1234',
-    address1: '마포구 합정동',
-    address2: '123-123',
-  },
-  role: 'basic-user',
-};
-renderNav(mockUserAPI.role === 'basic-user' ? false : true);
+
+renderNav();
 renderFooter();
 const mocCategoryAPI = [
-  {category: "outer"},
-  {category: "상의"},
-  {category: "하의"},
-  {category: "신발&가방"},
-  {category: "Accesory"},
+  { category: "outer" },
+  { category: "상의" },
+  { category: "하의" },
+  { category: "신발&가방" },
+  { category: "Accesory" },
 ];
 
 // 카테고리 렌더링
 const categoryList = document.querySelector('#category-list');
 const categoryTitle = document.querySelector('.category-name');
 // 상품목록 - 왼쪽 nav바 렌더링/모달 
-for(let i=0; i<mocCategoryAPI.length; i++){
+for (let i = 0; i < mocCategoryAPI.length; i++) {
   categoryList.innerHTML += `<div class="category">${mocCategoryAPI[i].category}</div>`;
 }
+
 
 // 카테고리 클릭시 상단 title 변경하기
 const categories = document.querySelectorAll('.category');
@@ -66,6 +56,10 @@ const editClose = getNode('#modal-editCategory button.delete');
 const editCategoryBtn = document.querySelectorAll('.edit-category-button');
 // const delCategoryBtn = document.querySelectorAll('.del-category-button')
 // 카테고리편집 버튼 클릭시 -> 모달창 
+getNode('.editCategory').onclick = () => {
+  modalEditCategory.classList.add('is-active');
+};
+
 editClose.onclick = () => {
   modalEditCategory.classList.remove('is-active');
   // 닫을때 창 새로고침하기? 
@@ -77,11 +71,11 @@ getNode('.editCategory').onclick = () => {
   modalEditCategory.classList.add('is-active');
 };
 // 카테고리 수정버튼 클릭스 input 태그로 변경하고 button 바꾸기 
-for(let i=0; i<editCategoryBtn.length; i++) {
+for (let i = 0; i < editCategoryBtn.length; i++) {
   editCategoryBtn[i].onclick = (e) => {
     const categoryNode = document.querySelectorAll('.categoryName')[i];
     const btnClasses = editCategoryBtn[i].classList;
-    if(btnClasses.contains('is-warning')) { //수정버튼일때
+    if (btnClasses.contains('is-warning')) { //수정버튼일때
       categoryNode.innerHTML = `<input type="text" value="${categoryNode.textContent}" class="input editName"></input>`;
       btnClasses.remove('is-warning');
       btnClasses.add('is-success');
@@ -92,7 +86,7 @@ for(let i=0; i<editCategoryBtn.length; i++) {
       categoryNode.innerHTML = getNode('.editName').value;
       editCategoryBtn[i].innerHTML = '수정';
     }
-  }
+  };
 }
 
 
