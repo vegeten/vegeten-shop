@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Page</title>
+  <!-- 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <!-- 아이콘 -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- bulma css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 폰트 어썸: 아이콘 -->
+  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+  <!-- 커스텀 css, js -->
+  <link rel="stylesheet" href="admin.css" />
+  <script src="admin.js" type="module" defer></script>
+</head>
+
+<body>
+  <!-- 헤더 -->
+  <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+  </nav>
+
+  <main class="main-wrapper" aria-label="main contents">
+    <div class="main-order-list">
+      <form>
+        <table class="table is-striped is-hoverable table-style">
+          <thead>
+            <tr>
+              <th>선택</th>
+              <th>주문번호</th>
+              <th>주문자명</th>
+              <th>주문내역</th>
+              <th>주문날짜</th>
+              <th>상세</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" name="check"></td>
+              <th>12345</th>
+              <td>엘리스</td>
+              <td>옷 여러개가 주문하나에 들어가있습니다요.</td>
+              <td>2022.05.23</td>
+              <td>
+                <a class="order-detail-button">
+                  <span class="material-icons">
+                    open_in_full
+                  </span>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" name="check"></td>
+              <th>12346</th>
+              <td>엘리스</td>
+              <td>옷 여러개</td>
+              <td>2022.05.26</td>
+              <td>
+                <a class="order-detail-button">
+                  <span class="material-icons">
+                    open_in_full
+                  </span>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="button-wrapper">
+          <button class="button is-medium is-danger delete-button" type="submit">선택삭제</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">주문 상세</p>
+        <button class="close-button delete" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="body-wrapper">
+          <div class="order-detail-info">
+            <span class="info-order-number">No. 123456</span>
+            <span class="info-order-date">2022.05.23</span>
+          </div>
+          <div class="order-detail-list">
+            <table class="table is-hoverable is-fullwidth">
+              <thead>
+                <tr>
+                  <th>상품명</th>
+                  <th>수량</th>
+                  <th>금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>치마치마</td>
+                  <td>2</td>
+                  <td>20,000</td>
+                </tr>
+                <tr>
+                  <td>바지바지</td>
+                  <td>1</td>
+                  <td>50,000</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr>
+          <div class="order-detail-user-info">
+            <ul>
+              <li><strong>배송지</strong></li>
+              <li><strong>주문자명</strong></li>
+              <li><strong>전화번호</strong></li>
+            </ul>
+            <ul>
+              <li>서울시 마포구</li>
+              <li>김엘리스</li>
+              <li>010-1234-5678</li>
+            </ul>
+          </div>
+          <hr>
+          <div class="order-detail-account">
+            <span><strong>총 주문금액: 70,000</strong></span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="footer">
+  </footer>
+
+</body>
+
+</html>
