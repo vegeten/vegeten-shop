@@ -25,12 +25,17 @@ function loginRequired(req, res, next) {
     const userId = jwtDecoded.userId;
 
     // 라우터에서 req.currentUserId를 통해 유저의 id에 접근 가능하게 됨
+    // + 다음 미들웨
     req.currentUserId = userId;
+    req.decoded = jwtDecoded;
+
     console.log(req.params.userId);
     if (jwtDecoded.role !== 'admin') {
       if (userId !== req.params.userId) {
         next(new Error('유저가 다릅니다.'));
       }
+      next();
+      return;
     }
 
     next();
