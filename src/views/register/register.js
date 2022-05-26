@@ -26,6 +26,30 @@ const passwordInput = getNode('#passwordInput');
 const passwordConfirmInput = getNode('#passwordConfirmInput');
 const submitButton = getNode('#submitButton');
 const nameInput = getNode('#fullNameInput');
+const modal = getNode('.modal');
+const modalButton = getNode('.close-button');
+const modalBackground = getNode('.modal-background');
+
+const viewDetailModal = (success, message = '회원가입 성공') => {
+  modal.classList.add('is-active');
+  const modalTitle = getNode('.modal-card-title');
+  const confirmIcon = getNode('.cofirm-icon');
+  const modalCardFooter = getNode('.modal-card-foot');
+
+  modalTitle.innerHTML = message;
+
+  if (success) {
+    confirmIcon.innerHTML = 'check_circle_outline';
+  } else {
+    confirmIcon.innerHTML = 'replay';
+    modalCardFooter.style.display = 'none';
+  }
+};
+
+const closeModal = () => {
+  modal.classList.remove('is-active');
+  window.location.href = '/login';
+};
 
 
 const validationInput = (e) => {
@@ -52,16 +76,7 @@ const addErrorHTML = (target) => {
   }
 };
 
-addAllElements();
 addAllEvents();
-
-
-
-// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() {
-
-
-}
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
@@ -70,6 +85,8 @@ function addAllEvents() {
   emailInput.addEventListener('input', validationInput);
   passwordInput.addEventListener('input', validationInput);
   passwordConfirmInput.addEventListener('input', validationInput);
+  modalButton.addEventListener('click', closeModal);
+  modalBackground.addEventListener('click', closeModal);
 }
 
 // 회원가입 진행
@@ -115,12 +132,10 @@ async function handleSubmit(e) {
 
     await Api.post('/api/register', data);
 
-
-
+    viewDetailModal(true);
     // 로그인 페이지 이동
-    window.location.href = '/login';
   } catch (err) {
     console.error(err.stack);
-    alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
+    viewDetailModal(false, err.message);
   }
 }
