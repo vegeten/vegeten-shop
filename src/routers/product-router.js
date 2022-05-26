@@ -13,40 +13,50 @@ productRouter.get('/products', async function (req, res, next) {
 
     // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '전체 상품 목록 조회 성공',
       data: products,
     });
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occurred while retrieving Product.',
+    next(error);
+  }
+});
+
+// 전체 상품 목록을 가져옴
+productRouter.get('/products/:category', async function (req, res, next) {
+  try {
+    // 전체 상품 목록을 얻음
+    const products = await productService.getCategoryProducts(req.params.category);
+
+    // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      status: 200,
+      message: '카테고리별 상품 목록 조회 성공',
+      data: products,
     });
+  } catch (error) {
+    next(error);
   }
 });
 
 // 특정 상품의 상세정보 조회
-productRouter.get('/products/:productId', async function (req, res, next) {
+productRouter.get('/product/:productId', async function (req, res, next) {
   try {
     // 특정 id에 맞는 상품 상세정보를 얻음
     const product = await productService.getProduct(req.params.productId);
     // 상품상세정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '상품 정보 조회 성공',
       data: product,
     });
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occurred while retrieving Product.',
-    });
     next(error);
   }
 });
 
-// 상품등록 api (아래는 /products이지만, 실제로는 /api/products 로 요청해야 함.)
-productRouter.post('/products', async (req, res, next) => {
+// 상품등록 api (아래는 /product이지만, 실제로는 /api/product 로 요청해야 함.)
+productRouter.post('/product', async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -60,6 +70,8 @@ productRouter.post('/products', async (req, res, next) => {
     const description = req.body.description;
     const company = req.body.company;
     const category = req.body.category;
+    const image = req.body.image;
+    const detailImage = req.body.detailImage;
 
     // 위 데이터를 유저 db에 추가하기
     const newProduct = await productService.addProduct({
@@ -68,25 +80,23 @@ productRouter.post('/products', async (req, res, next) => {
       description,
       company,
       category,
+      image,
+      detailImage,
     });
 
     // 추가된 상품의 db 데이터를 프론트에 다시 보내줌
     res.status(201).json({
-      statusCode: 201,
+      status: 201,
       message: '상품 등록 성공',
       data: newProduct,
     });
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occured while creating th Product.',
-    });
     next(error);
   }
 });
 
 // 상품 정보 수정
-productRouter.patch('/products/:productId', async function (req, res, next) {
+productRouter.patch('/product/:productId', async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -103,6 +113,8 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
     const description = req.body.description;
     const company = req.body.company;
     const category = req.body.category;
+    const image = req.body.image;
+    const detailImage = req.body.detailImage;
 
     // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
     // 보내주었다면, 업데이트용 객체에 삽입함.
@@ -112,6 +124,8 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
       ...(description && { description }),
       ...(company && { company }),
       ...(category && { category }),
+      ...(image && { image }),
+      ...(detailImage && { detailImage }),
     };
 
     // 상품 정보를 업데이트함.
@@ -119,28 +133,24 @@ productRouter.patch('/products/:productId', async function (req, res, next) {
 
     // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '상품 정보 수정 성공',
       data: updatedProductInfo,
     });
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occurred while retrieving Product.',
-    });
     next(error);
   }
 });
 
 // 상품 정보 삭제
-productRouter.delete('/products/:productId', async function (req, res, next) {
+productRouter.delete('/product/:productId', async function (req, res, next) {
   try {
     const productId = req.params.productId;
     // id에 맞는 상품을 삭제함
     const deleteProduct = await productService.deleteProduct(productId);
 
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '상품 삭제 성공',
       data: {
         deleteProduct,
