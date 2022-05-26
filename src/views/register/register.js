@@ -1,5 +1,5 @@
 import * as Api from '/api.js';
-import { validateEmail, getAuthorizationObj } from '/useful-functions.js';
+import { validateEmail, getAuthorizationObj, getNode } from '/useful-functions.js';
 import renderFooter from '../components/footer.js';
 import { renderNav } from "../components/nav.js";
 
@@ -41,6 +41,9 @@ function addAllEvents() {
 
 // 회원가입 진행
 async function handleSubmit(e) {
+  const $modal = getNode('.modal');
+
+  $modal.style.display = 'block';
   e.preventDefault();
 
   const fullName = fullNameInput.value;
@@ -56,6 +59,7 @@ async function handleSubmit(e) {
 
   if (!isFullNameValid || !isPasswordValid) {
     return alert('이름은 2글자 이상, 비밀번호는 4글자 이상이어야 합니다.');
+
   }
 
   if (!isEmailValid) {
@@ -72,7 +76,7 @@ async function handleSubmit(e) {
 
     await Api.post('/api/register', data);
 
-    alert(`정상적으로 회원가입되었습니다.`);
+
 
     // 로그인 페이지 이동
     window.location.href = '/login';
