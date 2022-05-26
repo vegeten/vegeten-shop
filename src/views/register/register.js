@@ -20,11 +20,37 @@ renderNav();
 renderFooter();
 
 // 요소(element), input 혹은 상수
-const fullNameInput = document.querySelector('#fullNameInput');
-const emailInput = document.querySelector('#emailInput');
-const passwordInput = document.querySelector('#passwordInput');
-const passwordConfirmInput = document.querySelector('#passwordConfirmInput');
-const submitButton = document.querySelector('#submitButton');
+const fullNameInput = getNode('#fullNameInput');
+const emailInput = getNode('#emailInput');
+const passwordInput = getNode('#passwordInput');
+const passwordConfirmInput = getNode('#passwordConfirmInput');
+const submitButton = getNode('#submitButton');
+const nameInput = getNode('#fullNameInput');
+
+
+const validationInput = (e) => {
+  if (e.target.value === '') {
+    e.target.classList.add('is-danger');
+    e.target.nextElementSibling.style.display = 'block';
+  } else {
+    e.target.classList.remove('is-danger');
+    e.target.nextElementSibling.style.display = 'none';
+  }
+};
+
+const addErrorHTML = (target) => {
+  target.classList.add('is-danger');
+  target.nextElementSibling.style.display = 'block';
+  if (target === fullNameInput) {
+    target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
+  } else if (target === passwordInput) {
+    target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
+  } else if (target === emailInput) {
+    target.nextElementSibling.innerHTML = '이메일 형식이 맞지 않습니다.';
+  } else if (target === passwordConfirmInput) {
+    target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+  }
+};
 
 addAllElements();
 addAllEvents();
@@ -32,20 +58,24 @@ addAllEvents();
 
 
 // html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() { }
+async function addAllElements() {
+
+
+}
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
   submitButton.addEventListener('click', handleSubmit);
+  nameInput.addEventListener('input', validationInput);
+  emailInput.addEventListener('input', validationInput);
+  passwordInput.addEventListener('input', validationInput);
+  passwordConfirmInput.addEventListener('input', validationInput);
 }
 
 // 회원가입 진행
 async function handleSubmit(e) {
-  const $modal = getNode('.modal');
-
-  $modal.style.display = 'block';
   e.preventDefault();
-
+  let validateFlag = true;
   const fullName = fullNameInput.value;
   const email = emailInput.value;
   const password = passwordInput.value;
@@ -57,18 +87,27 @@ async function handleSubmit(e) {
   const isPasswordValid = password.length >= 4;
   const isPasswordSame = password === passwordConfirm;
 
-  if (!isFullNameValid || !isPasswordValid) {
-    return alert('이름은 2글자 이상, 비밀번호는 4글자 이상이어야 합니다.');
+  if (!isFullNameValid) {
+    addErrorHTML(fullNameInput);
+    validateFlag = false;
+  }
 
+  if (!isPasswordValid) {
+    addErrorHTML(passwordInput);
+    validateFlag = false;
   }
 
   if (!isEmailValid) {
-    return alert('이메일 형식이 맞지 않습니다.');
+    addErrorHTML(emailInput);
+    validateFlag = false;
   }
 
   if (!isPasswordSame) {
-    return alert('비밀번호가 일치하지 않습니다.');
+    addErrorHTML(passwordConfirmInput);
+    validateFlag = false;
   }
+
+  if (!validateFlag) return;
 
   // 회원가입 api 요청
   try {
