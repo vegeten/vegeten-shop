@@ -1,23 +1,24 @@
-import { getAuthorizationObj, getNode } from "../useful-functions.js";
+import { getAuthorizationObj, getNode } from '../useful-functions.js';
 
 const logOut = () => {
-  localStorage.removeItem("token");
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
   window.location.href = '/';
 };
 
 const addLogOutEvent = (isLogin) => {
   if (isLogin) {
-    const $logout = getNode(".logout");
+    const $logout = getNode('.logout');
     $logout.addEventListener('click', logOut);
   }
 };
 
 const nav = (isLogin, isAdmin) => {
-  const $navbar = getNode(".navbar");
+  const $navbar = getNode('.navbar');
   $navbar.style.cssText = 'position:fixed;top:0;width:100%';
   const template = `
   <div class="container mt-3">
-    <div class="navbar-brand">
+    <div cit lass="navbar-brand">
       <a class="navbar-item" href="/">
         <img src="/elice-rabbit.png" width="30" height="30" alt="LOGO" />
       </a>
@@ -36,9 +37,11 @@ const nav = (isLogin, isAdmin) => {
       <a class="navbar-item" href="/shop">
         <span>Shop</span>
       </a>
-      ${isLogin ?
-      `${isAdmin ?
-        `<div class="navbar-item has-dropdown is-hoverable">
+      ${
+        isLogin
+          ? `${
+              isAdmin
+                ? `<div class="navbar-item has-dropdown is-hoverable">
           <span class="material-icons navbar-link">
             account_circle
           </span>
@@ -46,8 +49,8 @@ const nav = (isLogin, isAdmin) => {
             <a class="navbar-item" href="/admin">Admin</a>
             <a class="navbar-item logout">Log out</a>
           </div>
-        </div>` :
-        `
+        </div>`
+                : `
             <div class="navbar-item has-dropdown is-hoverable">
               <span class="material-icons navbar-link">
                 account_circle
@@ -63,9 +66,9 @@ const nav = (isLogin, isAdmin) => {
                 shopping_bag
               </span>
             </a>
-          `}`
-      :
-      `
+          `
+            }`
+          : `
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
@@ -76,7 +79,8 @@ const nav = (isLogin, isAdmin) => {
           shopping_bag
         </span>
       </a>
-      ` } 
+      `
+      } 
     </div>
   </div>`;
 
@@ -90,5 +94,3 @@ const renderNav = () => {
 };
 
 export { renderNav, logOut };
-
-
