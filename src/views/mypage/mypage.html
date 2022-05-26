@@ -19,6 +19,8 @@
   <!-- 커스텀 css, js -->
   <link rel="stylesheet" href="mypage.css" />
   <script src="mypage.js" type="module" defer></script>
+  <!-- 다음 API js -->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 
 <body>
@@ -147,50 +149,68 @@
     <div class="register-user-form-container">
       <span span class="container-title">회원 정보</span>
       <form class="box register-user-form-box has-background-light" id="modifyUserForm">
-        <div class="field">
-          <label class="label-input" for="fullNameInput">이름</label>
-          <div class="control">
-            <input class="input" id="fullNameInput" type="text" placeholder="홍길동" autocomplete="on" />
+        <label for="fullNameInput">이름</label>
+        <div class="control">
+          <input class="input is-medium" id="fullNameInput" type="text" placeholder="이름을 입력해주세요." autocomplete="off" />
+          <div id="name-msg" class="help is-danger">
+            <span>이름을 입력해주세요.</span>
           </div>
         </div>
 
         <div class="field">
-          <label class="label-input" for="emailInput">이메일</label>
+          <label for="emailInput">이메일(아이디)</label>
           <div class="control">
-            <input class="input" id="emailInput" type="email" placeholder="abc@example.com" autocomplete="on" />
+            <input class="input is-medium " id="emailInput" type="email" placeholder="이메일을 입력해주세요."
+              autocomplete="off" />
+            <div id="email-msg" class="help is-danger">
+              <span>이메일을 입력해주세요.</span>
+            </div>
           </div>
         </div>
 
+        <!-- <div class="field">
+          <label class="passwordInput" for="passwordInput">비밀번호</label>
+          <div class="password-wrap control">
+            <input class="input is-medium" id="passwordInput" type="password" placeholder="현재 비밀번호를 입력해주세요." readonly />
+            <button id="password-check" class="button is-medium is-warning">비밀번호 변경</button>
+          </div>
+        </div> -->
+
         <div class="field">
-          <label class="label-input" for="phoneNumber">휴대폰번호</label>
-          <div class="control">
-            <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="3" />
-            <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="4" />
-            <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="4" />
+          <label for="phoneInput">연락처</label>
+          <div class="phone-wrap control">
+            <input id="phoneInput" class="input is-medium phone" type="tel" maxlength="3" />
+            <span>-</span>
+            <input class="input is-medium phone" type="tel" maxlength="4" />
+            <span>-</span>
+            <input class="input is-medium phone" type="tel" maxlength="4" />
+          </div>
+          <div id="phone-msg" class="help is-danger">
+            <span>연락처를 입력해주세요.</span>
           </div>
         </div>
 
         <div class="field">
           <label class="label-input" for="address-search">우편번호</label>
-          <div class="control">
-            <input class="input" id="address-search" type="text" autocomplete="off" readonly />
-            <button class="button is-midium">검색하기</button>
+          <div class="addr-wrap control">
+            <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" readonly />
+            <button id="kakao_address" class="button is-medium is-responsive">주소찾기</button>
           </div>
         </div>
 
         <div class="field">
           <label class="label-input" for="address">주소</label>
           <div class="control">
-            <input class="input mb-3" id="address" type="text" autocomplete="off" readonly />
-            <input class="input" id="address" type="text" autocomplete="off" readonly />
+            <input class="input is-medium mb-3 address-1" type="text" autocomplete="off" readonly />
+            <input class="input is-medium address-2" type="text" placeholder="상세 주소를 입력해주세요." autocomplete="off" />
           </div>
         </div>
 
         <div class="btn-wrapper">
-          <button class="button is-danger is-midium mb-3">
+          <button class="button is-danger is-midium mt-3 mb-3">
             탈퇴하기
           </button>
-          <button class="button is-black is-midium mb-3" id="submitButton">
+          <button class="button is-black is-midium mt-3 mb-3" id="submitButton">
             변경 사항 저장하기
           </button>
         </div>

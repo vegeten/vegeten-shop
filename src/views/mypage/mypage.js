@@ -1,6 +1,6 @@
 import renderFooter from '../components/footer.js';
 import { renderNav } from "../components/nav.js";
-import { getAuthorizationObj } from '../useful-functions.js';
+import { getAuthorizationObj, getNode } from '../useful-functions.js';
 
 window.onpageshow = function (event) {
   if (event.persisted) {
@@ -17,3 +17,19 @@ if (!isLogin) {
 
 renderNav();
 renderFooter();
+
+const addressCode = getNode('.address-code');
+
+window.onload = function () {
+  getNode('#kakao_address').addEventListener('click', (e) => {
+    e.preventDefault();
+    new daum.Postcode({
+      oncomplete: function (data) {
+        addressCode.value = data.zonecode;
+        getNode('.address-1').value = data.address;
+        getNode('.address-2').focus();
+      },
+    }).open();
+  });
+};
+

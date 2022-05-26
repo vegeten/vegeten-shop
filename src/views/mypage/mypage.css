@@ -40,6 +40,10 @@
   margin-top: 1.5rem;
 }
 
+.help {
+  display: none;
+}
+
 .order-list-image {
   width: 20%;
 }
@@ -71,11 +75,7 @@
 }
 
 .register-user-form-container {
-  width: 40%;
-}
-
-.input[type="tel"] {
-  width: 32.7%;
+  width: 45%;
 }
 
 .btn-wrapper {
@@ -83,6 +83,30 @@
   justify-content: space-between;
 }
 
-.input[id="address-search"] {
-  width: 79%;
+.password-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.password-wrap button {
+  margin-left: 1rem;
+}
+
+.phone-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.phone-wrap span {
+  display: inline-block;
+  margin: 0 0.8rem;
+}
+
+.addr-wrap {
+  display: flex;
+}
+
+.addr-wrap button {
+  margin-left: 1rem;
 }
