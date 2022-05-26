@@ -37,6 +37,6 @@ export const getNode = (selector) => {
 export const getAuthorizationObj = () => {
   return {
     isLogin: localStorage.getItem("token") ? true : false,
-    isAdmin: false,
+    isAdmin: true,
   };
 };
