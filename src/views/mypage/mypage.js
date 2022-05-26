@@ -16,7 +16,7 @@ if (!isLogin) {
   window.location.href = '/login';
 }
 
-const nameInput = getNode('.name-input');
+const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
 const numberFirstInput = getNode('.number-1');
 const numberSecondInput = getNode('.number-2');
@@ -26,6 +26,19 @@ const addressTitleInput = getNode('.address-1');
 const addressDetailInput = getNode('.address-2');
 const currentPasswordInput = getNode('.passwd');
 const currentPasswordCheck = getNode('.passwd-check');
+
+const addErrorHTML = (target) => {
+  target.classList.add('is-danger');
+  console.log(target.nextElementSibling.style);
+  target.nextElementSibling.style.display = 'block';
+  if (target === fullNameInput) {
+    target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
+  } else if (target === currentPasswordInput) {
+    target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
+  } else if (target === currentPasswordCheck) {
+    target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+  }
+};
 
 const validationPassword = (currentPassword) => {
   return currentPasswordCheck.value === currentPassword;
@@ -43,7 +56,7 @@ const renderUserInfo = (data) => {
     addressDetail
   } = data;
 
-  nameInput.value = fullName;
+  fullNameInput.value = fullName;
   emailInput.value = email;
   numberFirstInput.value = phoneNumberFirst;
   numberSecondInput.value = phoneNumberSecond;
@@ -111,15 +124,44 @@ const submitWithdrawUser = async (e) => {
 const submitModifyUserInfo = async (e) => {
   e.preventDefault();
 
+  let validateFlag = true;
+  const fullName = fullNameInput.value;
+  const password = currentPasswordInput.value;
+  const passwordConfirm = currentPasswordCheck.value;
+
+  // 잘 입력했는지 확인
+  const isFullNameValid = fullName.length >= 2;
+  const isPasswordValid = password.length >= 4;
+  const isPasswordSame = password === passwordConfirm;
+
+  if (!isFullNameValid) {
+    addErrorHTML(fullNameInput);
+    validateFlag = false;
+  }
+
+  if (!isPasswordValid) {
+    addErrorHTML(passwordInput);
+    validateFlag = false;
+  }
+
+  if (!isPasswordSame) {
+    addErrorHTML(currentPasswordCheck);
+    validateFlag = false;
+  }
+
+  if (!validateFlag) return;
+
+  if (!validationPassword(currentPasswordInput.value)) {
+    alert('현재비밀번호랑 달라 !');
+    return;
+  }
+
+
   const ok = window.confirm("정말 수정하시겠습니까?");
   if (!ok) return;
 
   const userId = '628f6e0fd4439b2a3e8dca67';
   try {
-    if (!validationPassword(currentPasswordInput.value)) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
 
     const data = {
       fullName: nameInput.value,
