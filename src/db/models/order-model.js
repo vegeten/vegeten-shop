@@ -1,7 +1,7 @@
-import res from "express/lib/response";
-import { model } from "mongoose";
-import { OrderSchema } from "../schemas/order-schema";
-const Order = model("orders", OrderSchema);
+import res from 'express/lib/response';
+import { model } from 'mongoose';
+import { OrderSchema } from '../schemas/order-schema';
+const Order = model('orders', OrderSchema);
 export class OrderModel {
   async findByEmail(email) {
     const order = await Order.find({ email: email });
@@ -10,7 +10,7 @@ export class OrderModel {
   async findById(orderId) {
     const order = await Order.findOne({ _id: orderId });
     if (!order || order === null) {
-      throw new Error("Id not found");
+      throw new Error('Id not found');
     }
     return order;
   }
@@ -23,8 +23,7 @@ export class OrderModel {
     return orders;
   }
   async delete(orderId) {
-    await Order.findOneAndDelete({ _id: orderId });
-    return;
+    return await Order.findOneAndDelete({ _id: orderId });
   }
 }
 const orderModel = new OrderModel();
