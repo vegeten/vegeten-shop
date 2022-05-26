@@ -31,11 +31,11 @@ const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
 
 const viewDetailModal = (success, message = '회원가입 성공') => {
-  modal.classList.add('is-active');
   const modalTitle = getNode('.modal-card-title');
   const confirmIcon = getNode('.cofirm-icon');
   const modalCardFooter = getNode('.modal-card-foot');
 
+  modal.classList.add('is-active');
   modalTitle.innerHTML = message;
 
   if (success) {
