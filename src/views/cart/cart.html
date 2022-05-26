@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <link rel="stylesheet" href="cart.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet" />
+    <script src="cart.js" type="module" defer></script>
+  </head>
+  <body>
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation"></nav>
+    <div id="container">
+      <h2 id="title">장바구니</h2>
+      <div id="cart-wrap">
+        <div id="top-buttons">
+          <button id="all-check" class="button is-normal">전체선택</button>
+          <button id="all-delete" class="button is-normal is-danger">선택삭제</button>
+        </div>
+
+        <div class="cart-element">
+          <div class="product-info">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="checkbox" />
+            </div>
+            <div class="product-image-wrap">
+              <img src="../elice-rabbit.png" alt="상품 사진" />
+            </div>
+            <div class="product-description">
+              <span class="product-name">TSHIRT FLOWERMARDI_WHITE GREEN</span>
+              <span class="product-cost">30000</span>
+            </div>
+          </div>
+          <div class="product-quantity">
+            <span class="subTitle">수량</span>
+            <div class="counter-wrap">
+              <button class="decrease-button count counter-button">-</button>
+              <input class="quantity count quantity-count" type="number" value="3" />
+              <button class="increase-button count counter-button">+</button>
+            </div>
+          </div>
+          <div class="product-total-price-wrap">
+            <span class="subTitle">가격</span>
+            <span class="product-total-price">90000</span>
+          </div>
+        </div>
+
+        <div class="cart-element">
+          <div class="product-info">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="checkbox" />
+            </div>
+            <div class="product-image-wrap">
+              <img src="../elice-rabbit.png" alt="상품 사진" />
+            </div>
+            <div class="product-description">
+              <span class="product-name">TSHIRT FLOWERMARDI_WHITE GREEN</span>
+              <span class="product-cost">20000</span>
+            </div>
+          </div>
+          <div class="product-quantity">
+            <span class="subTitle">수량</span>
+            <div class="counter-wrap">
+              <button class="decrease-button count counter-button">-</button>
+              <input class="quantity count quantity-count" type="number" value="1" />
+              <button class="increase-button count counter-button">+</button>
+            </div>
+          </div>
+          <div class="product-total-price-wrap">
+            <span class="subTitle">가격</span>
+            <span class="product-total-price">90000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 총합 -->
+      <div id="bottom">
+        <div id="cart-total-cost-wrap">
+          <span id="cart-total-cost-title" class="cart-total-cost">합계</span>
+          <span id="cart-total-cost-number" class="cart-total-cost">190,000원</span>
+        </div>
+        <div id="pay-button-wrap">
+          <button id="pay-button" class="button is-medium">
+            <a href="/order">주문하기</a>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer"></footer>
+  </body>
+</html>

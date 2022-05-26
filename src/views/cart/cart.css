@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+#container {
+  padding-top: 60px;
+  width: 74vw;
+  margin: 0 auto;
+}
+
+h2 {
+  margin-bottom: 60px;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+#cart-wrap {
+  border-bottom: 1px solid black;
+}
+
+#top-buttons {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid black;
+}
+
+#all-check {
+  margin-right: 10px;
+}
+
+.cart-element {
+  display: flex;
+  padding: 20px 10px;
+}
+
+.product-info {
+  display: flex;
+  width: 50%;
+  align-items: center;
+}
+
+.checkbox-wrap {
+  margin-right: 5px;
+}
+
+.checkbox {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.product-image-wrap {
+  display: inline-block;
+  width: 150px;
+  margin-right: 30px;
+}
+
+.product-description {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-name {
+}
+
+.product-quantity {
+  width: 30%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 70px;
+}
+
+.counter-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.counter-button {
+  width: 37px;
+  height: 37px;
+  background-color: #fff;
+  border: 1px solid #f2f2f2;
+  cursor: pointer;
+}
+
+.quantity-count {
+  width: 37px;
+  height: 37px;
+  padding: 5px;
+  text-align: center;
+  outline: none;
+  border: 1px solid #f2f2f2;
+  outline: none;
+}
+
+.quantity-count:focus {
+  outline: none;
+}
+
+.count + .count {
+  margin-left: -1px;
+}
+
+.product-total-price-wrap {
+  width: 20%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-total-price-wrap span {
+  text-align: center;
+}
+
+.subTitle {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#bottom {
+  display: flex;
+
+  flex-direction: column;
+}
+
+#cart-total-cost-wrap {
+  padding: 40px 0;
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.cart-total-cost {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+#cart-total-cost-title {
+  display: inline-block;
+  margin-right: 50px;
+}
+#pay-button-wrap {
+  display: flex;
+  justify-content: right;
+}
+
+#pay-button {
+  background-color: #000;
+
+  padding: 9px 30px;
+  font-size: 16px;
+  height: 50px;
+}
+
+#pay-button a {
+  text-decoration: none;
+  color: #fff;
+}
