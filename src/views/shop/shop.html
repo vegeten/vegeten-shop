@@ -31,11 +31,6 @@
     <nav class="category-nav">
       <div id="category-list">
         <div class="category all active">전체보기</div>
-        <!-- <div class="category">Outer</div>
-        <div class="category">상의</div>
-        <div class="category">하의</div>
-        <div class="category">신발&가방</div>
-        <div class="category">Accesory</div> -->
       </div>
       <button class="editCategory button" data-target="modal-editCategory">
         카테고리편집
@@ -48,11 +43,19 @@
             <button class="delete" aria-label="close"></button>
           </header>
           <section class="modal-card-body">
-            
+            <table class="table is-large">
+              <thead>
+                <tr>
+                  <th>카테고리명</th>
+                  <th>수정</th>
+                  <th>삭제</th>
+                </tr>
+              </thead>
+              <tbody class="category-modal-list">
+              </tbody>
+            </table>
           </section>
           <footer class="modal-card-foot">
-            <button class="button is-success">Save changes</button>
-            <button class="button">Cancel</button>
           </footer>
         </div>
       </div>
@@ -108,13 +111,13 @@
               </div>
               <div>카테고리</div>
               <div>상품이름</div>
-              <input class="input" type="text" name="productName" >
+              <input class="input is-danger" type="text" name="productName" >
               <div>상품설명</div>
-              <input class="input" type="textarea" name="description">
+              <input class="input is-danger" type="textarea" name="description">
               <div>price</div>
-              <input class="input is-3" type="number" name="productName">
+              <input class="input is-danger" type="number" name="productName">
               <div>제조사</div>
-              <input class="input" type="text" name="productName">
+              <input class="input is-danger" type="text" name="productName">
 
             </section>
             <footer class="modal-card-foot">

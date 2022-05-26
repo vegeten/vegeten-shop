@@ -30,6 +30,18 @@ main {
   margin: 30px auto;
   width: 80%;
 }
+.category-nav #modal-editCategory table {
+  width: 90%;
+  text-align: center;
+}
+#modal-editCategory table button{
+  margin: 0;
+}
+#modal-editCategory  input{
+  width: 60%;
+  margin: 0;
+}
+
 article {
   position: relative;
 }
