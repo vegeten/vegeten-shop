@@ -43,7 +43,7 @@ const nav = (isLogin, isAdmin) => {
             account_circle
           </span>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="/orderlist">Order list</a>
+            <a class="navbar-item" href="/admin">Admin</a>
             <a class="navbar-item logout">Log out</a>
           </div>
         </div>` :
