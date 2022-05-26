@@ -102,8 +102,23 @@
           </div>
         </div>
       </div>
+
       <div id="bottom">
-        <button class="button is-large">300,000원 결제하기</button>
+        <button id="pay-button" class="button is-large">300,000원 결제하기</button>
+      </div>
+    </div>
+
+    <div id="modal-js-example" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box">
+          <div id="modal-title">주문이 완료되었습니다!</div>
+          <div id="modal-buttons-wrap">
+            <a href="/shop"> <button id="move-shop-button" class="button is-medium">쇼핑계속하기</button></a>
+            <a href="/mypage"> <button id="move-mypage-button" class="button is-medium">주문내역보기</button></a>
+          </div>
+        </div>
+        <!-- <button class="modal-close is-large" aria-label="close"></button> -->
       </div>
     </div>
   </body>

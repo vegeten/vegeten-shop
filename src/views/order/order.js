@@ -46,3 +46,21 @@ phoneInput.forEach((phone) => {
     }
   });
 });
+
+const modal = getNode('.modal');
+const btn = getNode('#pay-button');
+const close = getNode('.modal-close');
+
+btn.addEventListener('click', function () {
+  modal.style.display = 'flex';
+});
+
+close.addEventListener('click', function () {
+  modal.style.display = 'none';
+});
+
+// window.addEventListener('click', function (event) {
+//   if (event.target.className === 'modal-background') {
+//     modal.style.display = 'none';
+//   }
+// });

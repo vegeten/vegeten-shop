@@ -145,3 +145,48 @@ header a {
   color: #fff;
   border: none;
 }
+/* 
+.modal {
+  display: flex;
+} */
+
+.modal-content {
+  justify-content: center;
+  display: flex;
+}
+
+.modal-close {
+  display: none;
+}
+
+.box {
+  width: 500px;
+  justify-content: center;
+}
+
+#modal-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin: 50px 0;
+}
+
+#modal-buttons-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#modal-buttons-wrap button {
+  width: 360px;
+}
+
+#move-shop-button {
+  margin-bottom: 20px;
+}
+
+#move-mypage-button {
+  background-color: #000;
+  color: #fff;
+}
