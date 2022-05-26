@@ -151,7 +151,8 @@
       <form class="box register-user-form-box has-background-light" id="modifyUserForm">
         <label for="fullNameInput">이름</label>
         <div class="control">
-          <input class="input is-medium" id="fullNameInput" type="text" placeholder="이름을 입력해주세요." autocomplete="off" />
+          <input class="input is-medium name-input" id="fullNameInput" type="text" placeholder="이름을 입력해주세요."
+            autocomplete="off" />
           <div id="name-msg" class="help is-danger">
             <span>이름을 입력해주세요.</span>
           </div>
@@ -160,7 +161,7 @@
         <div class="field">
           <label for="emailInput">이메일(아이디)</label>
           <div class="control">
-            <input class="input is-medium " id="emailInput" type="email" placeholder="이메일을 입력해주세요."
+            <input class="input is-medium email-input" id="emailInput" type="email" placeholder="이메일을 입력해주세요."
               autocomplete="off" />
             <div id="email-msg" class="help is-danger">
               <span>이메일을 입력해주세요.</span>
@@ -168,22 +169,38 @@
           </div>
         </div>
 
-        <!-- <div class="field">
+        <div class="field">
           <label class="passwordInput" for="passwordInput">비밀번호</label>
+          <div class="control">
+            <input class="input is-medium passwd" id="passwordInput" type="password" placeholder="현재 비밀번호를 입력해주세요." />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="passwordInput" for="passwordInput">비밀번호 확인</label>
+          <div class="control">
+            <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
+              placeholder="현재 비밀번호를 확인해주세요." />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="passwordInput" for="passwordInput">비밀번호 변경</label>
           <div class="password-wrap control">
-            <input class="input is-medium" id="passwordInput" type="password" placeholder="현재 비밀번호를 입력해주세요." readonly />
+            <input class="input is-medium passwd mb-3" id="passwordInput" type="password"
+              placeholder="새로운 비밀번호를 입력해주세요." readonly />
             <button id="password-check" class="button is-medium is-warning">비밀번호 변경</button>
           </div>
-        </div> -->
+        </div>
 
         <div class="field">
           <label for="phoneInput">연락처</label>
           <div class="phone-wrap control">
-            <input id="phoneInput" class="input is-medium phone" type="tel" maxlength="3" />
+            <input id="phoneInput" class="input is-medium phone number-1" type="tel" maxlength="3" />
             <span>-</span>
-            <input class="input is-medium phone" type="tel" maxlength="4" />
+            <input class="input is-medium phone number-2" type="tel" maxlength="4" />
             <span>-</span>
-            <input class="input is-medium phone" type="tel" maxlength="4" />
+            <input class="input is-medium phone number-3" type="tel" maxlength="4" />
           </div>
           <div id="phone-msg" class="help is-danger">
             <span>연락처를 입력해주세요.</span>
@@ -207,10 +224,10 @@
         </div>
 
         <div class="btn-wrapper">
-          <button class="button is-danger is-midium mt-3 mb-3">
+          <button class="button is-danger is-midium mt-3 mb-3 btn-withdraw">
             탈퇴하기
           </button>
-          <button class="button is-black is-midium mt-3 mb-3" id="submitButton">
+          <button class="button is-black is-midium mt-3 mb-3 btn-modify" type="submit" id="submitButton">
             변경 사항 저장하기
           </button>
         </div>
