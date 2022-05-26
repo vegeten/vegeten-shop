@@ -3,7 +3,7 @@
 }
 main {
   display: flex;
-  /* height: 1200px; */
+  margin-top: 4%;
 }
 .category-nav {
   display: flex;

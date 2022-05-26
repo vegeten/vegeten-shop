@@ -67,6 +67,7 @@ editClose.onclick = () => {
   categoryModalList.innerHTML = "";
   renderCategory()
 };
+
 getNode('.editCategory').onclick = () => {
   modalEditCategory.classList.add('is-active');
 };

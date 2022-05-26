@@ -7,8 +7,8 @@ article {
 article .intro-item {
   display: flex;
   margin: 5%;
+  margin-top: 10%;
   flex-wrap: wrap;
-  /* border: solid 1px black; */
   height: 80%;
   text-align: center;
 }
