@@ -24,21 +24,29 @@
 </head>
 
 <body>
-  <!-- 헤더 -->
   <nav class="navbar is-light" role="navigation" aria-label="main navigation">
   </nav>
-
   <main class="main-wrapper" aria-label="main contents">
     <article class="main-thumnail" aria-label="main thumnail">
-      <div class="thumnail-wrapper">
-        <div class="carousel">
-          <img src="https://picsum.photos/2700/2000" alt="image-1">
-          <img src="https://picsum.photos/id/2/2700/2000" alt="image-2">
-          <img src="https://picsum.photos/id/3/2700/2000" alt="image-3">
+      <div class="carousel-container">
+        <div class="carousel-slide">
+          <img src="https://picsum.photos/id/100/2700/2000" alt="image-1" id="last">
+          <img src="https://picsum.photos/id/5/2700/2000" alt="image-2">
+          <img src="https://picsum.photos/id/12/2700/2000" alt="image-3">
+          <img src="https://picsum.photos/id/36/2700/2000" alt="image-4" id="first">
         </div>
+        <button id="prevBtn">
+          <span class="material-icons">
+            arrow_back_ios
+          </span>
+        </button>
+        <button id="nextBtn">
+          <span class="material-icons">
+            arrow_forward_ios
+          </span>
+        </button>
       </div>
     </article>
-
     <article class="main-introduction" aria-label="main introduction">
       <div class="introduction-wrapper">
         <p class="introduction-contents title"><strong>10 Shop</strong></p>
@@ -47,22 +55,23 @@
         <p class="introduction-contents">화이팅.</p>
       </div>
     </article>
-
     <article class="main-new" aria-label="main new items">
       <div class="new-wrapper">
-        <a class="new-item">
-          <img src="https://picsum.photos/id/4/300/300" alt="item-1">
-        </a>
-        <a class="new-item">
-          <img src="https://picsum.photos/id/5/300/300" alt="item-2">
-        </a>
-        <a class="new-item">
-          <img src="https://picsum.photos/id/6/300/300" alt="item-3">
-        </a>
+        <span>New Arrival</span>
+        <div>
+          <a class="new-item">
+            <img src="https://picsum.photos/id/4/300/300" alt="item-1">
+          </a>
+          <a class="new-item">
+            <img src="https://picsum.photos/id/5/300/300" alt="item-2">
+          </a>
+          <a class="new-item">
+            <img src="https://picsum.photos/id/6/300/300" alt="item-3">
+          </a>
+        </div>
       </div>
     </article>
   </main>
-
   <footer class="footer">
   </footer>
 
