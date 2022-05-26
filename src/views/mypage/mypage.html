@@ -159,13 +159,9 @@
         </div>
 
         <div class="field">
-          <label for="emailInput">이메일(아이디)</label>
+          <label for="emailInput">이메일</label>
           <div class="control">
-            <input class="input is-medium email-input" id="emailInput" type="email" placeholder="이메일을 입력해주세요."
-              autocomplete="off" />
-            <div id="email-msg" class="help is-danger">
-              <span>이메일을 입력해주세요.</span>
-            </div>
+            <input class="input is-medium email-input" id="emailInput" type="email" autocomplete="off" readonly />
           </div>
         </div>
 
@@ -181,15 +177,18 @@
           <div class="control">
             <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
               placeholder="현재 비밀번호를 확인해주세요." />
+            <div id="password-check-msg" class="help is-danger">
+              <span>비밀번호가 일치하지 않습니다.</span>
+            </div>
           </div>
         </div>
 
         <div class="field">
           <label class="passwordInput" for="passwordInput">비밀번호 변경</label>
           <div class="password-wrap control">
-            <input class="input is-medium passwd mb-3" id="passwordInput" type="password"
-              placeholder="새로운 비밀번호를 입력해주세요." readonly />
-            <button id="password-check" class="button is-medium is-warning">비밀번호 변경</button>
+            <input class="input is-medium passwd mb-3" id="passwordModify" type="password"
+              placeholder="비밀번호 변경 버튼을 누르세요." readonly />
+            <button id="password-modify" class="button is-medium is-warning">비밀번호 변경</button>
           </div>
         </div>
 

@@ -24,8 +24,12 @@ const numberThirdInput = getNode('.number-3');
 const addressCodeInput = getNode('.address-code');
 const addressTitleInput = getNode('.address-1');
 const addressDetailInput = getNode('.address-2');
+const currentPasswordInput = getNode('.passwd');
+const currentPasswordCheck = getNode('.passwd-check');
 
-
+const validationPassword = (currentPassword) => {
+  return currentPasswordCheck.value === currentPassword;
+};
 
 const renderUserInfo = (data) => {
   const {
@@ -68,7 +72,7 @@ function addAllEvents() {
 }
 
 const getUserInfo = async () => {
-  const userId = '628b2a77877f7226b55cbfe6';
+  const userId = '628f6e0fd4439b2a3e8dca67';
   try {
     const result = await Api.get('/api/users', userId);
     const userInfo = {
@@ -90,9 +94,11 @@ const getUserInfo = async () => {
 };
 
 const submitWithdrawUser = async (e) => {
+  e.preventDefault();
+
   const ok = window.confirm("정말로 탈퇴하시겠습니까?");
   if (!ok) return;
-  e.preventDefault();
+
   const userId = '628f5d6adf2db6f55127f676';
   try {
     await Api.delete('/api/users', userId);
@@ -105,10 +111,29 @@ const submitWithdrawUser = async (e) => {
 const submitModifyUserInfo = async (e) => {
   e.preventDefault();
 
+  const ok = window.confirm("정말 수정하시겠습니까?");
+  if (!ok) return;
+
+  const userId = '628f6e0fd4439b2a3e8dca67';
   try {
-    const result = await Api.get('/api/userlist');
-    console.log(result);
+    if (!validationPassword(currentPasswordInput.value)) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    const data = {
+      fullName: nameInput.value,
+      currentPassword: currentPasswordInput.value,
+      address: '',
+      phoneNumber: '',
+      password: '',
+    };
+
+    await Api.patch('/api/users', userId, data);
+
+    window.location.href = '/';
   } catch (err) {
+    console.log(err.message);
   }
 };
 
