@@ -15,7 +15,7 @@ export class UserModel {
     return createdNewUser;
   }
   async findAll() {
-    const users = await User.find({});
+    const users = await User.find({}, { email: 1, fullName: 1, password: 1, address: 1, role: 1, refresh: 1 });
     return users;
   }
   async update({ userId, update }) {
