@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Team-Ten</title>
+  <!-- 폰트 -->
+  <link rel=“preconnect” href=“https://fonts.googleapis.com”>
+  <link rel=“preconnect” href=“https://fonts.gstatic.com” crossorigin>
+  <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
+  <!-- 아이콘 -->
+  <link rel="icon" type="image/png" sizes="16x16" href="../elice-rabbit-favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- bulma css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 폰트 어썸: 아이콘 -->
+  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+      <!-- bulma css -->
+      <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="shop.css" />
+    <script src="shop.js" type="module" defer></script>
+</head>
+<body>
+  <!-- 헤더 -->
+  <nav class="navbar is-light" role="navigation" aria-label="main navigation"></nav>
+  <main>
+    <nav class="category-nav">
+      <div id="category-list">
+        <div class="category all active">전체보기</div>
+      </div>
+      <button class="editCategory button" data-target="modal-editCategory">
+        카테고리편집
+      </button>
+      <div id="modal-editCategory" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">카테고리 편집</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <section class="modal-card-body">
+            <table class="table is-large">
+              <thead>
+                <tr>
+                  <th>카테고리명</th>
+                  <th>수정</th>
+                  <th>삭제</th>
+                </tr>
+              </thead>
+              <tbody class="category-modal-list">
+              </tbody>
+            </table>
+          </section>
+          <footer class="modal-card-foot">
+          </footer>
+        </div>
+      </div>
+    </nav>
+    <!-- <h2>전체보기</h2> -->
+    <article class="container">
+      <div class="title is-size-4 category-name">전체보기</div>
+      <button class="button is-black modal-button addProduct" data-target="modal-ter" aria-haspopup="true">상품추가</button>
+      <!-- 모달 -->
+      <div class="modal modal-addProduct">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">상품추가하기</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+          <form action="POST">
+            <section class="modal-card-body">
+              <!-- Content ... -->
+              <div class="is-size-5">대표이미지</div>
+              <div id="file-main" class="file has-name is-right">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">
+                      Choose a file…
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    No file uploaded
+                  </span>
+                </label>
+              </div>
+              <div class="is-size-5">상세이미지</div>
+              <div id="file-sub" class="file has-name is-right">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">
+                      Choose a file…
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    No file uploaded
+                  </span>
+                </label>
+              </div>
+              <div>카테고리</div>
+              <div>상품이름</div>
+              <input class="input is-danger" type="text" name="productName" >
+              <div>상품설명</div>
+              <input class="input is-danger" type="textarea" name="description">
+              <div>price</div>
+              <input class="input is-danger" type="number" name="productName">
+              <div>제조사</div>
+              <input class="input is-danger" type="text" name="productName">
+
+            </section>
+            <footer class="modal-card-foot">
+              <input type="submit" class="button is-success" value="상품추가하기"></input>
+            </footer>
+          </form>
+        </div>
+      </div>
+      <!-- 모달끝 -->
+      <div id="list">
+        <div class="item-card">
+          <div class="img-box"><img src="https://img.29cm.co.kr/next-product/2022/04/25/4143c72951de4ebe9d687b04aff8e8c5_20220425153023.jpg?width=700" alt=""></div>
+          <div class="productName" name="productName">TSHIRT FLOWERMARDI_WHITE GREEN</div>
+          <div name="price">37,800원</div>
+        </div>   
+        <div class="item-card">
+          <div class="img-box"><img src="https://img.29cm.co.kr/next-product/2022/04/25/4143c72951de4ebe9d687b04aff8e8c5_20220425153023.jpg?width=700" alt=""></div>
+          <div class="productName" name="productName">TSHIRT FLOWERMARDI_WHITE GREEN</div>
+          <div name="price">37,800원</div>
+        </div>   
+        <div class="item-card">
+          <div class="img-box"><img src="https://img.29cm.co.kr/next-product/2022/04/25/4143c72951de4ebe9d687b04aff8e8c5_20220425153023.jpg?width=700" alt=""></div>
+          <div class="productName" name="productName">TSHIRT FLOWERMARDI_WHITE GREEN</div>
+          <div name="price">37,800원</div>
+        </div>   
+      </div>
+      <!-- pagination -->
+      <div class="bottom">
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          <a class="pagination-previous">Previous</a>
+          <a class="pagination-next">Next page</a>
+          <ul class="pagination-list">
+            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+            <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
+            <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+          </ul>
+        </nav>
+      </div>
+    </article>
+    
+  </main>
+  <footer class="footer"></footer>
+</body>
+</html>
