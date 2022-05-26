@@ -28,23 +28,11 @@ const mocCategoryAPI = [
 
 // 카테고리 렌더링
 const categoryList = document.querySelector('#category-list');
-const categoryModalList = document.querySelector('.category-modal-list');
 const categoryTitle = document.querySelector('.category-name');
 // 상품목록 - 왼쪽 nav바 렌더링/모달 
 for(let i=0; i<mocCategoryAPI.length; i++){
   categoryList.innerHTML += `<div class="category">${mocCategoryAPI[i].category}</div>`;
 }
-function renderCategory() {
-  for(let i=0; i<mocCategoryAPI.length; i++){
-    categoryModalList.innerHTML +=  `<tr>
-    <td class="categoryName ${mocCategoryAPI[i].category}" name="categoryName">${mocCategoryAPI[i].category}</td>
-    <td><button class="button is-warning edit-category-button">수정</button></td>
-    <td><button class="button is-danger del-category-button">삭제</button></td>
-  </tr>`;
-  }
-}
-renderCategory()
-
 
 // 카테고리 클릭시 상단 title 변경하기
 const categories = document.querySelectorAll('.category');
@@ -58,18 +46,35 @@ for (let i = 0; i < categories.length; i++) {
     }
   };
 }
+
+// 카테고리편집 모달창 렌더링
+// 상품목록 - 카테고리편집 모달 렌더링 
+function renderCategory() {
+  const categoryModalList = document.querySelector('.category-modal-list');
+  for(let i=0; i<mocCategoryAPI.length; i++){
+    categoryModalList.innerHTML +=  `<tr>
+    <td class="categoryName ${mocCategoryAPI[i].category}" name="categoryName">${mocCategoryAPI[i].category}</td>
+    <td><button class="button is-warning edit-category-button">수정</button></td>
+    <td><button class="button is-danger del-category-button">삭제</button></td>
+    </tr>`;
+  }
+}
+renderCategory()
 // 카테고리편집 모달창 활성화
 const modalEditCategory = getNode('#modal-editCategory');
 const editClose = getNode('#modal-editCategory button.delete');
 const editCategoryBtn = document.querySelectorAll('.edit-category-button');
-const delCategoryBtn = document.querySelectorAll('.del-category-button')
-getNode('.editCategory').onclick = () => {
-  modalEditCategory.classList.add('is-active');
-};
+// const delCategoryBtn = document.querySelectorAll('.del-category-button')
+// 카테고리편집 버튼 클릭시 -> 모달창 
 editClose.onclick = () => {
   modalEditCategory.classList.remove('is-active');
   // 닫을때 창 새로고침하기? 
   // 초기화 어떻게 시킬까
+  categoryModalList.innerHTML = "";
+  renderCategory()
+};
+getNode('.editCategory').onclick = () => {
+  modalEditCategory.classList.add('is-active');
 };
 // 카테고리 수정버튼 클릭스 input 태그로 변경하고 button 바꾸기 
 for(let i=0; i<editCategoryBtn.length; i++) {
@@ -85,6 +90,7 @@ for(let i=0; i<editCategoryBtn.length; i++) {
       btnClasses.remove('is-success');
       btnClasses.add('is-warning');
       categoryNode.innerHTML = getNode('.editName').value;
+      editCategoryBtn[i].innerHTML = '수정';
     }
   }
 }
