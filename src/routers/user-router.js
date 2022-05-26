@@ -24,7 +24,11 @@ userRouter.post('/register', async (req, res, next) => {
     });
     // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
     // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-    res.status(201).json(newUser);
+    res.status(200).json({
+      status: 200,
+      message: '전체 상품 목록 조회 성공',
+      data: newUser,
+    });
   } catch (error) {
     next(error);
   }
@@ -55,7 +59,7 @@ userRouter.get('/userlist', loginRequired, async function (req, res, next) {
     const users = await userService.getUsers();
     // 사용자 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '전체 유저 목록 조회 성공',
       data: users,
     });
@@ -73,7 +77,7 @@ userRouter.get('/users/:userId', loginRequired, async function (req, res, next) 
 
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '유저 정보 조회 성공',
       data: user,
     });
@@ -89,7 +93,7 @@ userRouter.get('/users/:userId', loginRequired, async function (req, res, next) 
     const user = await userService.getUser(req.params.userId);
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '유저 정보 조회 성공',
       data: user,
     });
@@ -142,7 +146,7 @@ userRouter.patch('/users/:userId', loginRequired, async function (req, res, next
 
     // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '유저 정보 수정 성공',
       data: updatedUserInfo,
     });
@@ -161,7 +165,7 @@ userRouter.delete('/users/:userId', loginRequired, async function (req, res, nex
 
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '유저 정보 삭제 성공',
       data: {
         userId: userId,

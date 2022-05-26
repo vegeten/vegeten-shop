@@ -21,6 +21,13 @@ class ProductService {
     return products;
   }
 
+  // 카테고리별 상품 목록을 받음
+  async getCategoryProducts(category) {
+    const products = await this.productModel.findByCategory(category);
+
+    return products;
+  }
+
   // 특정 상품의 상세정보를 받음
   async getProduct(productId) {
     const product = await this.productModel.findById(productId);
@@ -38,7 +45,7 @@ class ProductService {
   // 상품 등록
   async addProduct(productInfo) {
     // 객체 destructuring
-    const { productName, price, description, company, category } = productInfo;
+    const { productName, price, description, company, category, image, detailImage } = productInfo;
 
     const newProductInfo = {
       productName,
@@ -46,6 +53,8 @@ class ProductService {
       description,
       company,
       category,
+      image,
+      detailImage,
     };
     // db에 저장
     const createdNewProduct = await this.productModel.create(newProductInfo);
