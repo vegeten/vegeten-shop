@@ -6,10 +6,24 @@ class CategoryService {
     this.categoryModel = categoryModel;
   }
 
+  async getCategories() {
+    const categories = await this.categoryModel.findAll();
+
+    return categories;
+  }
+
   // 카테고리 추가
   async addCategory(categoryInfo) {
     // 객체 destructuring
     const { category } = categoryInfo;
+
+    // 카테고리 중복 확인
+    const categoryName = await this.categoryModel.findByCategory(category);
+    if (categoryName) {
+      const e = new Error('이미 있는 카테고리입니다. 다른 이름으로 등록해주세요.');
+      e.status = 409;
+      throw e;
+    }
 
     const newCategoryInfo = {
       category,
@@ -20,19 +34,6 @@ class CategoryService {
     return createdNewCategory;
   }
 
-  async getCategories() {
-    const categories = await this.categoryModel.findAll();
-
-    // db에 등록된 상품이 하나도 없을 때, 에러 메시지 반환
-    if (!categories) {
-      const e = new Error('등록된 카테고리 내역이 없습니다. 새 상품을 등록해주세요.');
-      e.status = 404;
-      throw e;
-    }
-
-    return categories;
-  }
-
   // 카테고리 수정
   async setCategory(categoryId, toUpdate) {
     let category = await this.categoryModel.findById(categoryId);
@@ -41,6 +42,15 @@ class CategoryService {
       e.status = 404;
       throw e;
     }
+
+    // 카테고리 중복 확인
+    const categoryName = await this.categoryModel.findByCategory(toUpdate.category);
+    if (categoryName) {
+      const e = new Error('이미 있는 카테고리입니다. 다른 이름으로 등록해주세요.');
+      e.status = 409;
+      throw e;
+    }
+
     category = await this.categoryModel.update({
       categoryId,
       update: toUpdate,

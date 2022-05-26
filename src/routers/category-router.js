@@ -43,10 +43,7 @@ categoryRouter.post('/categories', async (req, res, next) => {
       data: newCategory,
     });
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occured while creating th Category.',
-    });
+    next(error);
   }
 });
 
@@ -80,10 +77,6 @@ categoryRouter.patch('/categories/:categoryId', async function (req, res, next) 
       data: updatedCategoryInfo,
     });
   } catch (error) {
-    res.status(500).send({
-      status: 500,
-      message: error.message || 'Some error occurred while retrieving category.',
-    });
     next(error);
   }
 });

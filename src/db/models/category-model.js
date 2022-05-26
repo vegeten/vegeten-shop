@@ -3,6 +3,10 @@ import { CategorySchema } from '../schemas/category-schema';
 const Category = model('categories', CategorySchema);
 
 export class CategoryModel {
+  async findByCategory(categoryName) {
+    const category = await Category.findOne({ category: categoryName });
+    return category;
+  }
   async findAll() {
     const categories = await Category.find({});
     return categories;
