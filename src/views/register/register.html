@@ -30,30 +30,46 @@
   <div class="register-user-form-container">
     <form class="box register-user-form-box has-background-light" id="registerUserForm">
       <div class="field">
-        <label class="label" for="fullNameInput">이름</label>
+        <label for="fullNameInput">이름</label>
         <div class="control">
-          <input class="input" id="fullNameInput" type="text" placeholder="홍길동" autocomplete="on" />
+          <input class="input is-medium is-danger" id="fullNameInput" type="text" placeholder="이름을 입력해주세요."
+            autocomplete="off" />
+          <div id="name-msg" class="help is-danger">
+            <span>이름을 입력해주세요.</span>
+          </div>
         </div>
       </div>
 
       <div class="field">
-        <label class="label" for="emailInput">이메일</label>
+        <label for="emailInput">이메일</label>
         <div class="control">
-          <input class="input" id="emailInput" type="email" placeholder="abc@example.com" autocomplete="on" />
+          <input class="input is-medium is-danger" id="emailInput" type="email" placeholder="이메일을 입력해주세요."
+            autocomplete="off" />
+          <div id="email-msg" class="help is-danger">
+            <span>이메일을 입력해주세요.</span>
+          </div>
         </div>
       </div>
 
       <div class="field">
-        <label class="label" for="passwordInput">비밀번호</label>
+        <label for="passwordInput">비밀번호</label>
         <div class="control">
-          <input class="input" id="passwordInput" type="password" placeholder="********" autocomplete="off" />
+          <input class="input is-medium is-danger" id="passwordInput" type="password" placeholder="비밀번호를 입력해주세요."
+            autocomplete="off" />
+          <div id="password-msg" class="help is-danger">
+            <span>비밀번호를 입력해주세요.</span>
+          </div>
         </div>
       </div>
 
       <div class="field mb-5">
-        <label class="label" for="passwordConfirmInput">비밀번호 확인</label>
+        <label for="passwordConfirmInput">비밀번호 확인</label>
         <div class="control">
-          <input class="input" id="passwordConfirmInput" type="password" placeholder="********" autocomplete="off" />
+          <input class="input is-medium is-danger" id="passwordConfirmInput" type="password"
+            placeholder="비밀번호확인을 입력해주세요." autocomplete="off" />
+          <div id="password-check-msg" class="help is-danger">
+            <span>비밀번호확인을 입력해주세요.</span>
+          </div>
         </div>
       </div>
       <div class="btn-wrapper">
@@ -66,12 +82,22 @@
 
   <div class="modal">
     <div class="modal-background"></div>
-    <div class="modal-content">
-      <p class="image is-4by3">
-        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="">
-      </p>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"></p>
+        <button class="delete close-button" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+          </span>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <a class="button is-black" href="/login">로그인 하러가기</a>
+        <a class="button is-white" href="/">홈 화면으로가기</a>
+      </footer>
     </div>
-    <button class="modal-close is-large" aria-label="close"></button>
   </div>
 
   <footer class="footer">
