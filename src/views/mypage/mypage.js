@@ -40,10 +40,6 @@ const addErrorHTML = (target) => {
   }
 };
 
-const validationPassword = (currentPassword) => {
-  return currentPasswordCheck.value === currentPassword;
-};
-
 const renderUserInfo = (data) => {
   const {
     fullName,
@@ -142,6 +138,8 @@ const submitModifyUserInfo = async (e) => {
   if (!isPasswordValid) {
     addErrorHTML(passwordInput);
     validateFlag = false;
+  } else {
+
   }
 
   if (!isPasswordSame) {
@@ -150,11 +148,6 @@ const submitModifyUserInfo = async (e) => {
   }
 
   if (!validateFlag) return;
-
-  if (!validationPassword(currentPasswordInput.value)) {
-    alert('현재비밀번호랑 달라 !');
-    return;
-  }
 
 
   const ok = window.confirm("정말 수정하시겠습니까?");
