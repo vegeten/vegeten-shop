@@ -148,21 +148,17 @@ const createOrderListElement = (item) => {
   li.innerHTML = `
   
   <li class="order box">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>주문 번호</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class='table-important'>
-            ${_id.substr(0, 7)}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table class="table">
+  <div class="order-info">
+    <div class="order-id">
+      <div><strong>주문 번호</strong></div>
+      <div class="content">${_id.substr(0, 7)}</div>
+    </div>
+    <div class="order-date">
+      <div><strong>주문 날짜</strong></div>
+      <div class="content">${createdAt.substr(0, 10)}</div>
+    </div>
+  </div>
+    <table class="table is-fullwidth">
     <thead>
       <tr>
         <th>제품</th>
@@ -174,24 +170,12 @@ const createOrderListElement = (item) => {
       ${orderDetail}
     </tbody>
   </table>
-  <table class="table">
-      <thead>
-        <tr>
-          <th>총 금액</th>
-          <th>주문 날짜</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="table-price">
-          ${addCommas(totalPrice)}
-          </td>
-          <td class="table-price">
-          ${createdAt.substr(0, 10)}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  
+  <div class="order-price">
+    <div><strong class="total-price">총 금액: </strong></div>
+    <div><strong>${addCommas(totalPrice)}</strong></div>
+  </div>
+  
   </li>
   
   `;
