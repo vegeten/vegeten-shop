@@ -13,7 +13,6 @@ const productId = productUrl[productUrl.length-2];
 // 상품상세 렌더링
 async function getProductDetail () {
   const datas = await Api.get('/api/products',productId);
-  console.log(datas.data);
   getNode('#productId').name = datas.data._id;
   getNode('#image').src = datas.data.image;
   getNode('#detailImage').src = datas.data.detailImage;
@@ -22,6 +21,9 @@ async function getProductDetail () {
   getNode('#price').innerHTML = addCommas(datas.data.price)+' 원';
   getNode('#totalPrice').innerHTML = addCommas(datas.data.price)+' 원';
   getNode('#description').innerHTML = datas.data.description;
+  //구매하기 버튼에 링크
+  getNode('.buyProduct').href = `/order/${datas.data._id}`;
+
 }
 getProductDetail();
 
@@ -62,5 +64,8 @@ function addToCart() {
 }
 
 //구매하기 버튼 클릭
-
+const buyProductBtn = getNode('.buyProduct');
+buyProductBtn.addEventListener("click", () => {
+  buyP
+})
 
