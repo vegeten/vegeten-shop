@@ -29,15 +29,6 @@ function loginRequired(req, res, next) {
     req.currentUserId = userId;
     req.decoded = jwtDecoded;
 
-    console.log(req.params.userId);
-    if (jwtDecoded.role !== 'admin') {
-      if (userId !== req.params.userId) {
-        next(new Error('유저가 다릅니다.'));
-      }
-      next();
-      return;
-    }
-
     next();
   } catch (error) {
     // jwt.verify 함수가 에러를 발생시키는 경우는 토큰이 정상적으로 decode 안되었을 경우임.
