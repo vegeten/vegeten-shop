@@ -55,7 +55,7 @@ class UserService {
     const userId = user._id;
     const refreshToken = refresh();
     //
-    redisClient.set(userId.toString(), refreshToken);
+    //redisClient.set(userId.toString(), refreshToken);
 
     return { token, refreshToken };
   }
