@@ -1,3 +1,4 @@
+
 function adminAuth(req, res, next) {
   const decoded = req.decoded;
   if (decoded.role !== 'admin') {
