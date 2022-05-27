@@ -2,6 +2,7 @@ import { getAuthorizationObj, getNode } from '../useful-functions.js';
 
 const logOut = () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
   window.location.href = '/';
 };
 
@@ -17,7 +18,7 @@ const nav = (isLogin, isAdmin) => {
   $navbar.style.cssText = 'position:fixed;top:0;width:100%';
   const template = `
   <div class="container mt-3">
-    <div class="navbar-brand">
+    <div cit lass="navbar-brand">
       <a class="navbar-item" href="/">
         <img src="/elice-rabbit.png" width="30" height="30" alt="LOGO" />
       </a>

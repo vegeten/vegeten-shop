@@ -25,8 +25,9 @@ function loginRequired(req, res, next) {
     const userId = jwtDecoded.userId;
 
     // 라우터에서 req.currentUserId를 통해 유저의 id에 접근 가능하게 됨
+    // + 다음 미들웨어에 보내줌 
     req.currentUserId = userId;
-
+    req.decoded = jwtDecoded;
     next();
   } catch (error) {
     // jwt.verify 함수가 에러를 발생시키는 경우는 토큰이 정상적으로 decode 안되었을 경우임.
