@@ -31,7 +31,7 @@
 
 .order {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-top: 1.5rem;
 }
 
@@ -129,6 +129,24 @@ input[type=number] {
   height: 50px;
 }
 
-tr td {
-  vertical-align: middle !important;
+.order-info {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.order-price {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+
+}
+
+.content {
+  color: rgb(76, 76, 246);
+}
+
+.total-price {
+  margin-right: 0.8rem;
 }
