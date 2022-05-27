@@ -1,6 +1,6 @@
 import renderFooter from '../components/footer.js';
 import { logOut, renderNav } from "../components/nav.js";
-import { getAuthorizationObj, getNode } from '../useful-functions.js';
+import { addCommas, getAuthorizationObj, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
 window.onpageshow = function (event) {
@@ -16,9 +16,9 @@ if (!isLogin) {
   window.location.href = '/login';
 }
 
+const orderWrapper = getNode('.order-list');
 const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
-const phoneWrap = getNode('.phone-wrap');
 const numberFirstInput = getNode('.number-1');
 const numberSecondInput = getNode('.number-2');
 const numberThirdInput = getNode('.number-3');
@@ -51,8 +51,6 @@ const addErrorHTML = (target) => {
     target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
   } else if (target === currentPasswordCheck) {
     target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
-  } else if (target === phoneWrap) {
-    target.nextElementSibling.innerHTML = '휴대폰 번호의 형식이 일치하지 않습니다.';
   }
 };
 
@@ -120,6 +118,82 @@ function addAllEvents() {
 
 }
 
+const createOrderListElement = (item) => {
+  const {
+    _id,
+    productImg,
+    productName,
+    count,
+    totalPrice,
+    createdAt } = item;
+
+  const li = document.createElement('li');
+  li.innerHTML = `<div class="box order-list has-background-light">
+    <div class="order-list-wrapper">
+      <div class="order-list-image">
+        <img src=${productImg} alt="상품 이미지" />
+      </div>
+      <div class="order-list-content">
+        <dl class="content-list">
+          <div class="content-wrapper">
+            <dt class="content-title">
+              <strong>주문 번호</strong>
+            </dt>
+            <dd class="content-content">
+              ${_id.substr(0, 7)}
+            </dd>
+          </div>
+          <div class="content-wrapper">
+            <dt class="content-title">
+              <strong>상품 명</strong>
+            </dt>
+            <dd class="content-content">
+              ${productName}
+            </dd>
+          </div>
+          <div class="content-wrapper">
+            <dt class="content-title">
+              <strong>수량</strong>
+            </dt>
+            <dd class="content-content">
+              ${count}
+            </dd>
+          </div>
+          <div class="content-wrapper">
+            <dt class="content-title">
+              <strong>금액</strong>
+            </dt>
+            <dd class="content-content">
+              ${addCommas(totalPrice)}
+            </dd>
+          </div>
+          <div class="content-wrapper">
+            <dt class="content-title">
+              <strong>날짜</strong>
+            </dt>
+            <dd class="content-content">
+              ${createdAt.substr(0, 10)}
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+  </div>`;
+
+  return li;
+};
+
+const renderAllOrderList = (orderList) => {
+  orderWrapper.innerHTML = '';
+  orderList.data.forEach(({ products, totalPrice, _id, createdAt }) => {
+    const orders = createOrderListElement({ totalPrice, _id, createdAt, ...products });
+    console.log(orders);
+    orderWrapper.appendChild(orders);
+  });
+
+};
+
 
 
 const getUserInfo = async () => {
@@ -144,6 +218,8 @@ const getUserInfo = async () => {
     console.log(err.message);
   }
 };
+
+
 
 const submitWithdrawUser = async (e) => {
   e.preventDefault();
@@ -213,68 +289,63 @@ const submitModifyUserInfo = async (e) => {
   }
 };
 
-const renderOrderList = (data) => {
+const getOrderList = () => {
+  const mockApi = {
+    "status": 200,
+    "message": "유저별 주문 목록 조회 성공",
+    "data": [
+      {
+        "_id": "6290553b2c6f347fcc130cd0",
+        "address": {
+          "postalCode": "우편번호",
+          "address1": "주소",
+          "address2": "주소디테일"
+        },
+        "phoneNumber": "010-2345-6789",
+        "products": {
+          "productsId": "123124",
+          "productImg": "https://picsum.photos/id/3/50/50",
+          "productName": "치마",
+          "count": 2
+        },
+        "totalPrice": 100000,
+        "userId": "62904c214b3992a2e46d3c66",
+        "createdAt": "2022-05-25T04:36:11.648Z",
+        "updatedAt": "2022-05-25T04:36:11.648Z",
+        "__v": 0
+      },
+      {
+        "_id": "62905830f011ab45acf38e17",
+        "address": {
+          "postalCode": "우편번호",
+          "address1": "주소",
+          "address2": "주소디테일"
+        },
+        "phoneNumber": "010-2345-6789",
+        "products": {
+          "productsId": "123123",
+          "productImg": "https://picsum.photos/id/6/50/50",
+          "productName": "바지",
+          "count": 1
+        },
+        "totalPrice": 440000,
+        "userId": "62904c214b3992a2e46d3c66",
+        "createdAt": "2022-05-27T04:48:48.077Z",
+        "updatedAt": "2022-05-27T04:48:48.077Z",
+        "__v": 0
+      }
+    ]
+  };
+  const result = mockApi;
+  renderAllOrderList(result);
 
-  const template = `
-    <li>
-      <div class="box order-list has-background-light">
-        <div class="order-list-wrapper">
-          <div class="order-list-image">
-            <img src=${imgSource} alt="상품 이미지" />
-          </div>
-          <div class="order-list-content">
-            <dl class="content-list">
-              <div class="content-wrapper">
-                <dt class="content-title">
-                  <strong>${orderId}</strong>
-                </dt>
-                <dd class="content-content">
-                  12345
-                </dd>
-              </div>
-              <div class="content-wrapper">
-                <dt class="content-title">
-                  <strong>${productName}</strong>
-                </dt>
-                <dd class="content-content">
-                  안녕
-                </dd>
-              </div>
-              <div class="content-wrapper">
-                <dt class="content-title">
-                  <strong>수량</strong>
-                </dt>
-                <dd class="content-content">
-                  1
-                </dd>
-              </div>
-              <div class="content-wrapper">
-                <dt class="content-title">
-                  <strong>금액</strong>
-                </dt>
-                <dd class="content-content">
-                  1,000
-                </dd>
-              </div>
-              <div class="content-wrapper">
-                <dt class="content-title">
-                  <strong>날짜</strong>
-                </dt>
-                <dd class="content-content">
-                  2022.05.01
-                </dd>
-              </div>
-            </dl>
-          </div>
-
-        </div>
-      </div>
-    </li>
-    `;
 };
+
+
 
 
 renderNav();
 renderFooter();
 addAllEvents();
-getUserInfo();
+await getUserInfo();
+getOrderList();
