@@ -1,7 +1,7 @@
 import res from 'express/lib/response';
 import { model } from 'mongoose';
 import { OrderSchema } from '../schemas/order-schema';
-const Order = model('orders3', OrderSchema);
+const Order = model('orders', OrderSchema);
 export class OrderModel {
   async findAll() {
     const orders = await Order.find({});

@@ -40,7 +40,7 @@ const OrderSchema = new Schema(
     },
   },
   {
-    collection: 'orders3',
+    collection: 'orders',
     timestamps: true,
   }
 );
