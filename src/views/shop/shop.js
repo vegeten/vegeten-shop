@@ -1,28 +1,25 @@
-
 // import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
 import { renderNav } from '../components/nav.js';
 import renderFooter from '../components/footer.js';
 
-
 renderNav();
 renderFooter();
 const mocCategoryAPI = [
-  { category: "outer" },
-  { category: "상의" },
-  { category: "하의" },
-  { category: "신발&가방" },
-  { category: "Accesory" },
+  { category: 'outer' },
+  { category: '상의' },
+  { category: '하의' },
+  { category: '신발&가방' },
+  { category: 'Accesory' },
 ];
 
 // 카테고리 렌더링
 const categoryList = document.querySelector('#category-list');
 const categoryTitle = document.querySelector('.category-name');
-// 상품목록 - 왼쪽 nav바 렌더링/모달 
+// 상품목록 - 왼쪽 nav바 렌더링/모달
 for (let i = 0; i < mocCategoryAPI.length; i++) {
   categoryList.innerHTML += `<div class="category">${mocCategoryAPI[i].category}</div>`;
 }
-
 
 // 카테고리 클릭시 상단 title 변경하기
 const categories = document.querySelectorAll('.category');
@@ -38,49 +35,51 @@ for (let i = 0; i < categories.length; i++) {
 }
 
 // 카테고리편집 모달창 렌더링
-// 상품목록 - 카테고리편집 모달 렌더링 
+// 상품목록 - 카테고리편집 모달 렌더링
 function renderCategory() {
   const categoryModalList = document.querySelector('.category-modal-list');
-  for(let i=0; i<mocCategoryAPI.length; i++){
-    categoryModalList.innerHTML +=  `<tr>
+  for (let i = 0; i < mocCategoryAPI.length; i++) {
+    categoryModalList.innerHTML += `<tr>
     <td class="categoryName ${mocCategoryAPI[i].category}" name="categoryName">${mocCategoryAPI[i].category}</td>
     <td><button class="button is-warning edit-category-button">수정</button></td>
     <td><button class="button is-danger del-category-button">삭제</button></td>
     </tr>`;
   }
 }
-renderCategory()
+renderCategory();
 // 카테고리편집 모달창 활성화
 const modalEditCategory = getNode('#modal-editCategory');
 const editClose = getNode('#modal-editCategory button.delete');
 const editCategoryBtn = document.querySelectorAll('.edit-category-button');
 // const delCategoryBtn = document.querySelectorAll('.del-category-button')
-// 카테고리편집 버튼 클릭시 -> 모달창 
+// 카테고리편집 버튼 클릭시 -> 모달창
 getNode('.editCategory').onclick = () => {
   modalEditCategory.classList.add('is-active');
 };
 
 editClose.onclick = () => {
   modalEditCategory.classList.remove('is-active');
-  // 닫을때 창 새로고침하기? 
+  // 닫을때 창 새로고침하기?
   // 초기화 어떻게 시킬까
-  categoryModalList.innerHTML = "";
-  renderCategory()
+  categoryModalList.innerHTML = '';
+  renderCategory();
 };
 getNode('.editCategory').onclick = () => {
   modalEditCategory.classList.add('is-active');
 };
-// 카테고리 수정버튼 클릭스 input 태그로 변경하고 button 바꾸기 
+// 카테고리 수정버튼 클릭스 input 태그로 변경하고 button 바꾸기
 for (let i = 0; i < editCategoryBtn.length; i++) {
   editCategoryBtn[i].onclick = (e) => {
     const categoryNode = document.querySelectorAll('.categoryName')[i];
     const btnClasses = editCategoryBtn[i].classList;
-    if (btnClasses.contains('is-warning')) { //수정버튼일때
+    if (btnClasses.contains('is-warning')) {
+      //수정버튼일때
       categoryNode.innerHTML = `<input type="text" value="${categoryNode.textContent}" class="input editName"></input>`;
       btnClasses.remove('is-warning');
       btnClasses.add('is-success');
       editCategoryBtn[i].innerHTML = '저장';
-    } else { //저장버튼일때 
+    } else {
+      //저장버튼일때
       btnClasses.remove('is-success');
       btnClasses.add('is-warning');
       categoryNode.innerHTML = getNode('.editName').value;
@@ -88,8 +87,6 @@ for (let i = 0; i < editCategoryBtn.length; i++) {
     }
   };
 }
-
-
 
 // 상품추가 모달창 활성화하기
 const addProduct = getNode('.addProduct');
@@ -126,3 +123,22 @@ subFileInput.onchange = () => {
 
 // }
 
+const cartList = [
+  {
+    productId: '123123',
+    productName: 'TSHIRT FLOWERMARDI_WHITE GREEN',
+    price: 37800,
+    image: 'https://picsum.photos/200',
+    count: 4,
+    check: false,
+  },
+  {
+    productId: '3523234',
+    productName: 'BROWN JUMPER',
+    price: 52000,
+    image: 'https://picsum.photos/200',
+    count: 3,
+    check: false,
+  },
+];
+localStorage.setItem('cart', JSON.stringify(cartList));

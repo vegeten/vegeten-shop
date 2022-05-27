@@ -1,5 +1,8 @@
+import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
 const postalCodeInput = getNode('#postal-code');
+
+// 주문하는 상품 뿌려주기
 
 // 카카오 주소 가져오기
 window.onload = function () {
@@ -31,7 +34,7 @@ nameInput.addEventListener('input', () => {
 
 // 전화번호
 const phoneInput = document.querySelectorAll('.phone');
-phoneInput.forEach((phone) => {
+phoneInput.forEach((phone, idx) => {
   phone.addEventListener('input', () => {
     if (phoneInput[0].value !== '' && phoneInput[1].value !== '' && phoneInput[2].value !== '') {
       phoneInput[0].classList.remove('is-danger');

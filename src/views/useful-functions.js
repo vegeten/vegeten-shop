@@ -36,7 +36,7 @@ export const getNode = (selector) => {
 // JWT 토큰 여부로 로그인 상태를 판단하여 객체로 전달해줌.
 export const getAuthorizationObj = () => {
   return {
-    isLogin: localStorage.getItem("token") ? true : false,
-    isAdmin: true,
+    isLogin: localStorage.getItem('token') ? true : false,
+    isAdmin: false,
   };
 };
