@@ -110,3 +110,60 @@
 .addr-wrap button {
   margin-left: 1rem;
 }
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.toggle-switch input[type=checkbox] {
+  display: none;
+}
+
+.toggle-track {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 25px;
+  border-radius: 60px;
+  background: #8b8b8b;
+}
+
+.toggle-track:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -8px;
+  left: -15px;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  background: #fff;
+  border-radius: 100%;
+  border: 1px solid #8b8b8b;
+  transition: left 0.3s;
+}
+
+.toggle-switch input[type=checkbox]+label .toggle-track:after {
+  content: '수정';
+  display: inline-block;
+  position: absolute;
+  right: 8px;
+  color: #fff;
+}
+
+.toggle-switch input[type=checkbox]:checked+label .toggle-track {
+  background: #e51836;
+}
+
+.toggle-switch input[type=checkbox]:checked+label .toggle-track:before {
+  left: 30px;
+  border: 1px solid #e51737;
+}
+
+.toggle-switch input[type=checkbox]:checked+label .toggle-track:after {
+  content: '종료';
+  left: 5px;
+}

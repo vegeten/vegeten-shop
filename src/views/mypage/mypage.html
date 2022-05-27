@@ -36,60 +36,7 @@
       </div>
 
       <ul>
-        <li>
-          <div class="box order-list has-background-light">
-            <div class="order-list-wrapper">
-              <div class="order-list-image">
-                <img src="https://picsum.photos/50/50" alt="상품 이미지" />
-              </div>
-              <div class="order-list-content">
-                <dl class="content-list">
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>주문 번호</strong>
-                    </dt>
-                    <dd class="content-content">
-                      12345
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>상품 명</strong>
-                    </dt>
-                    <dd class="content-content">
-                      안녕
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>수량</strong>
-                    </dt>
-                    <dd class="content-content">
-                      1
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>금액</strong>
-                    </dt>
-                    <dd class="content-content">
-                      1,000
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>날짜</strong>
-                    </dt>
-                    <dd class="content-content">
-                      2022.05.01
-                    </dd>
-                  </div>
-                </dl>
-              </div>
 
-            </div>
-          </div>
-        </li>
         <li>
           <div class="box order-list has-background-light">
             <div class="order-list-wrapper">
@@ -192,7 +139,14 @@
           <div class="password-wrap control">
             <input class="input is-medium passwd mb-3" id="passwordModify" type="password"
               placeholder="비밀번호 변경 버튼을 누르세요." readonly />
-            <button id="password-modify" class="button is-medium is-warning">비밀번호 변경</button>
+            <div class="toggle-container">
+              <div class="toggle-switch">
+                <input type="checkbox" class="check-toggle">
+                <label for="chkTog">
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -221,8 +175,15 @@
         <div class="field">
           <label class="label-input" for="address">주소</label>
           <div class="control">
-            <input class="input is-medium mb-3 address-1" type="text" autocomplete="off" readonly />
-            <input class="input is-medium address-2" type="text" placeholder="상세 주소를 입력해주세요." autocomplete="off" />
+            <input class="input is-medium mb-3 address" type="text" autocomplete="off" readonly />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label-input" for="addressDetail">상세 주소</label>
+          <div class="control">
+            <input class="input is-medium address-detail" id="addressDetail" type="text" placeholder="상세 주소를 입력해주세요."
+              autocomplete="off" />
           </div>
         </div>
 

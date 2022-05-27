@@ -22,14 +22,14 @@ const numberFirstInput = getNode('.number-1');
 const numberSecondInput = getNode('.number-2');
 const numberThirdInput = getNode('.number-3');
 const addressCodeInput = getNode('.address-code');
-const addressTitleInput = getNode('.address-1');
-const addressDetailInput = getNode('.address-2');
+const addressTitleInput = getNode('.address');
+const addressDetailInput = getNode('.address-detail');
 const currentPasswordInput = getNode('.passwd');
 const currentPasswordCheck = getNode('.passwd-check');
+const checkToggle = getNode('.check-toggle');
 
 const addErrorHTML = (target) => {
   target.classList.add('is-danger');
-  console.log(target.nextElementSibling.style);
   target.nextElementSibling.style.display = 'block';
   if (target === fullNameInput) {
     target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
@@ -47,9 +47,9 @@ const renderUserInfo = (data) => {
     phoneNumberFirst,
     phoneNumberSecond,
     phoneNumberThird,
-    addressCode,
-    addressTitle,
-    addressDetail
+    postalCode,
+    address1,
+    address2
   } = data;
 
   fullNameInput.value = fullName;
@@ -57,9 +57,9 @@ const renderUserInfo = (data) => {
   numberFirstInput.value = phoneNumberFirst;
   numberSecondInput.value = phoneNumberSecond;
   numberThirdInput.value = phoneNumberThird;
-  addressCodeInput.value = addressCode;
-  addressTitleInput.value = addressTitle;
-  addressDetailInput.value = addressDetail;
+  addressCodeInput.value = postalCode;
+  addressTitleInput.value = address1;
+  addressDetailInput.value = address2;
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
@@ -68,9 +68,9 @@ function addAllEvents() {
     e.preventDefault();
     new daum.Postcode({
       oncomplete: function (data) {
-        addressCode.value = data.zonecode;
-        addressTitle.value = data.address;
-        addressDetail.focus();
+        addressCodeInput.value = data.zonecode;
+        addressTitleInput.value = data.address;
+        addressDetailInput.focus();
       },
     }).open();
   });
@@ -81,20 +81,21 @@ function addAllEvents() {
 }
 
 const getUserInfo = async () => {
-  const userId = '628f6e0fd4439b2a3e8dca67';
   try {
-    const result = await Api.get('/api/users', userId);
+    const result = await Api.get('/api/users');
+    const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = result.data.phoneNumber?.split('-') || [];
+    const { postalCode = '', address1 = '', address2 = '' } = result.data?.address || {};
     const userInfo = {
       fullName: result.data.fullName,
       email: result.data.email,
-      phoneNumberFirst: '', //result.data.phoneNumber,
-      phoneNumberSecond: '',
-      phoneNumberThird: '',
-      addressCode: '',//result.data.address
-      addressTitle: '',
-      addressDetail: ''
+      phoneNumberFirst, //result.data.phoneNumber,
+      phoneNumberSecond,
+      phoneNumberThird,
+      postalCode,//result.data.address
+      address1,
+      address2
     };
-    console.log(userInfo);
+
     renderUserInfo(userInfo);
 
   } catch (err) {
@@ -108,9 +109,8 @@ const submitWithdrawUser = async (e) => {
   const ok = window.confirm("정말로 탈퇴하시겠습니까?");
   if (!ok) return;
 
-  const userId = '628f5d6adf2db6f55127f676';
   try {
-    await Api.delete('/api/users', userId);
+    await Api.delete('/api/users');
     logOut();
   } catch (err) {
     console.log(err.message);
@@ -153,23 +153,85 @@ const submitModifyUserInfo = async (e) => {
   const ok = window.confirm("정말 수정하시겠습니까?");
   if (!ok) return;
 
-  const userId = '628f6e0fd4439b2a3e8dca67';
   try {
-
+    console.log(addressCodeInput.value);
     const data = {
-      fullName: nameInput.value,
+      fullName: fullNameInput.value,
       currentPassword: currentPasswordInput.value,
-      address: '',
-      phoneNumber: '',
+      address: {
+        postalCode: addressCodeInput.value,
+        address1: addressTitleInput.value,
+        address2: addressDetailInput.value
+      },
+      phoneNumber: `${numberFirstInput.value}-${numberSecondInput.value}-${numberThirdInput.value}`,
       password: '',
     };
 
-    await Api.patch('/api/users', userId, data);
-
-    window.location.href = '/';
+    await Api.patch('/api/users', '', data);
+    window.location.reload();
   } catch (err) {
     console.log(err.message);
   }
+};
+
+const renderOrderList = (data) => {
+
+  const template = `
+    <li>
+      <div class="box order-list has-background-light">
+        <div class="order-list-wrapper">
+          <div class="order-list-image">
+            <img src=${imgSource} alt="상품 이미지" />
+          </div>
+          <div class="order-list-content">
+            <dl class="content-list">
+              <div class="content-wrapper">
+                <dt class="content-title">
+                  <strong>${orderId}</strong>
+                </dt>
+                <dd class="content-content">
+                  12345
+                </dd>
+              </div>
+              <div class="content-wrapper">
+                <dt class="content-title">
+                  <strong>${productName}</strong>
+                </dt>
+                <dd class="content-content">
+                  안녕
+                </dd>
+              </div>
+              <div class="content-wrapper">
+                <dt class="content-title">
+                  <strong>수량</strong>
+                </dt>
+                <dd class="content-content">
+                  1
+                </dd>
+              </div>
+              <div class="content-wrapper">
+                <dt class="content-title">
+                  <strong>금액</strong>
+                </dt>
+                <dd class="content-content">
+                  1,000
+                </dd>
+              </div>
+              <div class="content-wrapper">
+                <dt class="content-title">
+                  <strong>날짜</strong>
+                </dt>
+                <dd class="content-content">
+                  2022.05.01
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+        </div>
+      </div>
+    </li>
+    `;
 };
 
 
