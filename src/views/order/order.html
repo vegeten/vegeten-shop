@@ -26,32 +26,17 @@
 
       <div class="section">
         <div class="title">주문상품</div>
-        <div class="product-wrap">
-          <div class="product-image-wrap">
-            <img src="../elice-rabbit.png" alt="상품 사진" />
-          </div>
-          <div class="product-info-wrap">
-            <div>상품명: 엘리스 옷</div>
-            <div>수량: 5</div>
-            <div>상품구매금액: 25,000원</div>
-          </div>
-        </div>
-        <div class="product-wrap">
-          <div class="product-image-wrap">
-            <img src="../elice-rabbit.png" alt="상품 사진" />
-          </div>
-          <div class="product-info-wrap">
-            <div>상품명: 엘리스 옷</div>
-            <div>수량: 5</div>
-            <div>상품구매금액: 25,000원</div>
-          </div>
+        <div id="products-container">
+          <!-- 주문할 상품들이 들어가요 -->
         </div>
       </div>
 
       <div class="section">
         <div class="total-cost-wrap">
           <span class="title cost">상품 합계</span>
-          <span id="total-cost">300,000원</span>
+          <span id="total-cost">
+            <!-- 총 결제 금액이 들어가요 -->
+          </span>
         </div>
       </div>
 
@@ -61,8 +46,8 @@
           <div class="form-group">
             <label for="name">이름</label>
             <div class="input-wrap">
-              <input id="name" class="input is-medium is-danger" type="text" placeholder="이름을 입력해주세요." />
-              <div id="name-msg" class="help is-danger">
+              <input id="name" class="input is-medium" type="text" placeholder="이름을 입력해주세요." />
+              <div id="name-msg" class="help is-danger hide">
                 <span>이름을 입력해주세요.</span>
               </div>
             </div>
@@ -71,10 +56,10 @@
           <div class="form-group">
             <label for="postal-code">우편번호</label>
             <div id="postal-code-wrap" class="input-wrap">
-              <input id="postal-code" class="input is-medium is-danger" type="text" placeholder="" disabled />
+              <input id="postal-code" class="input is-medium" type="text" placeholder="" disabled />
               <button id="kakao_address" class="button is-medium is-responsive">주소찾기</button>
             </div>
-            <div id="postal-code-msg" class="help is-danger">
+            <div id="postal-code-msg" class="help is-danger hide">
               <span>우편번호가 올바르지 않습니다.</span>
             </div>
           </div>
@@ -91,20 +76,22 @@
         <div class="form-group">
           <label for="phone">연락처</label>
           <div id="phone-input-wrap" class="input-wrap">
-            <input id="phone1" class="input is-medium is-danger phone" type="tel" maxlength="3" />
+            <input id="phone1" class="input is-medium phone" type="tel" maxlength="3" />
             <span>-</span>
-            <input id="phone2" class="input is-medium is-danger phone" type="tel" maxlength="4" />
+            <input id="phone2" class="input is-medium phone" type="tel" maxlength="4" />
             <span>-</span>
-            <input id="phone3" class="input is-medium is-danger phone" type="tel" maxlength="4" />
+            <input id="phone3" class="input is-medium phone" type="tel" maxlength="4" />
           </div>
-          <div id="phone-msg" class="help is-danger">
+          <div id="phone-msg" class="help is-danger hide">
             <span>연락처를 입력해주세요.</span>
           </div>
         </div>
       </div>
 
       <div id="bottom">
-        <button id="pay-button" class="button is-large">300,000원 결제하기</button>
+        <button id="pay-button" class="button is-large">
+          <!-- '총 결제 금액'원 결제하기 -->
+        </button>
       </div>
     </div>
 
