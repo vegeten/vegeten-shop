@@ -100,8 +100,8 @@
         <div class="control">
           <input class="input is-medium name-input" id="fullNameInput" type="text" placeholder="이름을 입력해주세요."
             autocomplete="off" />
-          <div id="name-msg" class="help is-danger" style="display: none;">
-            <span></span>
+          <div id="name-msg" class="help is-danger">
+            <span>이름을 입력해주세요.</span>
           </div>
         </div>
 
@@ -116,8 +116,8 @@
           <label class="passwordInput" for="passwordInput">비밀번호</label>
           <div class="control">
             <input class="input is-medium passwd" id="passwordInput" type="password" placeholder="현재 비밀번호를 입력해주세요." />
-            <div id="password-msg" class="help is-danger" style="display: none;">
-              <span></span>
+            <div id="password-msg" class="help is-danger">
+              <span>비밀번호를 입력해주세요.</span>
             </div>
           </div>
 
@@ -128,39 +128,32 @@
           <div class="control">
             <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
               placeholder="현재 비밀번호를 확인해주세요." />
-            <div id="password-check-msg" class="help is-danger" style="display: none;">
-              <span></span>
+            <div id="password-check-msg" class="help is-danger">
+              <span>비밀번호 확인을 입력해주세요.</span>
             </div>
           </div>
         </div>
 
         <div class="field">
-          <label class="passwordInput" for="passwordInput">비밀번호 변경</label>
+          <label class="passwordInput" for="passwordInput">새 비밀번호</label>
           <div class="password-wrap control">
-            <input class="input is-medium passwd mb-3" id="passwordModify" type="password"
+            <input class="input is-medium new-passwd mb-3" id="passwordModify" type="password"
               placeholder="비밀번호 변경 버튼을 누르세요." readonly />
-            <div class="toggle-container">
-              <div class="toggle-switch">
-                <input type="checkbox" class="check-toggle">
-                <label for="chkTog">
-                  <span class="toggle-track"></span>
-                </label>
-              </div>
-            </div>
+            <button class="button is-medium is-warning passwd-modify">비밀번호 변경 활성</button>
           </div>
         </div>
 
         <div class="field">
-          <label for="phoneInput">연락처</label>
+          <label for="phoneInput">휴대폰 번호</label>
           <div class="phone-wrap control">
-            <input id="phoneInput" class="input is-medium phone number-1" type="tel" maxlength="3" />
+            <input id="phoneInput" class="input is-medium phone number-1" type="number" maxlength="3" />
             <span>-</span>
-            <input class="input is-medium phone number-2" type="tel" maxlength="4" />
+            <input class="input is-medium phone number-2" type="number" maxlength="4" />
             <span>-</span>
-            <input class="input is-medium phone number-3" type="tel" maxlength="4" />
+            <input class="input is-medium phone number-3" type="number" maxlength="4" />
           </div>
-          <div id="phone-msg" class="help is-danger" style="display: none;">
-            <span></span>
+          <div id="phone-msg" class="help is-danger">
+            <span>휴대폰 번호를 입력해주세요.</span>
           </div>
         </div>
 

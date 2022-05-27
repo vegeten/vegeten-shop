@@ -18,6 +18,7 @@ if (!isLogin) {
 
 const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
+const phoneWrap = getNode('.phone-wrap');
 const numberFirstInput = getNode('.number-1');
 const numberSecondInput = getNode('.number-2');
 const numberThirdInput = getNode('.number-3');
@@ -26,7 +27,20 @@ const addressTitleInput = getNode('.address');
 const addressDetailInput = getNode('.address-detail');
 const currentPasswordInput = getNode('.passwd');
 const currentPasswordCheck = getNode('.passwd-check');
-const checkToggle = getNode('.check-toggle');
+const newPasswordInput = getNode('.new-passwd');
+const passwordToggle = getNode('.passwd-modify');
+let toggle = false;
+
+const validationInput = (e) => {
+  if (e.target.value === '') {
+    e.target.classList.add('is-danger');
+    e.target.nextElementSibling.style.display = 'block';
+  } else {
+    e.target.classList.remove('is-danger');
+    e.target.nextElementSibling.style.display = 'none';
+  }
+};
+
 
 const addErrorHTML = (target) => {
   target.classList.add('is-danger');
@@ -37,7 +51,27 @@ const addErrorHTML = (target) => {
     target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
   } else if (target === currentPasswordCheck) {
     target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+  } else if (target === phoneWrap) {
+    target.nextElementSibling.innerHTML = '휴대폰 번호의 형식이 일치하지 않습니다.';
   }
+};
+
+const onPasswordToggle = (e) => {
+  e.preventDefault();
+  toggle = !toggle;
+  if (toggle) {
+    e.target.classList.remove('is-warning');
+    e.target.classList.add('is-danger');
+    newPasswordInput.readOnly = false;
+    newPasswordInput.placeholder = '새 비밀번호를 입력해주세요.';
+    newPasswordInput.focus();
+  } else {
+    e.target.classList.remove('is-danger');
+    e.target.classList.add('is-warning');
+    newPasswordInput.placeholder = '비밀번호 변경 버튼을 누르세요.';
+    newPasswordInput.readOnly = true;
+  }
+
 };
 
 const renderUserInfo = (data) => {
@@ -78,7 +112,15 @@ function addAllEvents() {
   const btnModify = getNode('.btn-modify');
   btnWithdraw.addEventListener('click', submitWithdrawUser);
   btnModify.addEventListener('click', submitModifyUserInfo);
+  passwordToggle.addEventListener('click', onPasswordToggle);
+  fullNameInput.addEventListener('input', validationInput);
+  currentPasswordInput.addEventListener('input', validationInput);
+  currentPasswordCheck.addEventListener('input', validationInput);
+  newPasswordInput.addEventListener('input', validationInput);
+
 }
+
+
 
 const getUserInfo = async () => {
   try {
@@ -88,10 +130,10 @@ const getUserInfo = async () => {
     const userInfo = {
       fullName: result.data.fullName,
       email: result.data.email,
-      phoneNumberFirst, //result.data.phoneNumber,
+      phoneNumberFirst,
       phoneNumberSecond,
       phoneNumberThird,
-      postalCode,//result.data.address
+      postalCode,
       address1,
       address2
     };
@@ -124,8 +166,8 @@ const submitModifyUserInfo = async (e) => {
   const fullName = fullNameInput.value;
   const password = currentPasswordInput.value;
   const passwordConfirm = currentPasswordCheck.value;
+  const phoneNumber = `${numberFirstInput.value}-${numberSecondInput.value}-${numberThirdInput.value}`;
 
-  // 잘 입력했는지 확인
   const isFullNameValid = fullName.length >= 2;
   const isPasswordValid = password.length >= 4;
   const isPasswordSame = password === passwordConfirm;
@@ -138,8 +180,6 @@ const submitModifyUserInfo = async (e) => {
   if (!isPasswordValid) {
     addErrorHTML(passwordInput);
     validateFlag = false;
-  } else {
-
   }
 
   if (!isPasswordSame) {
@@ -154,7 +194,6 @@ const submitModifyUserInfo = async (e) => {
   if (!ok) return;
 
   try {
-    console.log(addressCodeInput.value);
     const data = {
       fullName: fullNameInput.value,
       currentPassword: currentPasswordInput.value,
@@ -163,8 +202,8 @@ const submitModifyUserInfo = async (e) => {
         address1: addressTitleInput.value,
         address2: addressDetailInput.value
       },
-      phoneNumber: `${numberFirstInput.value}-${numberSecondInput.value}-${numberThirdInput.value}`,
-      password: '',
+      phoneNumber,
+      password: newPasswordInput.value,
     };
 
     await Api.patch('/api/users', '', data);
