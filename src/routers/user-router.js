@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired } from '../middlewares';
+import { loginRequired, adminAuth } from '../middlewares';
 import { userService } from '../services';
+
 const userRouter = Router();
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 userRouter.post('/register', async (req, res, next) => {
@@ -53,9 +54,8 @@ userRouter.post('/login', async function (req, res, next) {
 });
 // 전체 유저 목록을 가져옴 (배열 형태임)
 // 미들웨어로 loginRequired 를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
-userRouter.get('/userlist', loginRequired, async function (req, res, next) {
+userRouter.get('/userlist', loginRequired, adminAuth, async function (req, res, next) {
   try {
-    console.log(req.currentUserId);
     // 전체 사용자 목록을 얻음
     const users = await userService.getUsers();
     // 사용자 목록(배열)을 JSON 형태로 프론트에 보냄
@@ -63,6 +63,24 @@ userRouter.get('/userlist', loginRequired, async function (req, res, next) {
       status: 200,
       message: '전체 유저 목록 조회 성공',
       data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.get('/users', loginRequired, async function (req, res, next) {
+  const userId = req.currentUserId;
+  console.log(userId);
+  try {
+    // 특정 id에 맞는 사용자 정보를 얻음
+    const user = await userService.getUser(userId);
+
+    // 사용자 정보를 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      status: 200,
+      message: '유저 정보 조회 성공',
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -103,9 +121,8 @@ userRouter.get('/users/:userId', loginRequired, async function (req, res, next) 
     next(error);
   }
 });
-// 사용자 정보 수정
-// (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
-userRouter.patch('/users/:userId', loginRequired, async function (req, res, next) {
+// 사용자 정보 수정: 유저만 접근 가능
+userRouter.patch('/users', loginRequired, async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -114,7 +131,7 @@ userRouter.patch('/users/:userId', loginRequired, async function (req, res, next
     }
 
     // params로부터 id를 가져옴
-    const userId = req.params.userId;
+    const userId = req.currentUserId;
 
     // body data 로부터 업데이트할 사용자 정보를 추출함.
     const fullName = req.body.fullName;
@@ -159,11 +176,11 @@ userRouter.patch('/users/:userId', loginRequired, async function (req, res, next
 
 // 사용자 정보 삭제 (탈퇴)
 // (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
-userRouter.delete('/users/:userId', loginRequired, async function (req, res, next) {
+userRouter.delete('/users', loginRequired, async function (req, res, next) {
   try {
-    const userId = req.params.userId;
+    const userId = req.currentUserId;
     // 특정 id에 맞는 사용자 정보를 삭제함
-    await userService.deleteUser(req.params.userId);
+    await userService.deleteUser(userId);
 
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
