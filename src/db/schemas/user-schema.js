@@ -30,11 +30,17 @@ const UserSchema = new Schema(
         }
       ),
       required: false,
+      default: {},
     },
     role: {
       type: String,
       required: false,
       default: 'basic-user',
+    },
+    refresh: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
   {

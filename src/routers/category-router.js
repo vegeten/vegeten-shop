@@ -11,7 +11,7 @@ categoryRouter.get('/categories', async (req, res, next) => {
     const categories = await categoryService.getCategories();
     console.log(categories);
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '전체 카테고리 목록 조회 성공',
       data: categories,
     });
@@ -38,7 +38,7 @@ categoryRouter.post('/categories', async (req, res, next) => {
 
     // 추가된 상품의 db 데이터를 프론트에 다시 보내줌
     res.status(201).json({
-      statusCode: 201,
+      status: 201,
       message: '카테고리 추가 성공',
       data: newCategory,
     });
@@ -72,7 +72,7 @@ categoryRouter.patch('/categories/:categoryId', async function (req, res, next) 
 
     // 업데이트 이후의 카테고리 데이터를 프론트에 보내 줌
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '카테고리 정보 수정 성공',
       data: updatedCategoryInfo,
     });
@@ -88,7 +88,7 @@ categoryRouter.delete('/categories/:categoryId', async function (req, res, next)
     const deleteCategory = await categoryService.deleteCategory(categoryId);
 
     res.status(200).json({
-      statusCode: 200,
+      status: 200,
       message: '카테고리 삭제 성공',
       data: {
         deleteCategory,
