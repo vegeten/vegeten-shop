@@ -26,13 +26,7 @@ function loginRequired(req, res, next) {
 
     // 라우터에서 req.currentUserId를 통해 유저의 id에 접근 가능하게 됨
     req.currentUserId = userId;
-    console.log(req.params.userId);
-    if (jwtDecoded.role !== 'admin') {
-      if (userId !== req.params.userId) {
-        next(new Error('유저가 다릅니다.'));
-      }
-    }
-
+    req.decoded = jwtDecoded;
     next();
   } catch (error) {
     // jwt.verify 함수가 에러를 발생시키는 경우는 토큰이 정상적으로 decode 안되었을 경우임.
