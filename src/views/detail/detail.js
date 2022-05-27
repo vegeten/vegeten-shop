@@ -42,27 +42,44 @@ const addCartBtn = getNode('.addCart');
 addCartBtn.addEventListener("click", addToCart)
 // 장바구니 클릭시 로컬스토리지에 데이터 저장하기 
 function addToCart() {
+  // 중복 상품 => 체크해서 수량만 증가시키기 
   // 로컬스토리지에 배열 형태로 담기
   let existCartEntry = JSON.parse(localStorage.getItem('cart'));
   if(existCartEntry === null) {
     existCartEntry = [];
-  }
+  } 
+  console.log(existCartEntry[0])
   const selected = Number(selections.value.replace('개', ''));
   const cartEntry = {
     check: false,
     count : selected,
     image : getNode('#image').src,
-    price : convertToNumber(getNode('#totalPrice').textContent),
+    price : convertToNumber(getNode('#price').textContent),
     productName : getNode('#productName').textContent,
     productId : getNode('#productId').name,
   }
-  existCartEntry.push(cartEntry);
-  // 'cart' 라는 key값에 넣어주기 
-  localStorage.setItem('cart', JSON.stringify(existCartEntry));
+  let check = true;
+  //예외 처리 : 똑같은 품목 있다면 수량만 넣어주기 
+  for(let i=0; i<existCartEntry.length; i++) {
+    if(existCartEntry[i].productId === cartEntry.productId) {
+      existCartEntry[i].count += selected;
+      localStorage.setItem('cart', JSON.stringify(existCartEntry));
+      check = false;
+    }
+  }
+  if(check) {
+    existCartEntry.push(cartEntry);
+    // 'cart' 라는 key값에 넣어주기 
+    localStorage.setItem('cart', JSON.stringify(existCartEntry));
+  }
   // 장바구니 담기 확인 모달창 띄우기
   getNode('#cart-modal').classList.add('is-active');
 }
-
+// 장바구니 이동시 모달창 바로 비활성화하기 
+const moveCartBtn = getNode('.moveCart');
+moveCartBtn.addEventListener("click", ()=> {
+  getNode('#cart-modal').classList.remove('is-active');
+})
 //구매하기 버튼 클릭
 const buyProductBtn = getNode('.buyProduct');
 buyProductBtn.addEventListener("click", () => {
