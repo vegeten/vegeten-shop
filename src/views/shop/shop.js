@@ -118,10 +118,12 @@ async function getProductFromApi () {
   const productList = getNode('#product-list');
   for(let i=products.length-1; i>=0; i--) {
     let price = products[i].price.toLocaleString();
-    productList.innerHTML += `<div class="item-card" name="${products[i]._id}">
-    <div class="img-box"><img src="${products[i].image}" alt=""></div>
-    <div class="productName">${products[i].productName}</div>
-    <div>${price}원</div>
+    productList.innerHTML += `<div class="item-card">
+    <a href="${products[i]._id}">
+      <div class="img-box"><img src="${products[i].image}" alt=""></div>
+      <div class="productName">${products[i].productName}</div>
+      <div>${price}원</div>
+    </a>
   </div>`
   }
 }
