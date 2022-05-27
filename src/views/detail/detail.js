@@ -48,7 +48,6 @@ function addToCart() {
   if(existCartEntry === null) {
     existCartEntry = [];
   } 
-  console.log(existCartEntry[0])
   const selected = Number(selections.value.replace('개', ''));
   const cartEntry = {
     check: false,
@@ -83,6 +82,12 @@ moveCartBtn.addEventListener("click", ()=> {
 //구매하기 버튼 클릭
 const buyProductBtn = getNode('.buyProduct');
 buyProductBtn.addEventListener("click", () => {
-  buyP
+  const selected = Number(selections.value.replace('개', ''));
+  const cartEntry = {
+    count : selected,
+    productId : getNode('#productId').name,
+  }
+  // 'cart' 라는 key값에 넣어주기 
+  localStorage.setItem('buy', JSON.stringify(cartEntry));
 })
 
