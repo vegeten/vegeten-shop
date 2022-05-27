@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 4rem;
   height: 85vh;
 }
 
@@ -17,10 +18,6 @@
   font-weight: bold;
 }
 
-.register-user-form-box .input:focus {
-  border-color: #00d1b2;
-  box-shadow: 0 0 0 0.125em rgba(0, 209, 178, 0.25);
-}
 
 .btn-wrapper {
   display: flex;
@@ -31,4 +28,49 @@
 
 .modal {
   display: none;
+}
+
+.modal-card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-card-body:first-child {
+  font-size: 2rem;
+}
+
+.modal-card-foot {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-circle {
+  display: block;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 1rem;
+}
+
+.cofirm-icon {
+  font-size: 10rem;
+}
+
+.scale-in-center {
+  animation: scale-in-center .5s cubic-bezier(.25, .46, .45, .94) both
+}
+
+@keyframes scale-in-center {
+  0% {
+    transform: scale(0);
+    opacity: 1
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1
+  }
 }
