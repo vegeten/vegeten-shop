@@ -2,9 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import { viewsRouter, userRouter, orderRouter, productRouter, categoryRouter } from './routers';
 import { errorHandler } from './middlewares';
-import session from 'express-session';
-let RedisStore = require('connect-redis')(session);
-import { clientConnect } from './utils';
+// import session from 'express-session';
+// let RedisStore = require('connect-redis')(session);
+// import { clientConnect } from './utils';
 
 const app = express();
 // CORS 에러 방지
@@ -24,7 +24,7 @@ app.use(express.json());
 // Content-Type: application/x-www-form-urlencoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.urlencoded({ extended: false }));
 
-clientConnect();
+// clientConnect();
 
 // html, css, js 라우팅
 app.use(viewsRouter);
