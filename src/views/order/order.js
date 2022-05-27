@@ -2,6 +2,17 @@ import * as Api from '/api.js';
 import { getNode, addCommas } from '../useful-functions.js';
 const postalCodeInput = getNode('#postal-code');
 
+// 상품 상세페이지에서 주문하기 클릭한 경우
+if (window.location.href.indexOf('cartlist') === -1) {
+  const productUrl = window.location.href.split('/');
+  const productId = productUrl[productUrl.length - 2];
+  async function getProductInfo(productId) {
+    const res = await Api.get();
+  }
+} else {
+  console.log('힝');
+}
+
 // 로컬스토리지에 있는 장바구니 가져오기
 let cartList = JSON.parse(localStorage.getItem('cart'));
 
@@ -43,7 +54,6 @@ let userId;
 async function getUserInfo() {
   const res = await Api.get('/api/users');
   const userData = res.data;
-  console.log(userData);
   userId = userData._id;
 
   getNode('#name').value = userData.fullName;

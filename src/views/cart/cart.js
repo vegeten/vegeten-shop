@@ -23,7 +23,7 @@ const cartListMarkUp = (cartList) => {
             <input type="checkbox" class="checkbox" />
           </div>
           <div class="product-image-wrap">
-            <img src="${product.image}" alt="상품 사진" />
+            <img src="${product.image}" alt="상품 사진"/>
           </div>
           <div class="product-description">
             <span class="product-name">${product.productName}</span>
@@ -134,3 +134,15 @@ function deleteHandler() {
   cartTotalPrice.innerText = getTotalPrice(newCartList);
   location.reload();
 }
+
+// 로그인 안했으면 주문하기 버튼 클릭 시 로그인 페이지로 유도
+const payButton = getNode('#pay-button-aTag');
+function clickPayButotn() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('로그인이 필요합니다.');
+    payButton.href = '/login';
+  }
+}
+
+payButton.addEventListener('click', clickPayButotn);
