@@ -3,7 +3,6 @@ import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
 import { loginRequired, adminAuth } from '../middlewares';
 import { userService } from '../services';
-
 const userRouter = Router();
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 userRouter.post('/register', async (req, res, next) => {
@@ -87,24 +86,6 @@ userRouter.get('/users', loginRequired, async function (req, res, next) {
   }
 });
 
-// 특정 사용자 정보 조회
-// (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
-userRouter.get('/users/:userId', loginRequired, async function (req, res, next) {
-  const { userId } = req.params;
-  try {
-    // 특정 id에 맞는 사용자 정보를 얻음
-    const user = await userService.getUser(userId);
-
-    // 사용자 정보를 JSON 형태로 프론트에 보냄
-    res.status(200).json({
-      status: 200,
-      message: '유저 정보 조회 성공',
-      data: user,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
 // 특정 사용자 정보 조회
 // (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
 userRouter.get('/users/:userId', loginRequired, async function (req, res, next) {
