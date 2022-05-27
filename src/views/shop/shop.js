@@ -7,6 +7,7 @@ import renderFooter from '../components/footer.js';
 renderNav();
 renderFooter();
 
+
 // 카테고리 렌더링 - Api.get 통신
 async function getCategoriesFromApi() {
   const data = await Api.get('/api/categories');
@@ -16,19 +17,8 @@ async function getCategoriesFromApi() {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
     categoryList.innerHTML += `<div class="category">${data.data[i].category}</div>`;
   }
-  // 렌더링된 상품목록으로 title 변경하기 
-  const categoryTitle = document.querySelector('.category-name');
-  const categories = document.querySelectorAll('.category');
-  for (let i = 0; i < categories.length; i++) {
-    categories[i].onclick = function () {
-      if (!categories[i].classList.contains('active')) {
-        categories.forEach((ele) => ele.classList.remove('active'));
-        categories[i].classList.add('active');
-        // 클릭한 카테고리별로 제목 바꿔주기
-        categoryTitle.innerHTML = categories[i].textContent;
-      }
-    };
-  }
+  // 카테고리별로 상품보기 
+  productByCategory();
 }
 getCategoriesFromApi();
 
@@ -111,11 +101,36 @@ async function updateCategory(e) {
     }
   }
 }
-// 상품목록 렌더링 - Api.get 통신
-async function getProductFromApi () {
-  const datas = await Api.get('/api/products');
-  const products = datas.data;
+
+// 카테고리별로 상품목록 조회하기 
+async function productByCategory () {
+  // 렌더링된 상품목록으로 title 변경하기 
+  const categoryTitle = document.querySelector('.category-name');
+  const categories = document.querySelectorAll('.category');
+  for (let i = 0; i < categories.length; i++) {
+    categories[i].onclick = async function () {
+     if(categories[i].textContent === "전체보기") {
+      location.reload();
+     }
+    let categoryName = categories[i].textContent;
+    if (!categories[i].classList.contains('active')) {
+      categories.forEach((ele) => ele.classList.remove('active'));
+      categories[i].classList.add('active');
+      // 클릭한 카테고리별로 제목 바꿔주기
+      categoryTitle.innerHTML = categoryName;
+    }
+    
+    // 카테고리별 상품조회 api
+    const datas = await Api.get('/api/category',categoryName);
+    showProductByCategory(datas.data)
+    };
+  }  
+}
+
+// 카테고리별 상품조회하기 => 인자 api 통신을 받은 데이터 
+function showProductByCategory ( products ) {
   const productList = getNode('#product-list');
+  productList.innerHTML = ""
   for(let i=products.length-1; i>=0; i--) {
     let price = products[i].price.toLocaleString();
     productList.innerHTML += `<div class="item-card">
@@ -127,7 +142,16 @@ async function getProductFromApi () {
   </div>`
   }
 }
+
+// 상품목록 렌더링 - Api.get 통신
+async function getProductFromApi () {
+  const datas = await Api.get('/api/products');
+  const products = datas.data;
+  showProductByCategory(products)
+}
 getProductFromApi()
+
+
 // 상품추가 모달
 function addPostModal () {
   getOptionCategory();
