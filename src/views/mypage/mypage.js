@@ -118,68 +118,83 @@ function addAllEvents() {
 
 }
 
+const createOrderDetailListElement = (array) => {
+  return array.map(({ productImg, productName, count }) => {
+    return `
+    <tr>
+      <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
+      <td>${productName}</td>
+      <td>${count}개</td>
+    </tr>
+      `;
+  }).join("");
+};
+
 const createOrderListElement = (item) => {
   const {
     _id,
-    productImg,
-    productName,
-    count,
+    products,
     totalPrice,
-    createdAt } = item;
+    createdAt
+  } = item;
+
+  let orderDetail = '';
+
+  if (!products.length) orderDetail = createOrderDetailListElement([products]);
+  else orderDetail = createOrderDetailListElement(products);
 
   const li = document.createElement('li');
-  li.innerHTML = `<div class="box order-list has-background-light">
-    <div class="order-list-wrapper">
-      <div class="order-list-image">
-        <img src=${productImg} alt="상품 이미지" />
-      </div>
-      <div class="order-list-content">
-        <dl class="content-list">
-          <div class="content-wrapper">
-            <dt class="content-title">
-              <strong>주문 번호</strong>
-            </dt>
-            <dd class="content-content">
-              ${_id.substr(0, 7)}
-            </dd>
-          </div>
-          <div class="content-wrapper">
-            <dt class="content-title">
-              <strong>상품 명</strong>
-            </dt>
-            <dd class="content-content">
-              ${productName}
-            </dd>
-          </div>
-          <div class="content-wrapper">
-            <dt class="content-title">
-              <strong>수량</strong>
-            </dt>
-            <dd class="content-content">
-              ${count}
-            </dd>
-          </div>
-          <div class="content-wrapper">
-            <dt class="content-title">
-              <strong>금액</strong>
-            </dt>
-            <dd class="content-content">
-              ${addCommas(totalPrice)}
-            </dd>
-          </div>
-          <div class="content-wrapper">
-            <dt class="content-title">
-              <strong>날짜</strong>
-            </dt>
-            <dd class="content-content">
-              ${createdAt.substr(0, 10)}
-            </dd>
-          </div>
-        </dl>
-      </div>
 
-    </div>
-  </div>`;
+  li.innerHTML = `
+  
+  <li class="order box">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>주문 번호</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class='table-important'>
+            ${_id.substr(0, 7)}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>제품</th>
+        <th>제품 명</th>
+        <th>제품 수량</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${orderDetail}
+    </tbody>
+  </table>
+  <table class="table">
+      <thead>
+        <tr>
+          <th>총 금액</th>
+          <th>주문 날짜</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="table-price">
+          ${addCommas(totalPrice)}
+          </td>
+          <td class="table-price">
+          ${createdAt.substr(0, 10)}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  
+  `;
 
   return li;
 };
@@ -187,7 +202,7 @@ const createOrderListElement = (item) => {
 const renderAllOrderList = (orderList) => {
   orderWrapper.innerHTML = '';
   orderList.data.forEach(({ products, totalPrice, _id, createdAt }) => {
-    const orders = createOrderListElement({ totalPrice, _id, createdAt, ...products });
+    const orders = createOrderListElement({ totalPrice, _id, createdAt, products });
     console.log(orders);
     orderWrapper.appendChild(orders);
   });
@@ -289,55 +304,13 @@ const submitModifyUserInfo = async (e) => {
   }
 };
 
-const getOrderList = () => {
-  const mockApi = {
-    "status": 200,
-    "message": "유저별 주문 목록 조회 성공",
-    "data": [
-      {
-        "_id": "6290553b2c6f347fcc130cd0",
-        "address": {
-          "postalCode": "우편번호",
-          "address1": "주소",
-          "address2": "주소디테일"
-        },
-        "phoneNumber": "010-2345-6789",
-        "products": {
-          "productsId": "123124",
-          "productImg": "https://picsum.photos/id/3/50/50",
-          "productName": "치마",
-          "count": 2
-        },
-        "totalPrice": 100000,
-        "userId": "62904c214b3992a2e46d3c66",
-        "createdAt": "2022-05-25T04:36:11.648Z",
-        "updatedAt": "2022-05-25T04:36:11.648Z",
-        "__v": 0
-      },
-      {
-        "_id": "62905830f011ab45acf38e17",
-        "address": {
-          "postalCode": "우편번호",
-          "address1": "주소",
-          "address2": "주소디테일"
-        },
-        "phoneNumber": "010-2345-6789",
-        "products": {
-          "productsId": "123123",
-          "productImg": "https://picsum.photos/id/6/50/50",
-          "productName": "바지",
-          "count": 1
-        },
-        "totalPrice": 440000,
-        "userId": "62904c214b3992a2e46d3c66",
-        "createdAt": "2022-05-27T04:48:48.077Z",
-        "updatedAt": "2022-05-27T04:48:48.077Z",
-        "__v": 0
-      }
-    ]
-  };
-  const result = mockApi;
-  renderAllOrderList(result);
+const getOrderList = async () => {
+  try {
+    const result = await Api.get('/api/orders');
+    renderAllOrderList(result);
+  } catch (err) {
+    console.log(err.message);
+  }
 
 };
 
