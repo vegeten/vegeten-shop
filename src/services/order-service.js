@@ -7,23 +7,29 @@ class OrderService {
     this.orderModel = orderModel;
   }
 
-  async addOrder(orderInfo) {
-    const createdNewOrder = await this.orderModel.create(orderInfo);
-    return createdNewOrder;
-  }
-
   async getOrderlist() {
     const orders = await this.orderModel.findAll();
     return orders;
   }
 
-  async getOrder(orderId) {
-    try {
-      const order = await this.orderModel.findById(orderId);
-      return order;
-    } catch (err) {
-      return err;
+  async getOrdersByUser(userId) {
+    const orders = await this.orderModel.findByUser(userId);
+    if (!orders || orders === null) {
+      const e = new Error('Id not found');
+      e.status = 404;
+      throw e;
     }
+    return orders;
+  }
+
+  async getOrder(orderId) {
+    const order = await this.orderModel.findById(orderId);
+    if (!order || order === null) {
+      const e = new Error('해당 id의 주문 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
+    }
+    return order;
   }
 
   async getOrdersByEmail(email) {
@@ -31,10 +37,15 @@ class OrderService {
     return orders;
   }
 
+  async addOrder(orderInfo) {
+    const createdNewOrder = await this.orderModel.create(orderInfo);
+    return createdNewOrder;
+  }
+
   async deleteOrder(orderId) {
     let order = await this.orderModel.delete(orderId);
-    if (!order) {
-      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
+    if (!order || order === null) {
+      const e = new Error('해당 주문의 id가 없습니다. 다시 한 번 확인해 주세요.');
       e.status = 404;
       throw e;
     }

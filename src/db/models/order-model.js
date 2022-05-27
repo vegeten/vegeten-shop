@@ -1,26 +1,28 @@
 import res from 'express/lib/response';
 import { model } from 'mongoose';
 import { OrderSchema } from '../schemas/order-schema';
-const Order = model('orders', OrderSchema);
+const Order = model('orders3', OrderSchema);
 export class OrderModel {
-  async findByEmail(email) {
-    const order = await Order.find({ email: email });
-    return order;
-  }
-  async findById(orderId) {
-    const order = await Order.findOne({ _id: orderId });
-    if (!order || order === null) {
-      throw new Error('Id not found');
-    }
-    return order;
-  }
-  async create(orderInfo) {
-    const createdNewOrder = await Order.create(orderInfo);
-    return createdNewOrder;
-  }
   async findAll() {
     const orders = await Order.find({});
     return orders;
+  }
+  async findByUser(userId) {
+    const orders = await Order.find({ userId: userId });
+    // .populate('userId');
+    return orders;
+  }
+  async findById(orderId) {
+    const order = await Order.findOne({ _id: orderId });
+    return order;
+  }
+  // async findByEmail(email) {
+  //   const order = await Order.find({ email: email });
+  //   return order;
+  // }
+  async create(orderInfo) {
+    const createdNewOrder = await Order.create(orderInfo);
+    return createdNewOrder;
   }
   async delete(orderId) {
     return await Order.findOneAndDelete({ _id: orderId });
