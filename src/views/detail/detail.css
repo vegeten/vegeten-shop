@@ -1,0 +1,89 @@
+*{
+  font-family: 'Roboto', sans-serif;
+}
+article {
+  text-align: center;
+}
+article .intro-item {
+  display: flex;
+  margin: 5%;
+  margin-top: 10%;
+  flex-wrap: wrap;
+  height: 80%;
+  text-align: center;
+  justify-content: center;
+  
+}
+.img_box {
+  margin-left: 2%;
+  width: 450px;
+  height: 500px;
+  overflow: hidden;
+}
+.img_box img{
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+.text_box {
+  /* border: solid 1px black; */
+  text-align: left;
+  margin-left: 5%;
+  width: 45%;
+}
+.text_box .description {
+  width: 70%;
+  margin-bottom: 5%;
+}
+.text_box .product-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.text_box .product-count div:first-child{
+  font-weight: 700;
+}
+.total-price {
+  display: flex;
+  align-items: center;
+  margin: 3% auto;
+  justify-content: space-between;
+}
+.total-price div:first-child {
+  font-weight: 700;
+}
+.button-group {
+  text-align: right;
+}
+.detail-item{
+  margin-top: 5%;
+}
+.img_box_detail {
+  width: 60%;
+  height: 100%;
+  margin: auto;
+}
+.img_box_detail {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+#cart-modal .modal-card-foot,
+#cart-modal .modal-card-body  {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+#cart-modal .modal-card-body {
+  border-top-left-radius: 0.7em;
+  border-top-right-radius: 0.7em;
+}
+#cart-modal .material-icons {
+  margin: 6% auto;
+  font-size: 4em;
+}
+.modal-card-title {
+  margin-bottom: 4%;
+    font-size: 1.2em;
+    font-weight: 500;
+}

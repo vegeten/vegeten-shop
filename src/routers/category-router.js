@@ -59,7 +59,7 @@ categoryRouter.patch('/categories/:categoryId', async function (req, res, next) 
     const categoryId = req.params.categoryId;
 
     // body data 로부터 업데이트할 카테고리 정보를 추출함.
-    const category = req.body.category;
+    const category = req.body.category; 
 
     // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
     // 보내주었다면, 업데이트용 객체에 삽입함.
