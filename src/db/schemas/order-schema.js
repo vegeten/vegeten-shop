@@ -1,25 +1,45 @@
-import { Schema } from 'mongoose';
-// 주문 정보 - db에 배송지 정보, 주문 총액, 수령자 이름 및 연락처가 저장된다.			
+import mongoose, { Schema } from 'mongoose';
+// 주문 정보 - db에 배송지 정보, 주문 총액, 수령자 이름 및 연락처가 저장된다.
 const OrderSchema = new Schema(
   {
-    email: {
-      type: String,
+    // email: {
+    //   type: String,
+    //   required: true,
+    // },
+    address: {
+      type: new Schema(
+        {
+          postalCode: String,
+          address1: String,
+          address2: String,
+        },
+        {
+          _id: false,
+        }
+      ),
       required: true,
+      default: {},
     },
     phoneNumber: {
       type: String,
       required: true,
     },
-    address: {
-      type: String,
+    products: {
+      type: Object,
       required: true,
     },
-    price: {
+    totalPrice: {
       type: Number,
-      required: true
-    }
-
-  }, {
+      required: true,
+    },
+    // 유저 _id 만 가져오기위해 User 스키마와 연동
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'users',
+      required: true,
+    },
+  },
+  {
     collection: 'orders',
     timestamps: true,
   }
