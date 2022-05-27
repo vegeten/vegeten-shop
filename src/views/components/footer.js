@@ -1,7 +1,7 @@
-import { getNode } from "../useful-functions.js";
+import { getNode } from '../useful-functions.js';
 
 const renderFooter = () => {
-  const $footer = getNode(".footer");
+  const $footer = getNode('.footer');
 
   $footer.innerHTML = `
     <div class="content has-text-centered">
@@ -16,7 +16,6 @@ const renderFooter = () => {
       </p>
     </div>
     `;
-
 };
 
 export default renderFooter;
