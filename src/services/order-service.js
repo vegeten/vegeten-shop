@@ -32,11 +32,6 @@ class OrderService {
     return order;
   }
 
-  async getOrdersByEmail(email) {
-    const orders = await this.orderModel.findByEmail(email);
-    return orders;
-  }
-
   async addOrder(orderInfo) {
     const createdNewOrder = await this.orderModel.create(orderInfo);
     return createdNewOrder;

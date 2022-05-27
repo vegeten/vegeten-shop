@@ -2,11 +2,11 @@ import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
 import { orderService } from '../services/order-service';
-import { loginRequired } from '../middlewares';
+import { adminAuth, loginRequired } from '../middlewares';
 const orderRouter = Router();
 
-// 전체 주문내역 조회(미들웨어에 admin 인증 넣어야 함)
-orderRouter.get('/orderlist', async (req, res, next) => {
+// 전체 주문내역 조회, admin 전용
+orderRouter.get('/orderlist', loginRequired, adminAuth, async (req, res, next) => {
   try {
     const orders = await orderService.getOrderlist();
     res.status(200).json({
@@ -19,7 +19,7 @@ orderRouter.get('/orderlist', async (req, res, next) => {
   }
 });
 
-// 유저별 주문내역 조회(미들웨어에 login-required 인증 넣기)
+// 유저별 주문내역 조회, 로그인한 사용자만 가능
 orderRouter.get('/orders', loginRequired, async (req, res, next) => {
   try {
     const orders = await orderService.getOrdersByUser(req.currentUserId);
@@ -33,8 +33,8 @@ orderRouter.get('/orders', loginRequired, async (req, res, next) => {
   }
 });
 
-// 주문번호로 조회
-orderRouter.get('/orders/:orderId', async (req, res, next) => {
+// 주문번호로 조회, admin 전용 필요시 사용
+orderRouter.get('/orders/:orderId', loginRequired, adminAuth, async (req, res, next) => {
   const { orderId } = req.params;
   try {
     const order = await orderService.getOrder(orderId);
@@ -48,26 +48,10 @@ orderRouter.get('/orders/:orderId', async (req, res, next) => {
   }
 });
 
-// 이메일로 주문내역 조회
-// orderRouter.get('/orders/email/:email', async (req, res, next) => {
-//   const { email } = req.params;
-//   try {
-//     const orders = await orderService.getOrdersByEmail(email);
-//     res.status(200).json({
-//       status: 200,
-//       message: '주문내역 조회 성공',
-//       data: orders,
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
-
-// 주문 등록
+// 주문 등록, 로그인한 사용자만 가능
 orderRouter.post('/orders', loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
-    console.log(userId, '주문등록');
     const { email, phoneNumber, address, totalPrice, products } = req.body;
     const newOrder = await orderService.addOrder({
       // email,
@@ -87,6 +71,7 @@ orderRouter.post('/orders', loginRequired, async (req, res, next) => {
   }
 });
 
+// 주문 삭제, 로그인한 사용자만 가능
 orderRouter.delete('/orders/:orderId', loginRequired, async function (req, res, next) {
   try {
     const orderId = req.params.orderId;
