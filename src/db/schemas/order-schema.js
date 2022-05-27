@@ -27,8 +27,7 @@ const OrderSchema = new Schema(
       type: Object,
       required: false,
     },
-  },
-  {
+
     collection: 'orders',
     timestamps: true,
   }

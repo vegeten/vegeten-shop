@@ -1,5 +1,6 @@
 import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
+import { redisClient } from './redis';
 const secret = process.env.JWT_SECRET_KEY;
 
 const sign = (user) => {
