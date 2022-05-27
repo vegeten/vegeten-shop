@@ -22,6 +22,9 @@ userRouter.post('/register', async (req, res, next) => {
       fullName,
       email,
       password,
+      // 회원가입 시 기본으로 빈 값이 들어가도록
+      phoneNumber: '',
+      address: { postalCode: '', address1: '', address2: '' },
     });
     // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
     // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
@@ -105,22 +108,7 @@ userRouter.get('/users/:userId', loginRequired, async function (req, res, next) 
     next(error);
   }
 });
-// 특정 사용자 정보 조회
-// (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
-userRouter.get('/users/:userId', loginRequired, async function (req, res, next) {
-  try {
-    // 특정 id에 맞는 사용자 정보를 얻음
-    const user = await userService.getUser(req.params.userId);
-    // 사용자 정보를 JSON 형태로 프론트에 보냄
-    res.status(200).json({
-      status: 200,
-      message: '유저 정보 조회 성공',
-      data: user,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+
 // 사용자 정보 수정: 유저만 접근 가능
 userRouter.patch('/users', loginRequired, async function (req, res, next) {
   try {
