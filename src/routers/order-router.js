@@ -3,9 +3,10 @@ import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
 import { orderService } from '../services/order-service';
 const orderRouter = Router();
+import { loginRequired } from '../middlewares';
 
 // 전체 주문내역 조회(미들웨어에 admin 인증 넣어야 함)
-orderRouter.get('/orders', async (req, res, next) => {
+orderRouter.get('/orders', loginRequired, async (req, res, next) => {
   try {
     const orders = await orderService.getOrderlist();
     res.status(200).json({
@@ -19,7 +20,7 @@ orderRouter.get('/orders', async (req, res, next) => {
 });
 
 // 주문번호로 조회
-orderRouter.get('/orders/:orderId', async (req, res, next) => {
+orderRouter.get('/orders/:orderId', loginRequired, async (req, res, next) => {
   const { orderId } = req.params;
   try {
     const order = await orderService.getOrder(orderId);
@@ -34,7 +35,7 @@ orderRouter.get('/orders/:orderId', async (req, res, next) => {
 });
 
 // 이메일로 주문내역 조회
-orderRouter.get('/orders/email/:email', async (req, res, next) => {
+orderRouter.get('/orders/email/:email', loginRequired, async (req, res, next) => {
   const { email } = req.params;
   try {
     const orders = await orderService.getOrdersByEmail(email);
@@ -49,14 +50,15 @@ orderRouter.get('/orders/email/:email', async (req, res, next) => {
 });
 
 // 주문 등록
-orderRouter.post('/orders', async (req, res, next) => {
+orderRouter.post('/orders', loginRequired, async (req, res, next) => {
   try {
     const { email, phoneNumber, address, price } = req.body;
+
     const newOrder = await orderService.addOrder({
       email,
       phoneNumber,
       address,
-      price: Number(price),
+      price,
     });
     res.status(201).json({
       statusCode: 201,
@@ -68,7 +70,7 @@ orderRouter.post('/orders', async (req, res, next) => {
   }
 });
 
-orderRouter.delete('/orders/:orderId', async function (req, res, next) {
+orderRouter.delete('/orders/:orderId', loginRequired, async function (req, res, next) {
   try {
     const orderId = req.params.orderId;
     // 특정 id에 맞는 사용자 정보를 얻음
