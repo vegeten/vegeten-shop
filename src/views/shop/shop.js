@@ -140,5 +140,13 @@ const cartList = [
     count: 3,
     check: false,
   },
+  {
+    productId: '66234224',
+    productName: '치마치마치마치마',
+    price: 40000,
+    image: 'https://picsum.photos/200',
+    count: 1,
+    check: false,
+  },
 ];
 localStorage.setItem('cart', JSON.stringify(cartList));

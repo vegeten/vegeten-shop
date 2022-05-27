@@ -2,7 +2,45 @@ import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
 const postalCodeInput = getNode('#postal-code');
 
-// 주문하는 상품 뿌려주기
+// 로컬스토리지에 있는 장바구니 가져오기
+let cartList = JSON.parse(localStorage.getItem('cart'));
+
+// 로컬스토리지의 장바구니 값들 화면에 뿌려주기
+const productsContainer = getNode('#products-container');
+let markUp = '';
+cartList.forEach((product) => {
+  markUp += `
+    <div class="product-wrap">
+      <div class="product-image-wrap">
+        <img src="${product.image}" alt="상품 사진" />
+      </div>
+      <div class="product-info-wrap">
+        <div>상품명: ${product.productName}</div>
+        <div>수량: ${product.count}</div>
+        <div>상품구매금액: ${product.price * product.count}원</div>
+      </div>
+    </div>
+  `;
+});
+productsContainer.innerHTML = markUp;
+
+// 총 결제 금액 계산
+const totalCostElement = getNode('#total-cost');
+let totalCost = 0;
+
+cartList.forEach((product) => {
+  totalCost += product.price * product.count;
+});
+totalCostElement.innerText = `${totalCost}원`;
+
+// 총 결제 금액을 반영한 결제버튼
+const payButton = getNode('#pay-button');
+payButton.innerText = `${totalCost}원 결제하기`;
+
+// 회원 정보 받아오기
+const res = await Api.get('/api/users');
+const userData = res.data;
+console.log(userData);
 
 // 카카오 주소 가져오기
 window.onload = function () {
@@ -50,6 +88,7 @@ phoneInput.forEach((phone, idx) => {
   });
 });
 
+// 결제하기 눌렀을 때 뜨는 모달
 const modal = getNode('.modal');
 const btn = getNode('#pay-button');
 const close = getNode('.modal-close');
