@@ -97,9 +97,10 @@ class UserService {
     });
     return user;
   }
+
   // 특정 사용자 정보 삭제
   async deleteUser(userId) {
-    return userModel.delete(userId);
+    return this.userModel.delete(userId);
   }
 }
 const userService = new UserService(userModel);
