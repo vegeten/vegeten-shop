@@ -7,11 +7,12 @@ a {
 main {
   display: flex;
   margin-top: 4%;
+  justify-content: center;
 }
 .category-nav {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 450px;
   font-size: 1.3rem;
   margin-top: 5%;
 }
@@ -30,8 +31,9 @@ main {
   font-weight: 700;
 }
 .category-nav button {
-  margin: 30px auto;
-  width: 80%;
+  margin: 30px 0;
+  margin-left: 80px;
+  width: 150px;
 }
 .category-nav #modal-editCategory table {
   width: 90%;
@@ -77,7 +79,7 @@ article #product-list{
   display: flex;
   flex-wrap: wrap;
   margin-top: 10%;
-
+  /* justify-content: center; */
   /* border: 1px solid black; */
 }
 #product-list .item-card {
