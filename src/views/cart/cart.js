@@ -126,19 +126,21 @@ const deleteBtn = getNode('#all-delete');
 deleteBtn.addEventListener('click', deleteHandler);
 
 function deleteHandler() {
-  let deleteIndexes = [];
-  checkboxes.forEach((box, idx) => {
-    if (box.checked === true) {
-      deleteIndexes.push(idx);
-    }
-  });
-  const newCartList = cartList.filter((product, idx) => {
-    return deleteIndexes.indexOf(idx) === -1;
-  });
-  localStorage.setItem('cart', JSON.stringify(newCartList));
-  cartListMarkUp(newCartList);
-  cartTotalPrice.innerText = getTotalPrice(newCartList);
-  location.reload();
+  if (window.confirm('해당 상품을 삭제하시겠습니까?')) {
+    let deleteIndexes = [];
+    checkboxes.forEach((box, idx) => {
+      if (box.checked === true) {
+        deleteIndexes.push(idx);
+      }
+    });
+    const newCartList = cartList.filter((product, idx) => {
+      return deleteIndexes.indexOf(idx) === -1;
+    });
+    localStorage.setItem('cart', JSON.stringify(newCartList));
+    cartListMarkUp(newCartList);
+    cartTotalPrice.innerText = getTotalPrice(newCartList);
+    location.reload();
+  }
 }
 
 // 로그인 안했으면 주문하기 버튼 클릭 시 로그인 페이지로 유도
