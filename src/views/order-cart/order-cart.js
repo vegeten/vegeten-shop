@@ -1,11 +1,21 @@
 import * as Api from '/api.js';
 import { getNode, addCommas } from '../../useful-functions.js';
-const postalCodeInput = getNode('#postal-code');
 
-// 로컬스토리지에 있는 장바구니 가져오기
-let cartList = JSON.parse(localStorage.getItem('cart'));
+// elements
+const totalCostElement = getNode('#total-cost');
+const nameInput = getNode('#name');
+const postalCodeInput = getNode('#postal-code');
+const address1 = getNode('#address1');
+const address2 = getNode('#address2');
+const phoneInput = document.querySelectorAll('.phone');
+const payButton = getNode('#pay-button');
+const nameValidateMsg = getNode('#name-msg');
+const addressValidateMsg = getNode('#postal-code-msg');
+const phoneValidateMsg = getNode('#phone-msg');
+const modal = getNode('.modal');
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
+let cartList = JSON.parse(localStorage.getItem('cart'));
 const productsContainer = getNode('#products-container');
 let markUp = '';
 cartList.forEach((product) => {
@@ -25,16 +35,11 @@ cartList.forEach((product) => {
 productsContainer.innerHTML = markUp;
 
 // 총 결제 금액 계산
-const totalCostElement = getNode('#total-cost');
 let totalCost = 0;
-
 cartList.forEach((product) => {
   totalCost += product.price * product.count;
 });
 totalCostElement.innerText = `${addCommas(totalCost)}원`;
-
-// 총 결제 금액을 반영한 결제버튼
-const payButton = getNode('#pay-button');
 payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
 
 // 회원 정보 받아오기
@@ -44,21 +49,20 @@ async function getUserInfo() {
   const res = await Api.get('/api/users');
   const userData = res.data;
   userId = userData._id;
-
-  getNode('#name').value = userData.fullName;
+  nameInput.value = userData.fullName;
 
   const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = userData.phoneNumber?.split('-') || [];
-  const { postalCode = '', address1 = '', address2 = '' } = userData?.address || {};
+  const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
+  const { postalCode = '', baseAddress1 = '', baseAddress2 = '' } = userData?.address || {};
 
-  getNode('#postal-code').value = postalCode;
-  getNode('#address1').value = address1;
-  getNode('#address2').value = address2;
+  postalCodeInput.value = postalCode;
+  address1.value = baseAddress1;
+  address2.value = baseAddress2;
 
-  getNode('#phone1').value = phoneNumberFirst;
-  getNode('#phone2').value = phoneNumberSecond;
-  getNode('#phone3').value = phoneNumberThird;
+  phoneInput.forEach((phone, idx) => {
+    phone.value = phoneNumbers[idx];
+  });
 }
-
 getUserInfo();
 
 // 카카오 주소 가져오기
@@ -68,46 +72,73 @@ window.onload = function () {
       oncomplete: function (data) {
         postalCodeInput.value = data.zonecode;
         postalCodeInput.classList.remove('is-danger');
-        //getNode('#postal-code-msg').classList.add('hide');
-        getNode('#address1').value = data.address;
-        getNode('#address2').focus();
+        addressValidateMsg.classList.add('hide');
+        address1.value = data.address;
+        address2.value = '';
+        address2.focus();
       },
     }).open();
   });
 };
 
-// 폼 비어있는지 체크
+// 폼 비어있는지 체크 (실시간 입력에 따른 체크)
 // 이름
-const nameInput = getNode('#name');
 nameInput.addEventListener('input', () => {
   if (nameInput.value !== '') {
     nameInput.classList.remove('is-danger');
-    getNode('#name-msg').classList.add('hide');
+    nameValidateMsg.classList.add('hide');
   } else {
     nameInput.classList.add('is-danger');
-    getNode('#name-msg').classList.remove('hide');
+    nameValidateMsg.classList.remove('hide');
   }
 });
 
 // 전화번호
-const phoneInput = document.querySelectorAll('.phone');
 phoneInput.forEach((phone, idx) => {
   phone.addEventListener('input', () => {
     if (phoneInput[0].value !== '' && phoneInput[1].value !== '' && phoneInput[2].value !== '') {
       phoneInput[0].classList.remove('is-danger');
       phoneInput[1].classList.remove('is-danger');
       phoneInput[2].classList.remove('is-danger');
-      getNode('#phone-msg').classList.add('hide');
+      phoneValidateMsg.classList.add('hide');
     } else {
       phoneInput[0].classList.add('is-danger');
       phoneInput[1].classList.add('is-danger');
       phoneInput[2].classList.add('is-danger');
-      getNode('#phone-msg').classList.remove('hide');
+      phoneValidateMsg.classList.remove('hide');
     }
   });
 });
 
-// 결제하기 눌렀을 때 post 요청
+// 결제하기 눌렀을 때 폼 유효성 검사
+function checkForm() {
+  let validateFlag = true;
+
+  if (!nameInput.value) {
+    nameInput.classList.add('is-danger');
+    nameValidateMsg.classList.remove('hide');
+    validateFlag = false;
+  }
+
+  if (!postalCodeInput.value) {
+    postalCodeInput.classList.add('is-danger');
+    addressValidateMsg.classList.remove('hide');
+    validateFlag = false;
+  }
+
+  phoneInput.forEach((phone) => {
+    if (!phone.value) {
+      phoneInput[0].classList.add('is-danger');
+      phoneInput[1].classList.add('is-danger');
+      phoneInput[2].classList.add('is-danger');
+      phoneValidateMsg.classList.remove('hide');
+      validateFlag = false;
+    }
+  });
+  return validateFlag;
+}
+
+// 결제하기 눌렀을 때 주문정보 post 요청
 async function postOrder() {
   const productsList = [];
   cartList.forEach((product) => {
@@ -120,9 +151,9 @@ async function postOrder() {
   });
   const orderInfo = {
     address: {
-      postalCode: getNode('#postal-code').value,
-      address1: getNode('#address1').value,
-      address2: getNode('#address2').value,
+      postalCode: postalCodeInput.value,
+      address1: address1.value,
+      address2: address1.value,
     },
     phoneNumber: `${getNode('#phone1').value}-${getNode('#phone2').value}-${getNode('#phone3').value}`,
     products: productsList,
@@ -132,22 +163,13 @@ async function postOrder() {
 
   const res = await Api.post('/api/orders', orderInfo);
 }
-payButton.addEventListener('click', postOrder);
 
-// 결제하기 눌렀을 때 뜨는 모달
-const modal = getNode('.modal');
-const close = getNode('.modal-close');
+function handleSubmit() {
+  const formValidateCheck = checkForm();
+  console.log(formValidateCheck);
+  if (!formValidateCheck) return;
 
-payButton.addEventListener('click', function () {
+  postOrder();
   modal.style.display = 'flex';
-});
-
-close.addEventListener('click', function () {
-  modal.style.display = 'none';
-});
-
-// window.addEventListener('click', function (event) {
-//   if (event.target.className === 'modal-background') {
-//     modal.style.display = 'none';
-//   }
-// });
+}
+payButton.addEventListener('click', handleSubmit);
