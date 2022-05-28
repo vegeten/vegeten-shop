@@ -7,6 +7,7 @@ renderFooter();
 
 // 로컬스토리지에 있는 장바구니 가져오기
 let cartList = JSON.parse(localStorage.getItem('cart'));
+console.log('카트:', cartList);
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
 const productsContainer = getNode('#products-container');
@@ -14,21 +15,25 @@ const productsContainer = getNode('#products-container');
 const cartListMarkUp = (cartList) => {
   // 장바구니에 상품이 있을 경우
   let markUp = '';
-  if (cartList) {
+  if (cartList.length !== 0) {
     cartList.forEach((product) => {
       markUp += `
       <div class="cart-element">
-        <div class="product-info">
+        <div class="left">
           <div class="checkbox-wrap">
             <input type="checkbox" class="checkbox" />
           </div>
-          <div class="product-image-wrap">
-            <img src="${product.image}" alt="상품 사진"/>
-          </div>
-          <div class="product-description">
-            <span class="product-name">${product.productName}</span>
-            <span class="product-cost">${addCommas(product.price)}원</span>
-          </div>
+          <a href="/shop/${product.productId}">
+            <div class="product-info">
+              <div class="product-image-wrap">
+                <img src="${product.image}" alt="상품 사진"/>
+              </div>
+              <div class="product-description">
+                <span class="product-name">${product.productName}</span>
+                <span class="product-cost">${addCommas(product.price)}원</span>
+              </div>
+            </div>
+          </a>
         </div>
         <div class="product-quantity">
           <span class="subTitle">수량</span>
@@ -45,6 +50,7 @@ const cartListMarkUp = (cartList) => {
       </div>`;
     });
   } else {
+    // 장바구니가 비었을 때
     markUp += `<div id="empty-cart">장바구니가 비어있습니다.</div>`;
     getNode('#bottom').style.display = 'none';
     getNode('#top-buttons').style.display = 'none';
