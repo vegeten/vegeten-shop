@@ -8,13 +8,13 @@ window.onpageshow = function (event) {
   }
 };
 
-const { isLogin, isAdmin } = getAuthorizationObj();
+// const { isLogin, isAdmin } = getAuthorizationObj();
 
-if (!isLogin || !isAdmin) {
-  alert('어드민 유저만 접근 가능합니다.');
-  window.location.href = '/login';
+// if (!isLogin || !isAdmin) {
+//   alert('어드민 유저만 접근 가능합니다.');
+//   window.location.href = '/login';
 
-}
+// }
 
 renderNav();
 renderFooter();
