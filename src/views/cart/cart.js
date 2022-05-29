@@ -7,7 +7,6 @@ renderFooter();
 
 // 로컬스토리지에 있는 장바구니 가져오기
 let cartList = JSON.parse(localStorage.getItem('cart'));
-console.log('카트:', cartList);
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
 const productsContainer = getNode('#products-container');
@@ -21,7 +20,7 @@ const cartListMarkUp = (cartList) => {
       <div class="cart-element">
         <div class="left">
           <div class="checkbox-wrap">
-            <input type="checkbox" class="checkbox" />
+            <input type="checkbox" class="checkbox" value="${product.productId}" />
           </div>
           <a href="/shop/${product.productId}">
             <div class="product-info">
@@ -63,18 +62,15 @@ cartListMarkUp(cartList);
 const allCheckButton = getNode('#all-check');
 let isAllClicked = false;
 allCheckButton.addEventListener('click', checkAll);
-const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+let checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
 function checkAll() {
+  checkboxes = document.querySelectorAll('input[type="checkbox"]');
   if (isAllClicked) {
-    checkboxes.forEach((box) => {
-      box.checked = false;
-    });
+    checkboxes.forEach((box) => (box.checked = false));
     isAllClicked = false;
   } else {
-    checkboxes.forEach((box) => {
-      box.checked = true;
-    });
+    checkboxes.forEach((box) => (box.checked = true));
     isAllClicked = true;
   }
 }
@@ -112,34 +108,30 @@ increaseButton.forEach((button, idx) => {
 
 // 합계 계산
 const getTotalPrice = (cartList) => {
-  let price = 0;
-  cartList.forEach((product) => {
-    price += product.price * product.count;
-  });
-
+  const price = cartList.reduce((acc, cur) => acc + cur.price * cur.count, 0);
   return price;
 };
 cartTotalPrice.innerText = `${addCommas(getTotalPrice(cartList))}원`;
 
-// 선택 삭제
+// 삭제
 const deleteBtn = getNode('#all-delete');
 deleteBtn.addEventListener('click', deleteHandler);
 
+// 코치님 말씀대로 수정해본 코드
 function deleteHandler() {
-  if (window.confirm('해당 상품을 삭제하시겠습니까?')) {
-    let deleteIndexes = [];
-    checkboxes.forEach((box, idx) => {
-      if (box.checked === true) {
-        deleteIndexes.push(idx);
-      }
-    });
-    const newCartList = cartList.filter((product, idx) => {
-      return deleteIndexes.indexOf(idx) === -1;
-    });
-    localStorage.setItem('cart', JSON.stringify(newCartList));
-    cartListMarkUp(newCartList);
-    cartTotalPrice.innerText = getTotalPrice(newCartList);
-    location.reload();
+  const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  if (checkedCount) {
+    if (window.confirm('해당 상품을 삭제하시겠습니까?')) {
+      cartList = JSON.parse(localStorage.getItem('cart'));
+      const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(({ value }) => value);
+
+      const newCartList = cartList.filter(({ productId }) => checked.indexOf(productId) === -1);
+      localStorage.setItem('cart', JSON.stringify(newCartList));
+      cartListMarkUp(newCartList);
+      cartTotalPrice.innerText = `${addCommas(getTotalPrice(cartList))}원`;
+    }
+  } else {
+    alert('선택된 상품이 없습니다');
   }
 }
 

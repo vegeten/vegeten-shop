@@ -35,10 +35,7 @@ cartList.forEach((product) => {
 productsContainer.innerHTML = markUp;
 
 // 총 결제 금액 계산
-let totalCost = 0;
-cartList.forEach((product) => {
-  totalCost += product.price * product.count;
-});
+const totalCost = cartList.reduce((acc, cur) => acc + cur.price * cur.count, 0);
 totalCostElement.innerText = `${addCommas(totalCost)}원`;
 payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
 
