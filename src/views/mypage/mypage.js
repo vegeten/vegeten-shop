@@ -17,6 +17,7 @@ if (!isLogin) {
 }
 
 const orderWrapper = getNode('.order-list');
+const titleWrapper = getNode('.title-wrapper');
 const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
 const numberFirstInput = getNode('.number-1');
@@ -167,7 +168,7 @@ const createOrderListElement = (item) => {
     <div class="order-info">
       <div class="order-id-wrap">
         <div><strong>주문 번호</strong></div>
-        <div class="order-id">${_id}</div>
+        <div class="order-id content">${_id}</div>
       </div>
       <div class="order-date">
         <div><strong>주문 날짜</strong></div>
@@ -215,8 +216,6 @@ const renderAllOrderList = (orderList) => {
   });
   addOrderDeleteEvent();
 };
-
-
 
 const getUserInfo = async () => {
   try {
