@@ -71,8 +71,28 @@ orderRouter.post('/', loginRequired, async (req, res, next) => {
   }
 });
 
-// 주문 삭제 admin 유저만 가능
+// 주문 삭제 (user)
 orderRouter.delete('/:orderId', loginRequired, async function (req, res, next) {
+  try {
+    const orderId = req.params.orderId;
+    // 특정 id에 맞는 주문 정보를 얻음
+    const deleteOrder = await orderService.deleteOrder(orderId);
+    console.log(deleteOrder);
+    // 사용자 정보를 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      status: 200,
+      message: '주문 내역 삭제 성공',
+      data: {
+        deleteOrder,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// admin 전용 주문 삭제
+orderRouter.delete('/:orderId', adminAuth, async function (req, res, next) {
   try {
     const orderId = req.params.orderId;
     // 특정 id에 맞는 주문 정보를 얻음
