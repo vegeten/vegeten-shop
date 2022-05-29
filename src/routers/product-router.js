@@ -23,7 +23,7 @@ productRouter.get('/', async function (req, res, next) {
       message: '전체 상품 목록 조회 성공',
       data: {
         totalPage: totalPage,
-        postCount: total,
+        productCount: total,
         products,
       },
     });

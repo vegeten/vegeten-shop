@@ -115,7 +115,7 @@ categoryRouter.get('/:category/products', async function (req, res, next) {
       message: '카테고리별 상품 목록 조회 성공',
       data: {
         totalPage: totalPage,
-        postCount: total,
+        productCount: total,
         products,
       },
     });
