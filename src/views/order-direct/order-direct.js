@@ -149,7 +149,7 @@ async function postOrder() {
       productId: productId,
       productImg: productInfo.image,
       productName: productInfo.productName,
-      count: productCount.count,
+      count: productCount,
     },
   ];
 
