@@ -8,6 +8,11 @@ body {
   padding-top: 80px;
 }
 
+a {
+  text-decoration: none;
+  color: #000;
+}
+
 #container {
   padding-top: 60px;
   width: 74vw;
@@ -46,7 +51,7 @@ h2 {
   padding: 20px 10px;
 }
 
-.product-info {
+.left {
   display: flex;
   width: 70%;
   align-items: center;
@@ -60,6 +65,11 @@ h2 {
   cursor: pointer;
   width: 18px;
   height: 18px;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
 }
 
 .product-image-wrap {

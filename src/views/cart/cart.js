@@ -7,6 +7,7 @@ renderFooter();
 
 // 로컬스토리지에 있는 장바구니 가져오기
 let cartList = JSON.parse(localStorage.getItem('cart'));
+console.log('카트:', cartList);
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
 const productsContainer = getNode('#products-container');
@@ -14,21 +15,25 @@ const productsContainer = getNode('#products-container');
 const cartListMarkUp = (cartList) => {
   // 장바구니에 상품이 있을 경우
   let markUp = '';
-  if (cartList) {
+  if (cartList.length !== 0) {
     cartList.forEach((product) => {
       markUp += `
       <div class="cart-element">
-        <div class="product-info">
+        <div class="left">
           <div class="checkbox-wrap">
             <input type="checkbox" class="checkbox" />
           </div>
-          <div class="product-image-wrap">
-            <img src="${product.image}" alt="상품 사진"/>
-          </div>
-          <div class="product-description">
-            <span class="product-name">${product.productName}</span>
-            <span class="product-cost">${addCommas(product.price)}원</span>
-          </div>
+          <a href="/shop/${product.productId}">
+            <div class="product-info">
+              <div class="product-image-wrap">
+                <img src="${product.image}" alt="상품 사진"/>
+              </div>
+              <div class="product-description">
+                <span class="product-name">${product.productName}</span>
+                <span class="product-cost">${addCommas(product.price)}원</span>
+              </div>
+            </div>
+          </a>
         </div>
         <div class="product-quantity">
           <span class="subTitle">수량</span>
@@ -45,6 +50,7 @@ const cartListMarkUp = (cartList) => {
       </div>`;
     });
   } else {
+    // 장바구니가 비었을 때
     markUp += `<div id="empty-cart">장바구니가 비어있습니다.</div>`;
     getNode('#bottom').style.display = 'none';
     getNode('#top-buttons').style.display = 'none';
@@ -120,19 +126,21 @@ const deleteBtn = getNode('#all-delete');
 deleteBtn.addEventListener('click', deleteHandler);
 
 function deleteHandler() {
-  let deleteIndexes = [];
-  checkboxes.forEach((box, idx) => {
-    if (box.checked === true) {
-      deleteIndexes.push(idx);
-    }
-  });
-  const newCartList = cartList.filter((product, idx) => {
-    return deleteIndexes.indexOf(idx) === -1;
-  });
-  localStorage.setItem('cart', JSON.stringify(newCartList));
-  cartListMarkUp(newCartList);
-  cartTotalPrice.innerText = getTotalPrice(newCartList);
-  location.reload();
+  if (window.confirm('해당 상품을 삭제하시겠습니까?')) {
+    let deleteIndexes = [];
+    checkboxes.forEach((box, idx) => {
+      if (box.checked === true) {
+        deleteIndexes.push(idx);
+      }
+    });
+    const newCartList = cartList.filter((product, idx) => {
+      return deleteIndexes.indexOf(idx) === -1;
+    });
+    localStorage.setItem('cart', JSON.stringify(newCartList));
+    cartListMarkUp(newCartList);
+    cartTotalPrice.innerText = getTotalPrice(newCartList);
+    location.reload();
+  }
 }
 
 // 로그인 안했으면 주문하기 버튼 클릭 시 로그인 페이지로 유도
