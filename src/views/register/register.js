@@ -1,7 +1,7 @@
 import * as Api from '/api.js';
 import { validateEmail, getAuthorizationObj, getNode } from '/useful-functions.js';
 import renderFooter from '../components/footer.js';
-import { renderNav } from "../components/nav.js";
+import { renderNav } from '../components/nav.js';
 
 window.onpageshow = function (event) {
   if (event.persisted) {
@@ -50,7 +50,6 @@ const closeModal = () => {
   modal.classList.remove('is-active');
   window.location.href = '/login';
 };
-
 
 const validationInput = (e) => {
   if (e.target.value === '') {
@@ -130,7 +129,7 @@ async function handleSubmit(e) {
   try {
     const data = { fullName, email, password };
 
-    await Api.post('/api/register', data);
+    await Api.post('/api/users/register', data);
 
     viewDetailModal(true);
     // 로그인 페이지 이동

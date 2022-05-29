@@ -2,7 +2,7 @@ import { userModel } from '../db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { sign, refresh } from '../utils';
-import { redisClient } from '../utils';
+// import { redisClient } from '../utils';
 
 class UserService {
   // 본 파일의 맨 아래에서, new UserService(userModel) 하면, 이 함수의 인자로 전달됨
@@ -16,9 +16,11 @@ class UserService {
     // 이메일 중복 확인
     const user = await this.userModel.findByEmail(email);
     if (user) {
-      const e = new Error('이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.');
-      e.status = 409;
-      throw e;
+      const error = new Error();
+      error.status = 409;
+      error.message = '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
+      const { status, message } = error;
+      res.json({});
     }
     // 이메일 중복은 이제 아니므로, 회원가입을 진행함
     // 우선 비밀번호 해쉬화(암호화)
@@ -38,6 +40,7 @@ class UserService {
       const e = new Error('해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
       e.status = 404;
       throw e;
+      return;
     }
     // 이제 이메일은 문제 없는 경우이므로, 비밀번호를 확인함
     // 비밀번호 일치 여부 확인
@@ -52,9 +55,8 @@ class UserService {
 
     // access token, refresh token 발급
     const token = sign(user);
-    const userId = user._id;
     const refreshToken = refresh();
-    //
+    // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
 
     return { token, refreshToken };
