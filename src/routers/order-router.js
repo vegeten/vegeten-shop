@@ -6,7 +6,7 @@ import { adminAuth, loginRequired } from '../middlewares';
 const orderRouter = Router();
 
 // 전체 주문내역 조회, admin 전용
-orderRouter.get('/orderlist', loginRequired, adminAuth, async (req, res, next) => {
+orderRouter.get('/orderlist', adminAuth, async (req, res, next) => {
   try {
     const orders = await orderService.getOrderlist();
     res.status(200).json({
