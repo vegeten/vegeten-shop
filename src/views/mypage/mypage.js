@@ -17,7 +17,6 @@ if (!isLogin) {
 }
 
 const orderWrapper = getNode('.order-list');
-const titleWrapper = getNode('.title-wrapper');
 const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
 const numberFirstInput = getNode('.number-1');
@@ -317,7 +316,6 @@ const getOrderList = async () => {
   } catch (err) {
     console.log(err.message);
   }
-
 };
 
 
@@ -325,6 +323,6 @@ const getOrderList = async () => {
 
 renderNav();
 renderFooter();
-await getUserInfo();
+getUserInfo();
 getOrderList();
 addAllEvents();
