@@ -43,6 +43,19 @@ header a {
   font-weight: bold;
 }
 
+#select-address-wrap {
+  /* padding-left: 10px; */
+  margin-bottom: 25px;
+}
+
+#default-address-wrap {
+  margin-right: 25px;
+}
+
+#select-address-wrap > span > * {
+  cursor: pointer;
+}
+
 .title.cost {
   margin: 0;
 }

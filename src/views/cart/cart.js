@@ -7,6 +7,7 @@ renderFooter();
 
 // 로컬스토리지에 있는 장바구니 가져오기
 let cartList = JSON.parse(localStorage.getItem('cart'));
+console.log('흐앙', cartList);
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
 const productsContainer = getNode('#products-container');
@@ -14,7 +15,7 @@ const productsContainer = getNode('#products-container');
 const cartListMarkUp = (cartList) => {
   // 장바구니에 상품이 있을 경우
   let markUp = '';
-  if (cartList.length !== 0) {
+  if (cartList !== null) {
     cartList.forEach((product) => {
       markUp += `
       <div class="cart-element">
