@@ -34,7 +34,7 @@ orderRouter.get('/', loginRequired, async (req, res, next) => {
 });
 
 // 주문번호로 조회, admin 전용 필요시 사용
-orderRouter.get('/:orderId', loginRequired, adminAuth, async (req, res, next) => {
+orderRouter.get('/:orderId', loginRequired, async (req, res, next) => {
   const { orderId } = req.params;
   try {
     const order = await orderService.getOrder(orderId);
@@ -92,7 +92,7 @@ orderRouter.delete('/:orderId', loginRequired, async function (req, res, next) {
 });
 
 // admin 전용 주문 삭제
-orderRouter.delete('/:orderId', adminAuth, async function (req, res, next) {
+orderRouter.delete('/admin/:orderId', adminAuth, async function (req, res, next) {
   try {
     const orderId = req.params.orderId;
     // 특정 id에 맞는 주문 정보를 얻음

@@ -44,6 +44,7 @@ userRouter.post('/login', async function (req, res, next) {
     next(error);
   }
 });
+
 // 전체 유저 목록을 가져옴 (배열 형태임)
 // 미들웨어로 loginRequired 를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
 userRouter.get('/userlist', adminAuth, async function (req, res, next) {
@@ -136,6 +137,35 @@ userRouter.patch('/', loginRequired, async function (req, res, next) {
     res.status(200).json({
       status: 200,
       message: '유저 정보 수정 성공',
+      data: updatedUserInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.patch('/address', loginRequired, async function (req, res, next) {
+  try {
+    const userId = req.currentUserId;
+    if (!userId) {
+      throw new Error('유저 정보 만료');
+    }
+
+    const { address } = req.body;
+    const userInfoRequired = { userId };
+    console.log(userId);
+
+    const toUpdate = {
+      ...(address && { address }),
+    };
+
+    // 사용자 정보를 업데이트함.
+    const updatedUserInfo = await userService.setUserAddress(userInfoRequired, toUpdate);
+
+    // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
+    res.status(200).json({
+      status: 200,
+      message: '유저 주소 수정 성공',
       data: updatedUserInfo,
     });
   } catch (error) {

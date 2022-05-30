@@ -40,7 +40,6 @@ class UserService {
       const e = new Error('해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
       e.status = 404;
       throw e;
-      return;
     }
     // 이제 이메일은 문제 없는 경우이므로, 비밀번호를 확인함
     // 비밀번호 일치 여부 확인
@@ -56,10 +55,11 @@ class UserService {
     // access token, refresh token 발급
     const token = sign(user);
     const refreshToken = refresh();
+    const exp = jwt.decode(token).exp;
     // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
-
-    return { token, refreshToken };
+    console.log(exp);
+    return { token, refreshToken, exp };
   }
   // 사용자 목록을 받음.
   async getUsers() {
@@ -106,6 +106,24 @@ class UserService {
     });
     return user;
   }
+
+  async setUserAddress(userInfoRequired, toUpdate) {
+    const { userId } = userInfoRequired;
+    let user = await this.userModel.findById(userId);
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      const e = new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
+    }
+
+    user = await this.userModel.update({
+      userId,
+      update: toUpdate,
+    });
+    return user;
+  }
+
   // 특정 사용자 정보 삭제
   async deleteUser(userId) {
     return userModel.delete(userId);
