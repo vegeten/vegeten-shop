@@ -19,13 +19,26 @@ const UserSchema = new Schema(
     phoneNumber: {
       type: String,
       required: false,
+      default: null,
     },
     address: {
       type: new Schema(
         {
-          postalCode: String,
-          address1: String,
-          address2: String,
+          postalCode: {
+            type: String,
+            required: false,
+            default: null,
+          },
+          address1: {
+            type: String,
+            required: false,
+            default: null,
+          },
+          address2: {
+            type: String,
+            required: false,
+            default: null,
+          },
         },
         {
           _id: false,
@@ -38,11 +51,6 @@ const UserSchema = new Schema(
       type: String,
       required: false,
       default: 'basic-user',
-    },
-    refresh: {
-      type: String,
-      required: false,
-      default: '',
     },
   },
   {

@@ -26,56 +26,70 @@
   <nav class="navbar is-light" role="navigation" aria-label="main navigation">
   </nav>
 
-  <main class="main-wrapper" aria-label="main contents">
+  <main class="main-wrap" aria-label="main contents">
     <div class="main-order-list">
-      <form>
-        <table class="table is-striped is-hoverable table-style">
-          <thead>
-            <tr>
-              <th>선택</th>
-              <th>주문번호</th>
-              <th>주문자명</th>
-              <th>주문내역</th>
-              <th>주문날짜</th>
-              <th>상세</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="checkbox" name="check"></td>
-              <th>12345</th>
-              <td>엘리스</td>
-              <td>옷 여러개가 주문하나에 들어가있습니다요.</td>
-              <td>2022.05.23</td>
-              <td>
-                <a class="order-detail-button">
-                  <span class="material-icons">
-                    open_in_full
-                  </span>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td><input type="checkbox" name="check"></td>
-              <th>12346</th>
-              <td>엘리스</td>
-              <td>옷 여러개</td>
-              <td>2022.05.26</td>
-              <td>
-                <a class="order-detail-button">
-                  <span class="material-icons">
-                    open_in_full
-                  </span>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="button-wrapper">
-          <button class="button is-medium is-danger delete-button" type="submit">선택삭제</button>
+      <div class="order-list-wrap">
+        <div class="mod-wrap">
+          <div class="main-category-mod-wrap">
+            <span class="wrap-title">카테고리 관리</span>
+            <button class="button is-medium is-warning">카테고리 수정/추가/삭제</button>
+          </div>
+          <div class="main-product-mod-wrap">
+            <span class="wrap-title">상품내역 관리</span>
+            <button class="button is-medium is-info">상품내역 수정/추가/삭제</button>
+          </div>
         </div>
-      </form>
-    </div>
+        <div class="main-order-mod-wrap">
+          <span class="wrap-title">전체 주문 내역</span>
+          <form class="order-list ">
+            <table class="table is-striped is-hoverable table-style">
+              <thead>
+                <tr>
+                  <th>선택</th>
+                  <th>주문번호</th>
+                  <th>주문자명</th>
+                  <th>주문내역</th>
+                  <th>주문날짜</th>
+                  <th>상세</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" name="check"></td>
+                  <th>12345</th>
+                  <td>엘리스</td>
+                  <td>옷 여러개가 주문하나에 들어가있습니다요</td>
+                  <td>2022.05.23</td>
+                  <td>
+                    <a class="order-detail-button">
+                      <span class="material-icons">
+                        open_in_full
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name="check"></td>
+                  <th>12346</th>
+                  <td>엘리스</td>
+                  <td>옷 여러개</td>
+                  <td>2022.05.26</td>
+                  <td>
+                    <a class="order-detail-button">
+                      <span class="material-icons">
+                        open_in_full
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="button-wrap">
+              <button class="button is-medium is-danger delete-button" type="submit">선택삭제</button>
+            </div>
+          </form>
+        </div>
+      </div>
   </main>
 
   <div class="modal">
@@ -86,7 +100,7 @@
         <button class="close-button delete" aria-label="close"></button>
       </header>
       <section class="modal-card-body">
-        <div class="body-wrapper">
+        <div class="body-wrap">
           <div class="order-detail-info">
             <span class="info-order-number">No. 123456</span>
             <span class="info-order-date">2022.05.23</span>
