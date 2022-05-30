@@ -1,6 +1,7 @@
 import renderFooter from '../components/footer.js';
 import { renderNav } from "../components/nav.js";
 import { getAuthorizationObj, getNode } from '../useful-functions.js';
+import * as Api from '/api.js';
 
 window.onpageshow = function (event) {
   if (event.persisted) {
@@ -39,3 +40,11 @@ const closeModal = () => {
 $deleteButton.addEventListener('click', deleteSubmit);
 $orderDetailButton.addEventListener('click', viewDetailModal);
 $modalButton.addEventListener('click', closeModal);
+
+const getOrderALLList = async () => {
+  try {
+    const result = await Api.get();
+  } catch (err) {
+
+  }
+};

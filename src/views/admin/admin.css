@@ -1,6 +1,10 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 .main-wrap {
   height: 100vh;
-  width: 1000px;
+  width: 1300px;
   margin: 0 auto;
   margin-top: 5rem;
 }
@@ -9,8 +13,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin-bottom: 4rem;
+}
+
+.order-list-wrap {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.main-order-list {
+  display: flex;
+  flex-direction: row;
 }
 
 .main-order-list form {
