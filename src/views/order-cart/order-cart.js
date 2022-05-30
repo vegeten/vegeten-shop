@@ -13,6 +13,7 @@ const nameValidateMsg = getNode('#name-msg');
 const addressValidateMsg = getNode('#postal-code-msg');
 const phoneValidateMsg = getNode('#phone-msg');
 const modal = getNode('.modal');
+const setDefaultAddress = getNode('#set-default-address');
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
 // let cartList = JSON.parse(localStorage.getItem('cart'));
@@ -47,10 +48,11 @@ async function getUserInfo() {
   const userData = res.data;
   userId = userData._id;
   nameInput.value = userData.fullName;
+  console.log(userData);
 
   const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = userData.phoneNumber?.split('-') || [];
   const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
-  const { postalCode = '', baseAddress1 = '', baseAddress2 = '' } = userData?.address || {};
+  const { postalCode = '', address1: baseAddress1 = '', address2: baseAddress2 = '' } = userData?.address || {};
 
   postalCodeInput.value = postalCode;
   address1.value = baseAddress1;
@@ -104,21 +106,22 @@ nameInput.addEventListener('input', () => {
 });
 
 // 전화번호
-phoneInput.forEach((phone, idx) => {
-  phone.addEventListener('input', () => {
-    if (phoneInput[0].value !== '' && phoneInput[1].value !== '' && phoneInput[2].value !== '') {
-      phoneInput[0].classList.remove('is-danger');
-      phoneInput[1].classList.remove('is-danger');
-      phoneInput[2].classList.remove('is-danger');
-      phoneValidateMsg.classList.add('hide');
-    } else {
-      phoneInput[0].classList.add('is-danger');
-      phoneInput[1].classList.add('is-danger');
-      phoneInput[2].classList.add('is-danger');
-      phoneValidateMsg.classList.remove('hide');
-    }
-  });
-});
+const phoneWrap = getNode('#phone-input-wrap');
+phoneWrap.addEventListener('input', phoneCheck);
+
+function phoneCheck() {
+  if (phoneInput[0].value !== '' && phoneInput[1].value !== '' && phoneInput[2].value !== '') {
+    phoneInput[0].classList.remove('is-danger');
+    phoneInput[1].classList.remove('is-danger');
+    phoneInput[2].classList.remove('is-danger');
+    phoneValidateMsg.classList.add('hide');
+  } else {
+    phoneInput[0].classList.add('is-danger');
+    phoneInput[1].classList.add('is-danger');
+    phoneInput[2].classList.add('is-danger');
+    phoneValidateMsg.classList.remove('hide');
+  }
+}
 
 // 결제하기 눌렀을 때 폼 유효성 검사
 function checkForm() {
@@ -157,13 +160,14 @@ async function postOrder() {
       productImg: product.image,
       productName: product.productName,
       count: product.count,
+      productPrice: product.count * product.price,
     });
   });
   const orderInfo = {
     address: {
       postalCode: postalCodeInput.value,
       address1: address1.value,
-      address2: address1.value,
+      address2: address2.value,
     },
     phoneNumber: `${getNode('#phone1').value}-${getNode('#phone2').value}-${getNode('#phone3').value}`,
     products: productsList,
@@ -174,12 +178,27 @@ async function postOrder() {
   const res = await Api.post('/api/orders', orderInfo);
 }
 
+// 기본배송지 설정 눌렀을 때 주소정보 수정 patch 요청
+async function changeAddress() {
+  const newAddressInfo = {
+    postalCode: postalCodeInput.value,
+    address1: address1.value,
+    address2: address2.value,
+  };
+
+  const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
+  console.log('정보수정 잘 되었어요!', res);
+}
+
 function handleSubmit() {
   const formValidateCheck = checkForm();
   console.log(formValidateCheck);
   if (!formValidateCheck) return;
 
-  postOrder();
+  //postOrder();
+  if (setDefaultAddress.checked) {
+    changeAddress();
+  }
   localStorage.removeItem('cart');
   modal.style.display = 'flex';
 }

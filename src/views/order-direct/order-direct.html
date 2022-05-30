@@ -42,6 +42,17 @@
 
       <div class="section">
         <div class="title">배송지 정보</div>
+        <div id="select-address-wrap">
+          <span id="default-address-wrap">
+            <input type="radio" id="default-address" name="select-address" checked />
+            <label for="default-address"> 기본 배송지 </label>
+          </span>
+          <span id="new-address-wrap">
+            <input type="radio" id="new-address" name="select-address" />
+            <label for="new-address"> 신규 입력</label>
+          </span>
+        </div>
+        ㄴ
         <div class="user-info-wrap">
           <div class="form-group">
             <label for="name">이름</label>
@@ -85,6 +96,10 @@
           <div id="phone-msg" class="help is-danger hide">
             <span>연락처를 입력해주세요.</span>
           </div>
+        </div>
+        <div>
+          <input type="checkbox" id="set-default-address" />
+          <label for="set-default-address"> 기본 배송지 설정</label>
         </div>
       </div>
 
