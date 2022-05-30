@@ -12,8 +12,8 @@ class ProductService {
   }
 
   // 카테고리별 상품 목록을 받음
-  async getCategoryProducts(category, page, perPage) {
-    return await this.productModel.findByCategory(category, page, perPage);
+  async getCategoryProducts(categoryId, page, perPage) {
+    return await this.productModel.findByCategory(categoryId, page, perPage);
   }
 
   // 상품 등록

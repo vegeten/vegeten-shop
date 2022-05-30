@@ -1,11 +1,10 @@
 import mongoose, { Schema } from 'mongoose';
+const shortId = require('./types/short-id');
+
 // 주문 정보 - db에 배송지 정보, 주문 총액, 수령자 이름 및 연락처가 저장된다.
 const OrderSchema = new Schema(
   {
-    // email: {
-    //   type: String,
-    //   required: true,
-    // },
+    shortId,
     address: {
       type: new Schema(
         {
@@ -34,7 +33,7 @@ const OrderSchema = new Schema(
     },
     // 유저 _id 만 가져오기위해 User 스키마와 연동
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'users',
       required: true,
     },

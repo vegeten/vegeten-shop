@@ -9,13 +9,13 @@ export class OrderModel {
     return await Order.find({ userId: userId });
   }
   async findById(orderId) {
-    return await Order.findOne({ _id: orderId });
+    return await Order.findOne({ shortId: orderId });
   }
   async create(orderInfo) {
     return await Order.create(orderInfo);
   }
   async delete(orderId) {
-    return await Order.findOneAndDelete({ _id: orderId });
+    return await Order.findOneAndDelete({ shortId: orderId });
   }
 }
 const orderModel = new OrderModel();
