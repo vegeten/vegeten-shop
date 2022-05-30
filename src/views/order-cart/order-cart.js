@@ -15,29 +15,29 @@ const phoneValidateMsg = getNode('#phone-msg');
 const modal = getNode('.modal');
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
-let cartList = JSON.parse(localStorage.getItem('cart'));
-const productsContainer = getNode('#products-container');
-let markUp = '';
-cartList.forEach((product) => {
-  markUp += `
-    <div class="product-wrap">
-      <div class="product-image-wrap">
-        <img src="${product.image}" alt="상품 사진" />
-      </div>
-      <div class="product-info-wrap">
-        <div>상품명: ${product.productName}</div>
-        <div>수량: ${product.count}</div>
-        <div>상품구매금액: ${addCommas(product.price * product.count)}원</div>
-      </div>
-    </div>
-  `;
-});
-productsContainer.innerHTML = markUp;
+// let cartList = JSON.parse(localStorage.getItem('cart'));
+// const productsContainer = getNode('#products-container');
+// let markUp = '';
+// cartList.forEach((product) => {
+//   markUp += `
+//     <div class="product-wrap">
+//       <div class="product-image-wrap">
+//         <img src="${product.image}" alt="상품 사진" />
+//       </div>
+//       <div class="product-info-wrap">
+//         <div>상품명: ${product.productName}</div>
+//         <div>수량: ${product.count}</div>
+//         <div>상품구매금액: ${addCommas(product.price * product.count)}원</div>
+//       </div>
+//     </div>
+//   `;
+// });
+// productsContainer.innerHTML = markUp;
 
-// 총 결제 금액 계산
-const totalCost = cartList.reduce((acc, cur) => acc + cur.price * cur.count, 0);
-totalCostElement.innerText = `${addCommas(totalCost)}원`;
-payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
+// // 총 결제 금액 계산
+// const totalCost = cartList.reduce((acc, cur) => acc + cur.price * cur.count, 0);
+// totalCostElement.innerText = `${addCommas(totalCost)}원`;
+// payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
 
 // 회원 정보 받아오기
 let userId;
@@ -77,6 +77,19 @@ window.onload = function () {
     }).open();
   });
 };
+
+// 기본 주소 갖고오기
+const defaultAddressButton = getNode('#default-address');
+defaultAddressButton.addEventListener('click', getUserInfo);
+
+// 주소 폼 초기화
+const newAddressButton = getNode('#new-address');
+newAddressButton.addEventListener('click', resetForm);
+function resetForm() {
+  postalCodeInput.value = '';
+  address1.value = '';
+  address2.value = '';
+}
 
 // 폼 비어있는지 체크 (실시간 입력에 따른 체크)
 // 이름
@@ -167,6 +180,7 @@ function handleSubmit() {
   if (!formValidateCheck) return;
 
   postOrder();
+  localStorage.removeItem('cart');
   modal.style.display = 'flex';
 }
 payButton.addEventListener('click', handleSubmit);
