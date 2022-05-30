@@ -3,29 +3,24 @@ import { UserSchema } from '../schemas/user-schema';
 const User = model('users', UserSchema);
 export class UserModel {
   async findByEmail(email) {
-    const user = await User.findOne({ email });
-    return user;
+    return await User.findOne({ email });
   }
   async findById(userId) {
-    const user = await User.findOne({ _id: userId });
-    return user;
+    return await User.findOne({ shortId: userId });
   }
   async create(userInfo) {
-    const createdNewUser = await User.create(userInfo);
-    return createdNewUser;
+    return await User.create(userInfo);
   }
   async findAll() {
-    const users = await User.find({}, { email: 1, fullName: 1, password: 1, address: 1, role: 1 });
-    return users;
+    return await User.find({}, { email: 1, fullName: 1, password: 1, address: 1, role: 1 });
   }
   async update({ userId, update }) {
-    const filter = { _id: userId };
+    const filter = { shortId: userId };
     const option = { returnOriginal: false };
-    const updatedUser = await User.findOneAndUpdate(filter, update, option);
-    return updatedUser;
+    return await User.findOneAndUpdate(filter, update, option);
   }
   async delete(userId) {
-    return await User.findOneAndDelete({ _id: userId });
+    return await User.findOneAndDelete({ shortId: userId });
   }
 }
 const userModel = new UserModel();

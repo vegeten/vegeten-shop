@@ -52,7 +52,6 @@ class UserService {
 
     // access token, refresh token 발급
     const token = sign(user);
-    const userId = user._id;
     const refreshToken = refresh();
     //
     //redisClient.set(userId.toString(), refreshToken);

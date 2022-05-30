@@ -52,9 +52,8 @@ orderRouter.get('/orders/:orderId', loginRequired, adminAuth, async (req, res, n
 orderRouter.post('/orders', loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
-    const { email, phoneNumber, address, totalPrice, products } = req.body;
+    const { phoneNumber, address, totalPrice, products } = req.body;
     const newOrder = await orderService.addOrder({
-      // email,
       address,
       phoneNumber,
       totalPrice: Number(totalPrice),

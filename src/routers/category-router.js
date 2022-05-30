@@ -97,8 +97,8 @@ categoryRouter.delete('/:categoryId', adminAuth, async function (req, res, next)
   }
 });
 
-// 카테고리별 상품 목록 api (/api/categories/:category/products)
-categoryRouter.get('/products/:category', async function (req, res, next) {
+// 카테고리별 상품 목록 api (/api/categories/products/:categoryId/)
+categoryRouter.get('/products/:categoryId', async function (req, res, next) {
   try {
     // 페이지네이션
     // url 쿼리에서 page 받기, 기본값 1
@@ -107,7 +107,11 @@ categoryRouter.get('/products/:category', async function (req, res, next) {
     const perPage = Number(req.query.perPage || 9);
 
     // 카테고리별 상품 목록을 얻음
-    const { products, total, totalPage } = await productService.getCategoryProducts(req.params.category, page, perPage);
+    const { products, total, totalPage } = await productService.getCategoryProducts(
+      req.params.categoryId,
+      page,
+      perPage
+    );
 
     // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json({
