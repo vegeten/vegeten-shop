@@ -84,6 +84,22 @@ adminRouter.get('/products/:productId', adminAuth, async function (req, res, nex
   }
 });
 
+// 상품 조회
+adminRouter.get('/products/:productId', adminAuth, async function (req, res, next) {
+  try {
+    // 특정 id에 맞는 상품 상세정보를 얻음
+    const product = await productService.getProduct(req.params.productId);
+    // 상품상세정보를 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      status: 200,
+      message: '상품 정보 조회 성공',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 상품 등록 api (/api/admin/products)
 adminRouter.post('/products', adminAuth, async (req, res, next) => {
   try {
