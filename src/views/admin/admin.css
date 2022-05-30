@@ -1,8 +1,31 @@
-.main-wrapper {
-  height: 85vh;
-  width: 85vw;
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.main-wrap {
+  height: 100vh;
+  width: 1300px;
   margin: 0 auto;
   margin-top: 5rem;
+}
+
+.main-order-mod-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.order-list-wrap {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.main-order-list {
+  display: flex;
+  flex-direction: row;
 }
 
 .main-order-list form {
@@ -13,7 +36,7 @@
   width: 100%;
 }
 
-.body-wrapper {
+.body-wrap {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -36,4 +59,26 @@
   display: flex;
   flex-direction: row-reverse;
   font-size: 1.2rem;
+}
+
+.main-category-mod-wrap {
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-product-mod-wrap {
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrap-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 }
