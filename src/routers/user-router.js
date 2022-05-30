@@ -21,7 +21,6 @@ userRouter.post('/register', async (req, res, next) => {
     res.status(201).json({
       status: 201,
       message: '회원가입 성공',
-      data: newUser,
     });
   } catch (error) {
     next(error);
