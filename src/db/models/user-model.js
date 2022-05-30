@@ -7,16 +7,13 @@ export class UserModel {
     return user;
   }
   async findById(userId) {
-    const user = await User.findOne({ _id: userId });
-    return user;
+    return await User.findOne({ _id: userId });
   }
   async create(userInfo) {
-    const createdNewUser = await User.create(userInfo);
-    return createdNewUser;
+    return await User.create(userInfo);
   }
   async findAll() {
-    const users = await User.find({}, { email: 1, fullName: 1, password: 1, address: 1, role: 1 });
-    return users;
+    return await User.find({}, { email: 1, fullName: 1, password: 1, address: 1, role: 1 });
   }
   async update({ userId, update }) {
     const filter = { _id: userId };
@@ -25,7 +22,7 @@ export class UserModel {
     return updatedUser;
   }
   async delete(userId) {
-    return await User.findOneAndDelete({ _id: userId });
+    return await User.deleteOne({ _id: userId });
   }
 }
 const userModel = new UserModel();

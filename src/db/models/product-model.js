@@ -41,8 +41,7 @@ export class ProductModel {
   }
   async update({ productId, update }) {
     const option = { returnOriginal: false };
-    const updatedProduct = await Product.findByIdAndUpdate(productId, update, option);
-    return updatedProduct;
+    return await Product.findByIdAndUpdate(productId, update, option);
   }
   async delete(productId) {
     return await Product.findOneAndDelete({ _id: productId });
