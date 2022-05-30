@@ -4,56 +4,43 @@ import is from '@sindresorhus/is';
 import { loginRequired, adminAuth } from '../middlewares';
 import { userService } from '../services';
 const userRouter = Router();
-// 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
+
+// 회원가입 (/api/users/register)
 userRouter.post('/register', async (req, res, next) => {
   try {
-    // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-    // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
     if (is.emptyObject(req.body)) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
-    // req (request)의 body 에서 데이터 가져오기
-    const fullName = req.body.fullName;
-    const email = req.body.email;
-    const password = req.body.password;
-    // 위 데이터를 유저 db에 추가하기
-    const newUser = await userService.addUser({
-      fullName,
-      email,
-      password,
-    });
-    // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
-    // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-    res.status(200).json({
-      status: 200,
-      message: '전체 상품 목록 조회 성공',
-      data: newUser,
+
+    await userService.addUser(req.body);
+
+    res.status(201).json({
+      status: 201,
+      message: '회원가입 성공',
     });
   } catch (error) {
     next(error);
   }
 });
-// 로그인 api (아래는 /login 이지만, 실제로는 /api/login로 요청해야 함.)
+
+// 로그인 (/api/users/login)
 userRouter.post('/login', async function (req, res, next) {
   try {
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
     if (is.emptyObject(req.body)) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
-    // req (request) 에서 데이터 가져오기
-    const email = req.body.email;
-    const password = req.body.password;
     // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-    const userToken = await userService.getUserToken({ email, password });
+    const userToken = await userService.getUserToken(req.body);
     // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
     res.status(200).json(userToken);
   } catch (error) {
     next(error);
   }
 });
-// 전체 유저 목록을 가져옴 (배열 형태임)
-// 미들웨어로 loginRequired 를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
-userRouter.get('/userlist', loginRequired, adminAuth, async function (req, res, next) {
+
+// 전체 유저 목록 조회 (/api/users/list) ⇒ admin 한정
+userRouter.get('/list', adminAuth, async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
     const users = await userService.getUsers();
@@ -68,12 +55,17 @@ userRouter.get('/userlist', loginRequired, adminAuth, async function (req, res, 
   }
 });
 
-userRouter.get('/users', loginRequired, async function (req, res, next) {
+// 유저 정보 조회 (/api/users/)
+userRouter.get('/', loginRequired, async function (req, res, next) {
   const userId = req.currentUserId;
   console.log(userId);
   try {
     // 특정 id에 맞는 사용자 정보를 얻음
     const user = await userService.getUser(userId);
+    if (user === null || !user) {
+      res.json({ message: '없는 유저입니다.' });
+      return;
+    }
 
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
@@ -86,24 +78,8 @@ userRouter.get('/users', loginRequired, async function (req, res, next) {
   }
 });
 
-// 특정 사용자 정보 조회
-// (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
-userRouter.get('/users/:userId', loginRequired, async function (req, res, next) {
-  try {
-    // 특정 id에 맞는 사용자 정보를 얻음
-    const user = await userService.getUser(req.params.userId);
-    // 사용자 정보를 JSON 형태로 프론트에 보냄
-    res.status(200).json({
-      status: 200,
-      message: '유저 정보 조회 성공',
-      data: user,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-// 사용자 정보 수정: 유저만 접근 가능
-userRouter.patch('/users', loginRequired, async function (req, res, next) {
+// 유저 정보 수정 (/api/users/)
+userRouter.patch('/', loginRequired, async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -115,16 +91,7 @@ userRouter.patch('/users', loginRequired, async function (req, res, next) {
     const userId = req.currentUserId;
 
     // body data 로부터 업데이트할 사용자 정보를 추출함.
-    const fullName = req.body.fullName;
-    const password = req.body.password;
-    const address = req.body.address;
-    const phoneNumber = req.body.phoneNumber;
-    const role = req.body.role;
-
-    // body data로부터, 확인용으로 사용할 현재 비밀번호를 추출함.
-    const currentPassword = req.body.currentPassword;
-
-    // currentPassword 없을 시, 진행 불가
+    const { fullName, password, address, phoneNumber, role, currentPassword } = req.body;
     if (!currentPassword) {
       throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
     }
@@ -155,9 +122,38 @@ userRouter.patch('/users', loginRequired, async function (req, res, next) {
   }
 });
 
-// 사용자 정보 삭제 (탈퇴)
-// (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
-userRouter.delete('/users', loginRequired, async function (req, res, next) {
+// 유저 기본 주소 수정 (/api/users/address)
+userRouter.patch('/address', loginRequired, async function (req, res, next) {
+  try {
+    const userId = req.currentUserId;
+    if (!userId) {
+      throw new Error('유저 정보 만료');
+    }
+
+    const { address } = req.body;
+    const userInfoRequired = { userId };
+    console.log(userId);
+
+    const toUpdate = {
+      ...(address && { address }),
+    };
+
+    // 사용자 정보를 업데이트함.
+    const updatedUserInfo = await userService.setUserAddress(userInfoRequired, toUpdate);
+
+    // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
+    res.status(201).json({
+      status: 201,
+      message: '유저 주소 수정 성공',
+      data: updatedUserInfo,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 사용자 정보 삭제 (탈퇴) (/api/users)
+userRouter.delete('/', loginRequired, async function (req, res, next) {
   try {
     const userId = req.currentUserId;
     // 특정 id에 맞는 사용자 정보를 삭제함

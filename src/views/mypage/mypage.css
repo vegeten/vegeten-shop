@@ -1,9 +1,13 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 .main-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  height: 85vh;
-  width: 85vw;
+  height: 100%;
+  width: 1400px;
   margin: 0 auto;
   margin-top: 5rem;
   margin-bottom: 3rem;
@@ -24,20 +28,23 @@
   font-size: 1.4rem;
 }
 
-.order-list-wrapper {
+.order-list {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
-.order-list-content {
+.order {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  width: 80%;
+  flex-direction: column;
+  margin-top: 1.5rem;
 }
 
 .box {
   margin-top: 1.5rem;
+}
+
+.help {
+  display: none;
 }
 
 .order-list-image {
@@ -71,11 +78,7 @@
 }
 
 .register-user-form-container {
-  width: 40%;
-}
-
-.input[type="tel"] {
-  width: 32.7%;
+  width: 45%;
 }
 
 .btn-wrapper {
@@ -83,6 +86,67 @@
   justify-content: space-between;
 }
 
-.input[id="address-search"] {
-  width: 79%;
+.password-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.password-wrap button {
+  margin-left: 1rem;
+}
+
+.phone-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.phone-wrap span {
+  display: inline-block;
+  margin: 0 0.8rem;
+}
+
+.addr-wrap {
+  display: flex;
+}
+
+.addr-wrap button {
+  margin-left: 1rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+.order-img {
+  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+}
+
+.order-info {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.order-info-2 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.content {
+  color: rgb(76, 76, 246);
 }

@@ -1,7 +1,9 @@
 import { Schema } from 'mongoose';
+const shortId = require('./types/short-id');
 
 const ProductSchema = new Schema(
   {
+    shortId,
     productName: {
       type: String,
       required: true,
@@ -18,7 +20,7 @@ const ProductSchema = new Schema(
       type: String,
       required: true,
     },
-    category: {
+    categoryId: {
       type: String,
       required: true,
     },

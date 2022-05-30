@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>My Page</title>
   <!-- 폰트 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel=“preconnect” href=“https://fonts.googleapis.com”>
+  <link rel=“preconnect” href=“https://fonts.gstatic.com” crossorigin>
+  <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
   <!-- 아이콘 -->
   <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -19,6 +19,8 @@
   <!-- 커스텀 css, js -->
   <link rel="stylesheet" href="mypage.css" />
   <script src="mypage.js" type="module" defer></script>
+  <!-- 다음 API js -->
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 
 <body>
@@ -30,167 +32,102 @@
     <div class="order-list-form-container ">
       <div class="title-wrapper">
         <span class="container-title">주문 내역</span>
-        <a class="list-link-order" href="/order"><span>상세 주문 </span></a>
       </div>
-
-      <ul>
-        <li>
-          <div class="box order-list has-background-light">
-            <div class="order-list-wrapper">
-              <div class="order-list-image">
-                <img src="https://picsum.photos/50/50" alt="상품 이미지" />
-              </div>
-              <div class="order-list-content">
-                <dl class="content-list">
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>주문 번호</strong>
-                    </dt>
-                    <dd class="content-content">
-                      12345
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>상품 명</strong>
-                    </dt>
-                    <dd class="content-content">
-                      안녕
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>수량</strong>
-                    </dt>
-                    <dd class="content-content">
-                      1
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>금액</strong>
-                    </dt>
-                    <dd class="content-content">
-                      1,000
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>날짜</strong>
-                    </dt>
-                    <dd class="content-content">
-                      2022.05.01
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="box order-list has-background-light">
-            <div class="order-list-wrapper">
-              <div class="order-list-image">
-                <img src="https://picsum.photos/id/3/50/50" alt="상품 이미지" />
-              </div>
-              <div class="order-list-content">
-                <dl class="content-list">
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>주문 번호</strong>
-                    </dt>
-                    <dd class="content-content">
-                      67890
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>상품 명</strong>
-                    </dt>
-                    <dd class="content-content">
-                      바이
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>수량</strong>
-                    </dt>
-                    <dd class="content-content">
-                      2
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>금액</strong>
-                    </dt>
-                    <dd class="content-content">
-                      200,000
-                    </dd>
-                  </div>
-                  <div class="content-wrapper">
-                    <dt class="content-title">
-                      <strong>날짜</strong>
-                    </dt>
-                    <dd class="content-content">
-                      2022.05.25
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </li>
+      <ul class="order-list">
       </ul>
-
     </div>
     <div class="register-user-form-container">
       <span span class="container-title">회원 정보</span>
       <form class="box register-user-form-box has-background-light" id="modifyUserForm">
-        <div class="field">
-          <label class="label-input" for="fullNameInput">이름</label>
-          <div class="control">
-            <input class="input" id="fullNameInput" type="text" placeholder="홍길동" autocomplete="on" />
+        <label for="fullNameInput">이름</label>
+        <div class="control">
+          <input class="input is-medium name-input" id="fullNameInput" type="text" placeholder="이름을 입력해주세요."
+            autocomplete="off" />
+          <div id="name-msg" class="help is-danger">
+            <span>이름을 입력해주세요.</span>
           </div>
         </div>
 
         <div class="field">
-          <label class="label-input" for="emailInput">이메일</label>
+          <label for="emailInput">이메일</label>
           <div class="control">
-            <input class="input" id="emailInput" type="email" placeholder="abc@example.com" autocomplete="on" />
+            <input class="input is-medium email-input" id="emailInput" type="email" autocomplete="off" readonly />
           </div>
         </div>
 
         <div class="field">
-          <label class="label-input" for="phoneNumber">휴대폰번호</label>
+          <label class="passwordInput" for="passwordInput">비밀번호</label>
           <div class="control">
-            <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="3" />
-            <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="4" />
-            <input class="input" id="phoneNumber" type="tel" autocomplete="off" maxlength="4" />
+            <input class="input is-medium passwd" id="passwordInput" type="password" placeholder="현재 비밀번호를 입력해주세요." />
+            <div id="password-msg" class="help is-danger">
+              <span>비밀번호를 입력해주세요.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="field">
+          <label class="passwordInput" for="passwordInput">비밀번호 확인</label>
+          <div class="control">
+            <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
+              placeholder="현재 비밀번호를 확인해주세요." />
+            <div id="password-check-msg" class="help is-danger">
+              <span>비밀번호 확인을 입력해주세요.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="passwordInput" for="passwordInput">새 비밀번호</label>
+          <div class="password-wrap control">
+            <input class="input is-medium new-passwd mb-3" id="passwordModify" type="password"
+              placeholder="비밀번호 변경 버튼을 누르세요." readonly />
+            <button class="button is-medium is-warning passwd-modify">비밀번호 변경</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="phoneInput">휴대폰 번호</label>
+          <div class="phone-wrap control">
+            <input id="phoneInput" class="input is-medium phone number-1" type="number" maxlength="3" />
+            <span>-</span>
+            <input class="input is-medium phone number-2" type="number" maxlength="4" />
+            <span>-</span>
+            <input class="input is-medium phone number-3" type="number" maxlength="4" />
+          </div>
+          <div id="phone-msg" class="help is-danger">
+            <span>휴대폰 번호를 입력해주세요.</span>
           </div>
         </div>
 
         <div class="field">
           <label class="label-input" for="address-search">우편번호</label>
-          <div class="control">
-            <input class="input" id="address-search" type="text" autocomplete="off" readonly />
-            <button class="button is-midium">검색하기</button>
+          <div class="addr-wrap control">
+            <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" readonly />
+            <button id="kakao_address" class="button is-medium is-responsive">주소찾기</button>
           </div>
         </div>
 
         <div class="field">
           <label class="label-input" for="address">주소</label>
           <div class="control">
-            <input class="input mb-3" id="address" type="text" autocomplete="off" readonly />
-            <input class="input" id="address" type="text" autocomplete="off" readonly />
+            <input class="input is-medium address" type="text" autocomplete="off" readonly />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label-input" for="addressDetail">상세 주소</label>
+          <div class="control">
+            <input class="input is-medium address-detail" id="addressDetail" type="text" placeholder="상세 주소를 입력해주세요."
+              autocomplete="off" />
           </div>
         </div>
 
         <div class="btn-wrapper">
-          <button class="button is-danger is-midium mb-3">
+          <button class="button is-danger is-medium mt-3 mb-3 btn-withdraw">
             탈퇴하기
           </button>
-          <button class="button is-black is-midium mb-3" id="submitButton">
+          <button class="button is-black is-medium mt-3 mb-3 btn-modify" type="submit" id="submitButton">
             변경 사항 저장하기
           </button>
         </div>

@@ -1,14 +1,18 @@
 *{
   font-family: 'Roboto', sans-serif;
 }
+a {
+  color: black;
+}
 main {
   display: flex;
-  /* height: 1200px; */
+  margin-top: 4%;
+  justify-content: center;
 }
 .category-nav {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  /* width: 450px; */
   font-size: 1.3rem;
   margin-top: 5%;
 }
@@ -27,8 +31,9 @@ main {
   font-weight: 700;
 }
 .category-nav button {
-  margin: 30px auto;
-  width: 80%;
+  margin: 30px 0;
+  margin-left: 80px;
+  width: 150px;
 }
 .category-nav #modal-editCategory table {
   width: 90%;
@@ -37,11 +42,18 @@ main {
 #modal-editCategory table button{
   margin: 0;
 }
-#modal-editCategory  input{
+#modal-editCategory input{
   width: 60%;
   margin: 0;
 }
-
+#modal-editCategory footer span.material-icons{
+  margin: auto;
+  font-size: 40px;
+  cursor: pointer;
+}
+.category-nav #modal-editCategory button.add-category-button {
+  width: 30%;
+}
 article {
   position: relative;
 }
@@ -62,29 +74,37 @@ article button.addProduct {
   left: 75%;
   top: 5%;
 }
-article #list{
+article #product-list{
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   margin-top: 10%;
-
+  /* justify-content: center; */
   /* border: 1px solid black; */
 }
-#list .item-card {
+#product-list .item-card {
   margin: 3% 2%;
   margin: 3% 2%;
   width: 300px;
   height: 400px;
   border-radius: 2%;
-  /* border: 1px solid black; */
+  cursor: pointer;
 }
 .item-card .img-box {
   /* border: 1px solid black; */
   width: 100%;
   height: 80%;
+  overflow: hidden;
+  text-align: center;
+}
+.item-card .img-box  img{
+  height: 100%;
+  width: auto;
+  object-fit: cover;
 }
 .item-card .productName {
   /* border: 1px solid black; */
-  height: 14%;
+  margin-top: 4%;
+  height: 7%;
   font-weight: 700;
 }
