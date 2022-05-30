@@ -86,8 +86,12 @@ window.onload = function () {
   });
 };
 // 기본 주소 갖고오기
-const defaultAddressButton = getNode('#default-address');
-defaultAddressButton.addEventListener('click', getUserInfo);
+const defaultAddress = getNode('#default-address');
+defaultAddress.addEventListener('click', defaultAddressFn);
+function defaultAddressFn() {
+  getUserInfo();
+  setDefaultAddressWrap.style.display = 'none';
+}
 
 // 주소 폼 초기화
 const newAddressButton = getNode('#new-address');
@@ -96,6 +100,13 @@ function resetForm() {
   postalCodeInput.value = '';
   address1.value = '';
   address2.value = '';
+  setDefaultAddressWrap.style.display = 'block';
+}
+
+// 기본 배송지 체크되어있으면 "기본배송지 설정" 체크박스 안보임
+const setDefaultAddressWrap = getNode('#set-default-address-wrap');
+if (defaultAddress.checked) {
+  setDefaultAddressWrap.style.display = 'none';
 }
 
 // 폼 비어있는지 체크 (실시간 입력에 따른 체크)
