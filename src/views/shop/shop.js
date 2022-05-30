@@ -170,7 +170,7 @@ async function getProductCategory (page, categoryName ) {
   const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`);
   const data = await datas.json();
   console.log('카테고리별 상품목록', datas)
-  showProducts(data.data);
+  showProducts(data.data, categoryName);
 }
 // a태그를 누를때마다 호출되도록,,,
 // 전체보기 상품목록 렌더링 - Api.get 통신
