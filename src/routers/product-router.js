@@ -9,7 +9,7 @@ const productRouter = Router();
 productRouter.get('/', async function (req, res, next) {
   try {
     // 페이지네이션
-    // url 쿼리에서 page 받기, 기본값 1
+    // url 쿼리에서 page 받기, 기본값 1 
     const page = Number(req.query.page || 1);
     // url 쿼리에서 peRage 받기, 기본값 10
     const perPage = Number(req.query.perPage || 9);

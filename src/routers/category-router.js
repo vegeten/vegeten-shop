@@ -98,7 +98,7 @@ categoryRouter.delete('/:categoryId', async function (req, res, next) {
 });
 
 // 카테고리별 상품 목록 api (/api/categories/:category/products)
-categoryRouter.get('/:category/products', async function (req, res, next) {
+categoryRouter.get('/products/:category', async function (req, res, next) {
   try {
     // 페이지네이션
     // url 쿼리에서 page 받기, 기본값 1
