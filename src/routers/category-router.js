@@ -21,7 +21,7 @@ categoryRouter.get('/', async (req, res, next) => {
 });
 
 // 카테고리 추가 api (/api/categories/)
-categoryRouter.post('/', async (req, res, next) => {
+categoryRouter.post('/', adminAuth, async (req, res, next) => {
   try {
     // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
     // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
@@ -44,7 +44,7 @@ categoryRouter.post('/', async (req, res, next) => {
 });
 
 // 카테고리 수정 api (/api/categories/:categoryId)
-categoryRouter.patch('/:categoryId', async function (req, res, next) {
+categoryRouter.patch('/:categoryId', adminAuth, async function (req, res, next) {
   try {
     // content-type 을 application/json 로 프론트에서
     // 설정 안 하고 요청하면, body가 비어 있게 됨.
@@ -78,7 +78,7 @@ categoryRouter.patch('/:categoryId', async function (req, res, next) {
 });
 
 // 카테고리 삭제 api (/api/categories/:categoryId)
-categoryRouter.delete('/:categoryId', async function (req, res, next) {
+categoryRouter.delete('/:categoryId', adminAuth, async function (req, res, next) {
   try {
     // params로부터 id를 가져옴
     const { categoryId } = req.params;
@@ -98,7 +98,7 @@ categoryRouter.delete('/:categoryId', async function (req, res, next) {
 });
 
 // 카테고리별 상품 목록 api (/api/categories/:category/products)
-categoryRouter.get('/:category/products', async function (req, res, next) {
+categoryRouter.get('/products/:category', async function (req, res, next) {
   try {
     // 페이지네이션
     // url 쿼리에서 page 받기, 기본값 1
