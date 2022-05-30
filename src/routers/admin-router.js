@@ -42,7 +42,7 @@ adminRouter.get('/users/:userId', adminAuth, async function (req, res, next) {
 /* ------------------------------PRODUCTS------------------------------ */
 
 // 상품 목록 조회 api (/api/admin/products)
-adminRouter.get('/products/productlist', adminAuth, async function (req, res, next) {
+adminRouter.get('/products', adminAuth, async function (req, res, next) {
   try {
     // 페이지네이션
     // url 쿼리에서 page 받기, 기본값 1
