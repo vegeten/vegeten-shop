@@ -201,16 +201,20 @@ async function changeAddress() {
   console.log('정보수정 잘 되었어요!', res);
 }
 
+const aTag = getNode('#move-page');
+
 function handleSubmit() {
   const formValidateCheck = checkForm();
-  console.log(formValidateCheck);
-  if (!formValidateCheck) return;
+  if (!formValidateCheck) {
+    aTag.removeAttribute('href');
+    return;
+  }
 
+  aTag.setAttribute('href');
   postOrder();
   if (setDefaultAddress.checked) {
     changeAddress();
   }
   localStorage.removeItem('cart');
-  modal.style.display = 'flex';
 }
 payButton.addEventListener('click', handleSubmit);
