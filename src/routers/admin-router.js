@@ -42,7 +42,7 @@ adminRouter.get('/users/:userId', adminAuth, async function (req, res, next) {
 /* ------------------------------PRODUCTS------------------------------ */
 
 // 상품 목록 조회 api (/api/admin/products)
-adminRouter.get('/products/productlist', adminAuth, async function (req, res, next) {
+adminRouter.get('/products', adminAuth, async function (req, res, next) {
   try {
     // 페이지네이션
     // url 쿼리에서 page 받기, 기본값 1
@@ -69,6 +69,22 @@ adminRouter.get('/products/productlist', adminAuth, async function (req, res, ne
 });
 
 // 상품 조회 api (/api/products/:productId)
+adminRouter.get('/products/:productId', adminAuth, async function (req, res, next) {
+  try {
+    // 특정 id에 맞는 상품 상세정보를 얻음
+    const product = await productService.getProduct(req.params.productId);
+    // 상품상세정보를 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      status: 200,
+      message: '상품 정보 조회 성공',
+      data: product,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 상품 조회
 adminRouter.get('/products/:productId', adminAuth, async function (req, res, next) {
   try {
     // 특정 id에 맞는 상품 상세정보를 얻음
