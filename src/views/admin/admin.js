@@ -43,8 +43,73 @@ $modalButton.addEventListener('click', closeModal);
 
 const getOrderALLList = async () => {
   try {
-    const result = await Api.get();
+    const mockApi = {
+      "status": 200,
+      "message": "전체 주문 목록 조회 성공",
+      "data": [
+        {
+          "_id": "6290a19aa434bbe1a8987335",
+          "address": {
+            "postalCode": "우편번호",
+            "address1": "주소",
+            "address2": "주소디테일"
+          },
+          "phoneNumber": "010-2345-6789",
+          "products": [
+            {
+              "productId": "",
+              "productImg": "https://picsum.photos/200",
+              "productName": "바지",
+              "count": 1
+            },
+            {
+              "productId": "",
+              "productImg": "https://picsum.photos/200",
+              "productName": "치마",
+              "count": 2
+            }
+          ],
+          "totalPrice": 440000,
+          "userId": "629070084a2209c7479e7aa4",
+          "createdAt": "2022-05-27T10:02:02.365Z",
+          "updatedAt": "2022-05-27T10:02:02.365Z",
+          "__v": 0
+        },
+        {
+          "_id": "6290a19ea434bbe1a8987337",
+          "address": {
+            "postalCode": "우편번호",
+            "address1": "주소",
+            "address2": "주소디테일"
+          },
+          "phoneNumber": "010-2345-6789",
+          "products": [
+            {
+              "productId": "",
+              "productImg": "https://picsum.photos/200",
+              "productName": "바지",
+              "count": 1
+            },
+            {
+              "productId": "",
+              "productImg": "https://picsum.photos/200",
+              "productName": "치마",
+              "count": 2
+            }
+          ],
+          "totalPrice": 440000,
+          "userId": "629070084a2209c7479e7aa4",
+          "createdAt": "2022-05-27T10:02:06.145Z",
+          "updatedAt": "2022-05-27T10:02:06.145Z",
+          "__v": 0
+        }
+      ]
+    };
+    //const result = await Api.get('/api/orderlist');
+    console.log(mockApi);
   } catch (err) {
-
+    console.log(err);
   }
 };
+
+getOrderALLList();
