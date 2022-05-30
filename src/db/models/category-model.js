@@ -23,10 +23,8 @@ export class CategoryModel {
   }
 
   async update({ categoryId, update }) {
-    const filter = { _id: categoryId };
     const option = { returnOriginal: false };
-    const updatedCategory = await Category.findOneAndUpdate(filter, update, option);
-    return updatedCategory;
+    return await Category.findByIdAndUpdate(categoryId, update, option);
   }
 
   async delete(categoryId) {

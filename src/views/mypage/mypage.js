@@ -17,6 +17,7 @@ if (!isLogin) {
 }
 
 const orderWrapper = getNode('.order-list');
+const titleWrapper = getNode('.title-wrapper');
 const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
 const numberFirstInput = getNode('.number-1');
@@ -118,6 +119,22 @@ function addAllEvents() {
 
 }
 
+const onDeleteOrder = async (e) => {
+  e.preventDefault();
+
+  const ok = window.confirm('주문 내역을 정말 삭제하시겠습니까?');
+  if (!ok) return;
+
+  try {
+    const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
+    await Api.delete('/api/orders', orderId);
+    alert('주문 내역이 삭제되었습니다.');
+    window.location.reload();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const createOrderDetailListElement = (array) => {
   return array.map(({ productImg, productName, count }) => {
     return `
@@ -148,34 +165,36 @@ const createOrderListElement = (item) => {
   li.innerHTML = `
   
   <li class="order box">
-  <div class="order-info">
-    <div class="order-id">
-      <div><strong>주문 번호</strong></div>
-      <div class="content">${_id.substr(0, 7)}</div>
+    <div class="order-info">
+      <div class="order-id-wrap">
+        <div><strong>주문 번호</strong></div>
+        <div class="order-id content">${_id}</div>
+      </div>
+      <div class="order-date">
+        <div><strong>주문 날짜</strong></div>
+        <div class="content">${createdAt.substr(0, 10)}</div>
+      </div>
     </div>
-    <div class="order-date">
-      <div><strong>주문 날짜</strong></div>
-      <div class="content">${createdAt.substr(0, 10)}</div>
+      <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>제품</th>
+          <th>제품 명</th>
+          <th>제품 수량</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${orderDetail}
+      </tbody>
+    </table>
+    <div class="order-info-2">
+      <div class="order-delete">
+        <button class="order-delete-button button is-small is-danger">주문 취소</button>
+      </div>
+      <div class="order-price">
+        <div><strong>총 금액: ${addCommas(totalPrice)}</strong></div>
+      </div>
     </div>
-  </div>
-    <table class="table is-fullwidth">
-    <thead>
-      <tr>
-        <th>제품</th>
-        <th>제품 명</th>
-        <th>제품 수량</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${orderDetail}
-    </tbody>
-  </table>
-  
-  <div class="order-price">
-    <div><strong class="total-price">총 금액: </strong></div>
-    <div><strong>${addCommas(totalPrice)}</strong></div>
-  </div>
-  
   </li>
   
   `;
@@ -183,17 +202,20 @@ const createOrderListElement = (item) => {
   return li;
 };
 
+const addOrderDeleteEvent = () => {
+  document.querySelectorAll('.order-delete-button').forEach(item => {
+    item.addEventListener('click', onDeleteOrder);
+  });
+};
+
 const renderAllOrderList = (orderList) => {
   orderWrapper.innerHTML = '';
   orderList.data.forEach(({ products, totalPrice, _id, createdAt }) => {
     const orders = createOrderListElement({ totalPrice, _id, createdAt, products });
-    console.log(orders);
     orderWrapper.appendChild(orders);
   });
-
+  addOrderDeleteEvent();
 };
-
-
 
 const getUserInfo = async () => {
   try {
@@ -303,6 +325,6 @@ const getOrderList = async () => {
 
 renderNav();
 renderFooter();
-addAllEvents();
 await getUserInfo();
 getOrderList();
+addAllEvents();

@@ -7,9 +7,7 @@ class CategoryService {
   }
 
   async getCategories() {
-    const categories = await this.categoryModel.findAll();
-
-    return categories;
+    return await this.categoryModel.findAll();
   }
 
   // 카테고리 추가
@@ -25,13 +23,8 @@ class CategoryService {
       throw e;
     }
 
-    const newCategoryInfo = {
-      category,
-    };
     // db에 저장
-    const createdNewCategory = await this.categoryModel.create(newCategoryInfo);
-
-    return createdNewCategory;
+    return await this.categoryModel.create(categoryInfo);
   }
 
   // 카테고리 수정
@@ -51,12 +44,10 @@ class CategoryService {
       throw e;
     }
 
-    category = await this.categoryModel.update({
+    return await this.categoryModel.update({
       categoryId,
       update: toUpdate,
     });
-
-    return category;
   }
   // 카테고리 삭제
   async deleteCategory(categoryId) {
