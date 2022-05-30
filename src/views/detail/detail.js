@@ -21,21 +21,21 @@ async function getProductDetail () {
   getNode('#price').innerHTML = addCommas(datas.data.price)+' 원';
   getNode('#totalPrice').innerHTML = addCommas(datas.data.price)+' 원';
   getNode('#description').innerHTML = datas.data.description;
-  //구매하기 버튼에 링크
-  getNode('.buyProduct').href = `/order/${datas.data._id}`;
-
+  
+  // 선택한 수량에 따른 총액 계산하기
+  const selections = getNode('#total-count'); // select 드롭박스
+  const totalPrice = getNode('#totalPrice'); // 총가격 
+  selections.addEventListener("change", () => { // 선택이 바뀔때마다 총액 계산하기
+    const selected = selections.value.replace('개', '');
+    const price = convertToNumber(getNode('#price').textContent);
+    totalPrice.innerHTML = (selected * price).toLocaleString() + ' 원';
+    //구매하기 버튼에 링크
+    getNode('.buyProduct').href = `/order?product=${datas.data._id}&amount=${selected}`;
+  });
 }
 getProductDetail();
 
 
-// 선택한 수량에 따른 총액 계산하기
-const selections = getNode('#total-count'); // select 드롭박스
-const totalPrice = getNode('#totalPrice'); // 총가격 
-selections.addEventListener("change", () => { // 선택이 바뀔때마다 총액 계산하기
-  const selected = selections.value.replace('개', '');
-  const price = convertToNumber(getNode('#price').textContent);
-  totalPrice.innerHTML = (selected * price).toLocaleString() + ' 원';
-});
 
 // 장바구니 버튼 클릭 
 const addCartBtn = getNode('.addCart');
@@ -81,13 +81,20 @@ moveCartBtn.addEventListener("click", ()=> {
 })
 //구매하기 버튼 클릭
 const buyProductBtn = getNode('.buyProduct');
-buyProductBtn.addEventListener("click", () => {
-  const selected = Number(selections.value.replace('개', ''));
-  const cartEntry = {
-    count : selected,
-    productId : getNode('#productId').name,
-  }
-  // 'cart' 라는 key값에 넣어주기 
-  localStorage.setItem('buy', JSON.stringify(cartEntry));
-})
+buyProductBtn.addEventListener("click", buyProduct)
+
+function buyProduct () {
+  
+    const selected = Number(selections.value.replace('개', ''));
+    const cartEntry = {
+      count : selected,
+      productId : getNode('#productId').name,
+    }
+    // 'cart' 라는 key값에 넣어주기 
+    localStorage.setItem('buy', JSON.stringify(cartEntry));
+    
+}
+
+//
+// 상품수정하기 
 
