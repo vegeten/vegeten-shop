@@ -13,6 +13,7 @@ const nameValidateMsg = getNode('#name-msg');
 const addressValidateMsg = getNode('#postal-code-msg');
 const phoneValidateMsg = getNode('#phone-msg');
 const modal = getNode('.modal');
+const setDefaultAddress = getNode('#set-default-address');
 
 const productUrl = window.location.href.split('/');
 const productId = productUrl[productUrl.length - 2];
@@ -56,7 +57,7 @@ async function getUserInfo() {
 
   const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = userData.phoneNumber?.split('-') || [];
   const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
-  const { postalCode = '', baseAddress1 = '', baseAddress2 = '' } = userData?.address || {};
+  const { postalCode = '', address1: baseAddress1 = '', address2: baseAddress2 = '' } = userData?.address || {};
 
   postalCodeInput.value = postalCode;
   address1.value = baseAddress1;
@@ -84,6 +85,29 @@ window.onload = function () {
     }).open();
   });
 };
+// 기본 주소 갖고오기
+const defaultAddress = getNode('#default-address');
+defaultAddress.addEventListener('click', defaultAddressFn);
+function defaultAddressFn() {
+  getUserInfo();
+  setDefaultAddressWrap.style.display = 'none';
+}
+
+// 주소 폼 초기화
+const newAddressButton = getNode('#new-address');
+newAddressButton.addEventListener('click', resetForm);
+function resetForm() {
+  postalCodeInput.value = '';
+  address1.value = '';
+  address2.value = '';
+  setDefaultAddressWrap.style.display = 'block';
+}
+
+// 기본 배송지 체크되어있으면 "기본배송지 설정" 체크박스 안보임
+const setDefaultAddressWrap = getNode('#set-default-address-wrap');
+if (defaultAddress.checked) {
+  setDefaultAddressWrap.style.display = 'none';
+}
 
 // 폼 비어있는지 체크 (실시간 입력에 따른 체크)
 // 이름
@@ -98,21 +122,22 @@ nameInput.addEventListener('input', () => {
 });
 
 // 전화번호
-phoneInput.forEach((phone, idx) => {
-  phone.addEventListener('input', () => {
-    if (phoneInput[0].value !== '' && phoneInput[1].value !== '' && phoneInput[2].value !== '') {
-      phoneInput[0].classList.remove('is-danger');
-      phoneInput[1].classList.remove('is-danger');
-      phoneInput[2].classList.remove('is-danger');
-      phoneValidateMsg.classList.add('hide');
-    } else {
-      phoneInput[0].classList.add('is-danger');
-      phoneInput[1].classList.add('is-danger');
-      phoneInput[2].classList.add('is-danger');
-      phoneValidateMsg.classList.remove('hide');
-    }
-  });
-});
+const phoneWrap = getNode('#phone-input-wrap');
+phoneWrap.addEventListener('input', phoneCheck);
+
+function phoneCheck() {
+  if (phoneInput[0].value !== '' && phoneInput[1].value !== '' && phoneInput[2].value !== '') {
+    phoneInput[0].classList.remove('is-danger');
+    phoneInput[1].classList.remove('is-danger');
+    phoneInput[2].classList.remove('is-danger');
+    phoneValidateMsg.classList.add('hide');
+  } else {
+    phoneInput[0].classList.add('is-danger');
+    phoneInput[1].classList.add('is-danger');
+    phoneInput[2].classList.add('is-danger');
+    phoneValidateMsg.classList.remove('hide');
+  }
+}
 
 // 결제하기 눌렀을 때 폼 유효성 검사
 function checkForm() {
@@ -150,6 +175,7 @@ async function postOrder() {
       productImg: productInfo.image,
       productName: productInfo.productName,
       count: productCount,
+      productPrice: productCount * productInfo.price,
     },
   ];
 
@@ -167,12 +193,28 @@ async function postOrder() {
 
   const res = await Api.post('/api/orders', orderInfo);
 }
+
+// 기본배송지 설정 눌렀을 때 주소정보 수정 patch 요청
+async function changeAddress() {
+  const newAddressInfo = {
+    postalCode: postalCodeInput.value,
+    address1: address1.value,
+    address2: address2.value,
+  };
+
+  const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
+  console.log('정보수정 잘 되었어요!', res);
+}
+
 function handleSubmit() {
   const formValidateCheck = checkForm();
   console.log(formValidateCheck);
   if (!formValidateCheck) return;
 
   postOrder();
+  if (setDefaultAddress.checked) {
+    changeAddress();
+  }
   modal.style.display = 'flex';
 }
 payButton.addEventListener('click', handleSubmit);

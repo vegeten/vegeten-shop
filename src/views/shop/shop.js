@@ -17,7 +17,7 @@ async function getCategoriesFromApi() {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
     categoryList.innerHTML += `<div class="category">${data.data[i].category}</div>`;
   }
-  // 카테고리별로 상품보기 
+  // 카테고리별로 상품제목 바꾸기 
   productByCategory();
 }
 getCategoriesFromApi();
@@ -65,6 +65,7 @@ async function addCatgoryToApi() {
   showAddCategoryForm();
 }
 // 카테고리 삭제 - Api.delete통신 
+// 
 async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id'); 
@@ -75,7 +76,7 @@ async function delCategory(e) {
   categoryModalList.innerHTML="";
   getModalCategory();
 }
-// 카테고리 수정
+// 카테고리 수정- Api.patch통신
 async function updateCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id');
@@ -95,6 +96,7 @@ async function updateCategory(e) {
     // console.log('categoryId',categoryId,updatedName);
     //API 통신
     try {
+      //get으로전체 조회 => 쭉돌면서 -> category가 상의가 같을때 push해주기 -> 
       await Api.patch('/api/categories',categoryId,{category:updatedName});
     } catch (error) {
       console.log(error.message);
@@ -102,7 +104,7 @@ async function updateCategory(e) {
   }
 }
 
-// 카테고리별로 상품목록 조회하기 
+// 카테고리별로 제목 바꾸기
 async function productByCategory () {
   // 렌더링된 상품목록으로 title 변경하기 
   const categoryTitle = document.querySelector('.category-name');
@@ -121,35 +123,67 @@ async function productByCategory () {
     }
     
     // 카테고리별 상품조회 api
-    const datas = await Api.get('/api/category',categoryName);
-    showProductByCategory(datas.data)
+    // if (data)
+    const datas = await Api.get('/api/categories/products',categoryName);
+    console.log('카테고리~~',datas.data)
+    showProducts(datas.data, categoryName);
     };
   }  
 }
 
-// 카테고리별 상품조회하기 => 인자 api 통신을 받은 데이터 
-function showProductByCategory ( products ) {
+// 전체 상품조회하기 => 인자 api 통신을 받은 데이터, 카테고리명 
+function showProducts (data ,categoryName ='') {
   const productList = getNode('#product-list');
   productList.innerHTML = ""
-  for(let i=products.length-1; i>=0; i--) {
-    let price = products[i].price.toLocaleString();
-    productList.innerHTML += `<div class="item-card">
-    <a href="${products[i]._id}">
-      <div class="img-box"><img src="${products[i].image}" alt=""></div>
-      <div class="productName">${products[i].productName}</div>
-      <div>${price}원</div>
-    </a>
-  </div>`
+  // for(let i=data.products.length-1; i>=0; i--) {
+  data.products.map((product) => {
+    let price = product.price.toLocaleString();
+      productList.innerHTML += `<div class="item-card">
+      <a href="${product._id}">
+        <div class="img-box"><img src="${product.image}" alt=""></div>
+        <div class="productName">${product.productName}</div>
+        <div>${price}원</div>
+      </a>
+    </div>`
+  });
+  // 페이지네이션 
+  const pagenationList = getNode('.pagination-list');
+  pagenationList.innerHTML = ""
+  for(let i=1; i<=data.totalPage; i++) {
+    pagenationList.innerHTML += `<li><a class="pagination-link" aria-label="Goto page ${i}">${i}</a></li>`;
+  }
+  // 페이지 네이션 링크 
+  const pagenationLink = document.querySelectorAll('.pagination-link');
+  for(let i=0; i<data.totalPage; i++) {
+    // 전체보기가 아닐떄 
+    if(categoryName !== '전체보기' && categoryName !== '') {
+      pagenationLink[i].addEventListener("click", () => {
+        getProductCategory(i+1, categoryName)
+      })
+    } else {
+      pagenationLink[i].addEventListener("click", () => {
+        getProductAll(i+1)
+        // alert("test!")
+      })
+    }
   }
 }
-
-// 상품목록 렌더링 - Api.get 통신
-async function getProductFromApi () {
-  const datas = await Api.get('/api/products');
-  const products = datas.data;
-  showProductByCategory(products)
+// 카테고리별 상품목록 + 페이네이션 하기- Api.get 통신
+async function getProductCategory (page, categoryName ) {
+  const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`);
+  const data = await datas.json();
+  console.log('카테고리별 상품목록', datas)
+  showProducts(data.data, categoryName);
 }
-getProductFromApi()
+
+// 전체보기 상품목록 + 페이지네이션 - Api.get 통신
+async function getProductAll (page) {
+ const datas = await fetch(`/api/products?page=${page}`);
+ const data = await datas.json()
+  console.log('상품목록',datas)
+  showProducts(data.data)
+}
+getProductAll(1)
 
 
 // 상품추가 모달
