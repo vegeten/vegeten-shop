@@ -17,7 +17,7 @@ async function getCategoriesFromApi() {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
     categoryList.innerHTML += `<div class="category">${data.data[i].category}</div>`;
   }
-  // 카테고리별로 상품보기 
+  // 카테고리별로 상품제목 바꾸기 
   productByCategory();
 }
 getCategoriesFromApi();
@@ -65,6 +65,7 @@ async function addCatgoryToApi() {
   showAddCategoryForm();
 }
 // 카테고리 삭제 - Api.delete통신 
+// 
 async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id'); 
@@ -95,6 +96,7 @@ async function updateCategory(e) {
     // console.log('categoryId',categoryId,updatedName);
     //API 통신
     try {
+      //get으로전체 조회 => 쭉돌면서 -> category가 상의가 같을때 push해주기 -> 
       await Api.patch('/api/categories',categoryId,{category:updatedName});
     } catch (error) {
       console.log(error.message);
@@ -102,7 +104,7 @@ async function updateCategory(e) {
   }
 }
 
-// 카테고리별로 상품목록 조회하기 
+// 카테고리별로 제목 바꾸기
 async function productByCategory () {
   // 렌더링된 상품목록으로 title 변경하기 
   const categoryTitle = document.querySelector('.category-name');
@@ -129,7 +131,7 @@ async function productByCategory () {
   }  
 }
 
-// 전체 상품조회하기 => 인자 api 통신을 받은 데이터 
+// 전체 상품조회하기 => 인자 api 통신을 받은 데이터, 카테고리명 
 function showProducts (data ,categoryName ='') {
   const productList = getNode('#product-list');
   productList.innerHTML = ""
@@ -144,7 +146,7 @@ function showProducts (data ,categoryName ='') {
       </a>
     </div>`
   });
-  // 페이지네이션
+  // 페이지네이션 
   const pagenationList = getNode('.pagination-list');
   pagenationList.innerHTML = ""
   for(let i=1; i<=data.totalPage; i++) {
@@ -166,14 +168,15 @@ function showProducts (data ,categoryName ='') {
     }
   }
 }
+// 카테고리별 상품목록 + 페이네이션 하기- Api.get 통신
 async function getProductCategory (page, categoryName ) {
   const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`);
   const data = await datas.json();
   console.log('카테고리별 상품목록', datas)
   showProducts(data.data, categoryName);
 }
-// a태그를 누를때마다 호출되도록,,,
-// 전체보기 상품목록 렌더링 - Api.get 통신
+
+// 전체보기 상품목록 + 페이지네이션 - Api.get 통신
 async function getProductAll (page) {
  const datas = await fetch(`/api/products?page=${page}`);
  const data = await datas.json()
