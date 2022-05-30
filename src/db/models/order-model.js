@@ -1,24 +1,18 @@
-import res from 'express/lib/response';
 import { model } from 'mongoose';
 import { OrderSchema } from '../schemas/order-schema';
 const Order = model('orders', OrderSchema);
 export class OrderModel {
   async findAll() {
-    const orders = await Order.find({});
-    return orders;
+    return await Order.find({});
   }
   async findByUser(userId) {
-    const orders = await Order.find({ userId: userId });
-    // .populate('userId');
-    return orders;
+    return await Order.find({ userId: userId });
   }
   async findById(orderId) {
-    const order = await Order.findOne({ _id: orderId });
-    return order;
+    return await Order.findOne({ _id: orderId });
   }
   async create(orderInfo) {
-    const createdNewOrder = await Order.create(orderInfo);
-    return createdNewOrder;
+    return await Order.create(orderInfo);
   }
   async delete(orderId) {
     return await Order.findOneAndDelete({ _id: orderId });
