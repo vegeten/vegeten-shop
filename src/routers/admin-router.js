@@ -8,7 +8,7 @@ const adminRouter = Router();
 /* -------------------------------USER------------------------------- */
 
 // 전체 유저 목록을 가져옴 (배열 형태임)
-adminRouter.get('/users', adminAuth, async function (req, res, next) {
+adminRouter.get('/users', async function (req, res, next) {
   try {
     // 전체 사용자 목록을 얻음
     const users = await userService.getUsers();
@@ -28,6 +28,8 @@ adminRouter.get('/users/:userId', adminAuth, async function (req, res, next) {
   try {
     // 특정 id에 맞는 사용자 정보를 얻음
     const user = await userService.getUser(req.params.userId);
+    user.password = '*********';
+
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
       status: 200,

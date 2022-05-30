@@ -7,7 +7,7 @@ const sign = (user) => {
   // access token 발급
   const payload = {
     // access token에 들어갈 payload
-    userId: user._id,
+    userId: user.shortId,
     role: user.role,
   };
 

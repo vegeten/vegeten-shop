@@ -12,7 +12,7 @@ export class UserModel {
     return await User.create(userInfo);
   }
   async findAll() {
-    return await User.find({}, { email: 1, fullName: 1, password: 1, address: 1, role: 1 });
+    return await User.find({});
   }
   async update({ userId, update }) {
     const filter = { shortId: userId };
