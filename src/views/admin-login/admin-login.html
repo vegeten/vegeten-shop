@@ -17,44 +17,38 @@
   <!-- 폰트 어썸: 아이콘 -->
   <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
   <!-- 커스텀 css, js -->
-  <link rel="stylesheet" href="login.css" />
-  <script src="login.js" type="module" defer></script>
+  <link rel="stylesheet" href="admin-login.css" />
+  <script src="admin-login.js" type="module" defer></script>
 </head>
 
 <body>
-  <!-- 헤더 -->
-  <nav class="navbar is-light" role=" navigation" aria-label="main navigation">
-  </nav>
-
-  <!-- 로그인 폼(Form) -->
-  <div class="login-form-container 	">
-    <form class="box login-form-box has-background-light" id="loginForm">
-      <div class="field">
-        <label for="emailInput">이메일</label>
-        <div class="control">
-          <input class="input is-medium" id="emailInput" type="email" placeholder="이메일을 입력해주세요." autocomplete="off" />
+  <div class="admin-login-container">
+    <span class="admin-login-title">Admin Login</span>
+    <!-- 로그인 폼(Form) -->
+    <div class="login-form-container 	">
+      <form class="box login-form-box has-background-light" id="loginForm">
+        <div class="field">
+          <label for="emailInput">이메일</label>
+          <div class="control">
+            <input class="input is-medium" id="emailInput" type="email" placeholder="이메일을 입력해주세요." autocomplete="off" />
+          </div>
         </div>
-      </div>
-      <div class="field">
-        <label for="passwordInput">비밀번호</label>
-        <div class="control">
-          <input class="input is-medium" id="passwordInput" type="password" placeholder="비밀번호를 입력해주세요."
-            autocomplete="off" />
+        <div class="field">
+          <label for="passwordInput">비밀번호</label>
+          <div class="control">
+            <input class="input is-medium" id="passwordInput" type="password" placeholder="비밀번호를 입력해주세요."
+              autocomplete="off" />
+          </div>
         </div>
-      </div>
-      <div class="btn-wrapper">
-        <div>
-          <button class="button is-black is-midium mb-3" id="submitButton">
-            로그인하기
-          </button>
+        <div class="btn-wrapper">
+          <div>
+            <button class="button is-black is-midium mb-3" id="submitButton">
+              로그인하기
+            </button>
+          </div>
         </div>
-        <div>
-          <a class="button is-white is-midium" href="/register">
-            회원가입하기
-          </a>
-        </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 
   <div class="modal">
@@ -71,13 +65,10 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <a class="button is-black" href="/shop">쇼핑 하러가기</a>
-        <a class="button is-white" href="/">홈 화면으로가기</a>
+        <a class="button is-black" href="/admin">관리자 페이지로 이동</a>
       </footer>
     </div>
   </div>
-
-  <footer class="footer"></footer>
 </body>
 
 </html>

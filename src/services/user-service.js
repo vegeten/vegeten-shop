@@ -16,11 +16,9 @@ class UserService {
     // 이메일 중복 확인
     const user = await this.userModel.findByEmail(email);
     if (user) {
-      const error = new Error();
+      const error = new Error('이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.');
       error.status = 409;
-      error.message = '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
-      const { status, message } = error;
-      res.json({});
+      throw error;
     }
     // 이메일 중복은 이제 아니므로, 회원가입을 진행함
     // 우선 비밀번호 해쉬화(암호화)
@@ -127,6 +125,42 @@ class UserService {
   // 특정 사용자 정보 삭제
   async deleteUser(userId) {
     return userModel.delete(userId);
+  }
+
+  // 사용자 비밀번호 일치 여부 확인
+  async matchPassword(userInfoRequired) {
+    // 객체 destructuring
+    const { userId, currentPassword } = userInfoRequired;
+    // 우선 해당 id의 유저가 db에 있는지 확인
+    let user = await this.userModel.findById(userId);
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      const e = new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
+    }
+    // 이제, 정보 수정을 위해 사용자가 입력한 비밀번호가 올바른 값인지 확인해야 함
+    // 비밀번호 일치 여부 확인
+    const correctPasswordHash = user.password;
+    const isPasswordCorrect = await bcrypt.compare(currentPassword, correctPasswordHash);
+    if (!isPasswordCorrect) {
+      const e = new Error('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
+      e.status = 403;
+      throw e;
+    }
+    // // 이제 드디어 업데이트 시작
+    // // 비밀번호도 변경하는 경우에는, 회원가입 때처럼 해쉬화 해주어야 함.
+    // const { password } = toUpdate;
+    // if (password) {
+    //   const newPasswordHash = await bcrypt.hash(password, 10);
+    //   toUpdate.password = newPasswordHash;
+    // }
+    // // 업데이트 진행
+    // user = await this.userModel.update({
+    //   userId,
+    //   update: toUpdate,
+    // });
+    return true;
   }
 }
 const userService = new UserService(userModel);
