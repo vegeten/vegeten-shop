@@ -15,20 +15,19 @@ async function getCategoriesFromApi() {
   const categoryList = document.querySelector('#category-list');
   for (let i = 0; i < data.data.length; i++) {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
-    categoryList.innerHTML += `<div class="category">${data.data[i].category}</div>`;
+    categoryList.innerHTML += `<div class="category" id="${data.data[i].shortId}">${data.data[i].label}</div>`;
   }
   // 카테고리별로 상품제목 바꾸기 
   productByCategory();
 }
 getCategoriesFromApi();
-
 // 카테고리 모달 렌더링 - Api.get 통신
 async function getModalCategory() {
   const data = await Api.get('/api/categories');
   const categoryModalList = document.querySelector('.category-modal-list'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
-    categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i]._id}" name="categoryName">${data.data[i].category}</td>
+    categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
     <td><button class="button is-warning edit-category-button">수정</button></td>
     <td><button class="button is-danger del-category-button">삭제</button></td>
     </tr>`;
@@ -46,7 +45,6 @@ async function getModalCategory() {
   addCategoryTrigger.addEventListener("click", showAddCategoryForm);
 };
 getModalCategory();
-
 // 카테고리 추가하기 Form
 function showAddCategoryForm() {
   const addSection = getNode('#modal-editCategory footer');
@@ -58,14 +56,14 @@ function showAddCategoryForm() {
 // 카테고리 추가 - Api.post통신 
 async function addCatgoryToApi() {
   const addCategoryName = getNode('.addCategoryName').value;  
-  await Api.post('/api/categories', {category: addCategoryName});
+  console.log('추가하려는 카테고리',addCategoryName);
+  await Api.post('/api/categories', {label: addCategoryName});
   const categoryModalList = document.querySelector('.category-modal-list');
   categoryModalList.innerHTML="";
   getModalCategory();
   showAddCategoryForm();
 }
-// 카테고리 삭제 - Api.delete통신 
-// 
+// 카테고리 삭제 - Api.delete통신  
 async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id'); 
@@ -97,20 +95,19 @@ async function updateCategory(e) {
     //API 통신
     try {
       //get으로전체 조회 => 쭉돌면서 -> category가 상의가 같을때 push해주기 -> 
-      await Api.patch('/api/categories',categoryId,{category:updatedName});
+      await Api.patch('/api/categories',categoryId,{label:updatedName});
     } catch (error) {
       console.log(error.message);
     }
   }
 }
-
 // 카테고리별로 제목 바꾸기
 async function productByCategory () {
   // 렌더링된 상품목록으로 title 변경하기 
   const categoryTitle = document.querySelector('.category-name');
   const categories = document.querySelectorAll('.category');
   for (let i = 0; i < categories.length; i++) {
-    categories[i].onclick = async function () {
+    categories[i].onclick = async function (e) {
      if(categories[i].textContent === "전체보기") {
       location.reload();
      }
@@ -124,22 +121,20 @@ async function productByCategory () {
     
     // 카테고리별 상품조회 api
     // if (data)
-    const datas = await Api.get('/api/categories/products',categoryName);
-    console.log('카테고리~~',datas.data)
-    showProducts(datas.data, categoryName);
+    const datas = await Api.get('/api/categories/products',e.target.id);
+    showProducts(datas.data, e.target.id);
     };
   }  
 }
-
 // 전체 상품조회하기 => 인자 api 통신을 받은 데이터, 카테고리명 
-function showProducts (data ,categoryName ='') {
+function showProducts (data ,categoryId ='') {
   const productList = getNode('#product-list');
   productList.innerHTML = ""
   // for(let i=data.products.length-1; i>=0; i--) {
   data.products.map((product) => {
     let price = product.price.toLocaleString();
       productList.innerHTML += `<div class="item-card">
-      <a href="${product._id}">
+      <a href="${product.shortId}">
         <div class="img-box"><img src="${product.image}" alt=""></div>
         <div class="productName">${product.productName}</div>
         <div>${price}원</div>
@@ -156,7 +151,8 @@ function showProducts (data ,categoryName ='') {
   const pagenationLink = document.querySelectorAll('.pagination-link');
   for(let i=0; i<data.totalPage; i++) {
     // 전체보기가 아닐떄 
-    if(categoryName !== '전체보기' && categoryName !== '') {
+    // 카테고리 id 값으로 
+    if(categoryId !== '') {
       pagenationLink[i].addEventListener("click", () => {
         getProductCategory(i+1, categoryName)
       })
@@ -169,13 +165,12 @@ function showProducts (data ,categoryName ='') {
   }
 }
 // 카테고리별 상품목록 + 페이네이션 하기- Api.get 통신
-async function getProductCategory (page, categoryName ) {
+async function getProductCategory (page, categoryName) {
   const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`);
   const data = await datas.json();
   console.log('카테고리별 상품목록', datas)
   showProducts(data.data, categoryName);
 }
-
 // 전체보기 상품목록 + 페이지네이션 - Api.get 통신
 async function getProductAll (page) {
  const datas = await fetch(`/api/products?page=${page}`);
@@ -184,8 +179,6 @@ async function getProductAll (page) {
   showProducts(data.data)
 }
 getProductAll(1)
-
-
 // 상품추가 모달
 function addPostModal () {
   getOptionCategory();
@@ -199,8 +192,8 @@ async function getOptionCategory() {
   const categoryOptions = getNode('.category-option'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
-    if(i===0)categoryOptions.innerHTML += `<option selected>${data.data[i].category}</option>`;
-    else categoryOptions.innerHTML += `<option>${data.data[i].category}</option>`;
+    if(i===0)categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
+    else categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
   }
   // postProductToApi();
   // categoryOptions.addEventListener("change", ()=> {
@@ -213,6 +206,7 @@ async function postProductToApi () {
   const image = document.getElementsByName('image')[0].value;
   const detailImage = document.getElementsByName('detailImage')[0].value;
   const category = getNode('.category-option').value;
+  const categoryId = getNode(`.${category}`).id;
   const productName = document.getElementsByName('productName')[0].value;
   const description = document.getElementsByName('description')[0].value;
   const price = document.getElementsByName('price')[0].value;
@@ -220,7 +214,7 @@ async function postProductToApi () {
   const data = {
     image: image,
     detailImage : detailImage,
-    category:category,
+    categoryId:categoryId,
     productName: productName,
     description: description,
     price: price,
@@ -229,8 +223,6 @@ async function postProductToApi () {
   await Api.post('/api/products',data);
   location.reload();
 }
-
-
 // 닫기 아이콘 클릭시 모달창 비활성화
 const editClose = getNode('#modal-editCategory button.delete'); //닫기버튼
 editClose.onclick = () => {
