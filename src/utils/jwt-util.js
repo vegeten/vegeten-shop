@@ -1,7 +1,8 @@
 import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
-import { redisClient } from './redis';
+import { userService } from '../services'
 const secret = process.env.JWT_SECRET_KEY;
+// import { redisClient } from './redis';
 
 const sign = (user) => {
   // access token 발급
@@ -36,23 +37,34 @@ const verify = (token) => {
   }
 };
 
-const refresh = () => {
-  // refresh token 발급
-  return jwt.sign({}, secret, {
-    // refresh token은 payload 없이 발급
+const refresh = async (userId) => {
+  const refreshToken = jwt.sign({}, secret, {
     algorithm: 'HS256',
     expiresIn: '14d',
   });
+
+  await userService.setUserPartially({ userId }, {
+    refresh: refreshToken
+  })
+  return refreshToken
 };
 
 const refreshVerify = async (token, userId) => {
-  // refresh token 검증
-  /* redis 모듈은 기본적으로 promise를 반환하지 않으므로,
-       promisify를 이용하여 promise를 반환하게 해줍니다.*/
-  // const getAsync = promisify(redisClient.get).bind(redisClient);
+  
   try {
-    jwt.verify(token, secret);
-    return true;
+    const user = await userService.getUser(userId);
+    const savedRefreshToken = user.refresh;
+    if (token === savedRefreshToken){
+      try {
+        const decoded = jwt.verify(token, secret);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    } 
+    else{
+      return false;
+    }
   } catch (err) {
     return false;
   }
