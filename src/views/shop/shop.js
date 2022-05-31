@@ -135,7 +135,7 @@ function showProducts (data ,categoryName ='') {
   data.products.map((product) => {
     let price = product.price.toLocaleString();
       productList.innerHTML += `<div class="item-card">
-      <a href="${product._id}">
+      <a href="${product.shortId}">
         <div class="img-box"><img src="${product.image}" alt=""></div>
         <div class="productName">${product.productName}</div>
         <div>${price}원</div>
