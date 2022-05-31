@@ -36,6 +36,20 @@ const validationInput = (e) => {
   }
 };
 
+const addErrorHTML = (target) => {
+  target.classList.add('is-danger');
+  target.nextElementSibling.style.display = 'block';
+  if (target === fullNameInput) {
+    target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
+  } else if (target === passwordInput) {
+    target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
+  } else if (target === emailInput) {
+    target.nextElementSibling.innerHTML = '이메일 형식이 맞지 않습니다.';
+  } else if (target === passwordConfirmInput) {
+    target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+  }
+};
+
 const viewDetailModal = (success, message = '회원가입 성공') => {
   const modalTitle = getNode('.modal-card-title');
   const confirmIcon = getNode('.cofirm-icon');
