@@ -3,7 +3,7 @@ import { OrderSchema } from '../schemas/order-schema';
 const Order = model('orders', OrderSchema);
 export class OrderModel {
   async findAll() {
-    return await Order.find({});
+    return await Order.find({}).sort({ createdAt: -1 });
   }
   async findByUser(userId) {
     return await Order.find({ userId: userId });
