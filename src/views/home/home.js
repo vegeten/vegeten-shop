@@ -10,16 +10,16 @@ window.onpageshow = function (event) {
 renderNav();
 renderFooter();
 
-const $carouselSlide = getNode('.carousel-slide');
-const $prevBtn = getNode('#prevBtn');
-const $nextBtn = getNode('#nextBtn');
+const carouselSlide = getNode('.carousel-slide');
+const prevBtn = getNode('#prevBtn');
+const nextBtn = getNode('#nextBtn');
 const slideLength = 3;
 let counter = 0;
-let size = $carouselSlide.clientWidth;
+let size = carouselSlide.clientWidth;
 
 const setSlideSize = (e) => {
   console.log(e);
-  size = $carouselSlide.clientWidth;
+  size = carouselSlide.clientWidth;
 };
 
 const nextSlideEvent = () => {
@@ -28,8 +28,8 @@ const nextSlideEvent = () => {
   } else {
     counter++;
   };
-  $carouselSlide.style.transition = "transform 0.4s ease-in-out";
-  $carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+  carouselSlide.style.transition = "transform 0.4s ease-in-out";
+  carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
 };
 
 const prevSlideEvent = () => {
@@ -38,10 +38,10 @@ const prevSlideEvent = () => {
   } else {
     counter--;
   };
-  $carouselSlide.style.transition = "transform 0.4s ease-in-out";
-  $carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+  carouselSlide.style.transition = "transform 0.4s ease-in-out";
+  carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
 };
 
-$nextBtn.addEventListener('click', nextSlideEvent);
-$prevBtn.addEventListener('click', prevSlideEvent);
+nextBtn.addEventListener('click', nextSlideEvent);
+prevBtn.addEventListener('click', prevSlideEvent);
 window.addEventListener("resize", setSlideSize);
