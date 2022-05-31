@@ -18,7 +18,7 @@ const refresh = async (req, res) => {
     if (decoded === null) {
       res.status(401).send({
         ok: false,
-        message: 'No authorized!',
+        reason: 'No authorized!',
       });
     }
 
@@ -32,7 +32,7 @@ const refresh = async (req, res) => {
       if (refreshResult.ok === false) {
         res.status(401).send({
           ok: false,
-          message: 'No authorized!',
+          reason: 'No authorized!',
         });
       } else {
         // 2. access token이 만료되고, refresh token은 만료되지 않은 경우 => 새로운 access token을 발급
