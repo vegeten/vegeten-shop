@@ -95,7 +95,7 @@ async function updateCategory(e) {
     //API 통신
     try {
       //get으로전체 조회 => 쭉돌면서 -> category가 상의가 같을때 push해주기 -> 
-      await Api.patch('/api/categories',categoryId,{category:updatedName});
+      await Api.patch('/api/categories',categoryId,{label:updatedName});
     } catch (error) {
       console.log(error.message);
     }
@@ -193,8 +193,8 @@ async function getOptionCategory() {
   const categoryOptions = getNode('.category-option'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
-    if(i===0)categoryOptions.innerHTML += `<option selected>${data.data[i].category}</option>`;
-    else categoryOptions.innerHTML += `<option>${data.data[i].category}</option>`;
+    if(i===0)categoryOptions.innerHTML += `<option selected>${data.data[i].label}</option>`;
+    else categoryOptions.innerHTML += `<option>${data.data[i].label}</option>`;
   }
   // postProductToApi();
   // categoryOptions.addEventListener("change", ()=> {
