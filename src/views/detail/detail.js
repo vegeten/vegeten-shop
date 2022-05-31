@@ -24,7 +24,9 @@ async function getProductDetail () {
   
   // 선택한 수량에 따른 총액 계산하기
   const selections = getNode('#total-count'); // select 드롭박스
+  const selected = selections.value.replace('개', '');
   const totalPrice = getNode('#totalPrice'); // 총가격 
+  getNode('.buyProduct').href = `/order?product=${datas.data.shortId}&amount=${selected}`;
   selections.addEventListener("change", () => { // 선택이 바뀔때마다 총액 계산하기
     const selected = selections.value.replace('개', '');
     const price = convertToNumber(getNode('#price').textContent);
@@ -86,11 +88,13 @@ buyProductBtn.addEventListener("click", buyProduct)
 
 function buyProduct () {
   
-    const selected = Number(selections.value.replace('개', ''));
-    const cartEntry = {
-      count : selected,
-      productId : getNode('#productId').name,
-    }
+  const selections = getNode('#total-count'); // select 드롭박스
+  const selected = Number(selections.value.replace('개', ''));
+  console.log("갯수!!",selected);
+  const cartEntry = {
+    count : selected,
+    productId : getNode('#productId').name,
+  }
     // 'cart' 라는 key값에 넣어주기 
     localStorage.setItem('buy', JSON.stringify(cartEntry));
     

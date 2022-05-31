@@ -9,10 +9,10 @@ function errorHandler(error, req, res, next) {
   if (!error.status) {
     res.status(500).send({
       status: 500,
-      message: error.message,
+      reason: error.message,
     });
   }
-  res.status(error.status).json({ status: error.status, message: error.message });
+  res.status(error.status).json({ status: error.status, reason: error.message });
 }
 
 export { errorHandler };
