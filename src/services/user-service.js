@@ -20,7 +20,7 @@ class UserService {
       error.status = 409;
       error.message = '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.';
       const { status, message } = error;
-      res.json({ status, message });
+      throw error;
     }
     // 이메일 중복은 이제 아니므로, 회원가입을 진행함
     // 우선 비밀번호 해쉬화(암호화)
