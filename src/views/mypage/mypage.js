@@ -45,11 +45,8 @@ const changeUserForm = (flag) => {
     changeFormArray.forEach(item => item.style.display = 'block');
     fullNameInput.disabled = false;
     addressCodeInput.disabled = false;
-    addressCodeInput.value = '';
     addressTitleInput.disabled = false;
-    addressTitleInput.value = '';
     addressDetailInput.disabled = false;
-    addressDetailInput.value = '';
     btnPasswordConfirm.removeEventListener('click', changeSubmitButton);
     btnPasswordConfirm.addEventListener('click', submitModifyUserInfo);
   } else {
@@ -82,12 +79,17 @@ const validationInput = (e) => {
 const addErrorHTML = (target) => {
   target.classList.add('is-danger');
   target.nextElementSibling.style.display = 'block';
-  if (target === fullNameInput) {
-    target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
-  } else if (target === currentPasswordInput) {
-    target.nextElementSibling.innerHTML = '비밀번호는 필수 입력사항입니다.';
-  } else if (target === newPasswordCheck) {
-    target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+
+  switch (target) {
+    case fullNameInput:
+      target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
+      break;
+    case currentPasswordInput:
+      target.nextElementSibling.innerHTML = '비밀번호는 필수 입력사항입니다.';
+      break;
+    case newPasswordCheck:
+      target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
+      break;
   }
 };
 
