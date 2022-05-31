@@ -15,7 +15,7 @@ async function getCategoriesFromApi() {
   const categoryList = document.querySelector('#category-list');
   for (let i = 0; i < data.data.length; i++) {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
-    categoryList.innerHTML += `<div class="category">${data.data[i].label}</div>`;
+    categoryList.innerHTML += `<div class="category" id="${data.data[i].shortId}">${data.data[i].label}</div>`;
   }
   // 카테고리별로 상품제목 바꾸기 
   productByCategory();
@@ -107,7 +107,7 @@ async function productByCategory () {
   const categoryTitle = document.querySelector('.category-name');
   const categories = document.querySelectorAll('.category');
   for (let i = 0; i < categories.length; i++) {
-    categories[i].onclick = async function () {
+    categories[i].onclick = async function (e) {
      if(categories[i].textContent === "전체보기") {
       location.reload();
      }
@@ -121,14 +121,13 @@ async function productByCategory () {
     
     // 카테고리별 상품조회 api
     // if (data)
-    const datas = await Api.get('/api/categories/products',categoryName);
-    console.log('카테고리~~',datas.data)
-    showProducts(datas.data, categoryName);
+    const datas = await Api.get('/api/categories/products',e.target.id);
+    showProducts(datas.data, e.target.id);
     };
   }  
 }
 // 전체 상품조회하기 => 인자 api 통신을 받은 데이터, 카테고리명 
-function showProducts (data ,categoryName ='') {
+function showProducts (data ,categoryId ='') {
   const productList = getNode('#product-list');
   productList.innerHTML = ""
   // for(let i=data.products.length-1; i>=0; i--) {
@@ -153,7 +152,7 @@ function showProducts (data ,categoryName ='') {
   for(let i=0; i<data.totalPage; i++) {
     // 전체보기가 아닐떄 
     // 카테고리 id 값으로 
-    if(categoryName !== '전체보기' && categoryName !== '') {
+    if(categoryId !== '') {
       pagenationLink[i].addEventListener("click", () => {
         getProductCategory(i+1, categoryName)
       })
@@ -193,8 +192,8 @@ async function getOptionCategory() {
   const categoryOptions = getNode('.category-option'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
-    if(i===0)categoryOptions.innerHTML += `<option selected>${data.data[i].label}</option>`;
-    else categoryOptions.innerHTML += `<option>${data.data[i].label}</option>`;
+    if(i===0)categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
+    else categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
   }
   // postProductToApi();
   // categoryOptions.addEventListener("change", ()=> {
@@ -207,6 +206,7 @@ async function postProductToApi () {
   const image = document.getElementsByName('image')[0].value;
   const detailImage = document.getElementsByName('detailImage')[0].value;
   const category = getNode('.category-option').value;
+  const categoryId = getNode(`.${category}`).id;
   const productName = document.getElementsByName('productName')[0].value;
   const description = document.getElementsByName('description')[0].value;
   const price = document.getElementsByName('price')[0].value;
@@ -214,7 +214,7 @@ async function postProductToApi () {
   const data = {
     image: image,
     detailImage : detailImage,
-    category:category,
+    categoryId:categoryId,
     productName: productName,
     description: description,
     price: price,
