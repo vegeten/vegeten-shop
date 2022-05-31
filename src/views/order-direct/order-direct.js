@@ -15,10 +15,10 @@ const phoneValidateMsg = getNode('#phone-msg');
 const modal = getNode('.modal');
 const setDefaultAddress = getNode('#set-default-address');
 
-const productUrl = window.location.href.split('/');
-const productId = productUrl[productUrl.length - 2];
+const productUrl = window.location.search.split('=');
+const productCount = productUrl[2];
+const productId = productUrl[1].split('&')[0];
 
-const productCount = JSON.parse(localStorage.getItem('buy')).count;
 let productInfo;
 async function getProductInfo(productId) {
   const res = await Api.get(`/api/products/${productId}`);
@@ -206,15 +206,20 @@ async function changeAddress() {
   console.log('정보수정 잘 되었어요!', res);
 }
 
+const aTag = getNode('#move-page');
+
 function handleSubmit() {
   const formValidateCheck = checkForm();
-  console.log(formValidateCheck);
-  if (!formValidateCheck) return;
+  if (!formValidateCheck) {
+    aTag.removeAttribute('href');
+    return;
+  }
 
+  aTag.setAttribute('href');
   postOrder();
   if (setDefaultAddress.checked) {
     changeAddress();
   }
-  modal.style.display = 'flex';
+  localStorage.removeItem('cart');
 }
 payButton.addEventListener('click', handleSubmit);
