@@ -3,11 +3,6 @@ import { validateEmail, getAuthorizationObj, getNode } from '/useful-functions.j
 import renderFooter from '../components/footer.js';
 import { renderNav } from '../components/nav.js';
 
-window.onpageshow = function (event) {
-  if (event.persisted) {
-    window.location.reload();
-  }
-};
 const { isLogin } = getAuthorizationObj();
 
 if (isLogin) {
@@ -29,28 +24,12 @@ const modalBackground = getNode('.modal-background');
 const validationInput = (e) => {
   if (e.target.value === '') {
     e.target.classList.add('is-danger');
-    e.target.nextElementSibling.style.display = 'block';
   } else {
     e.target.classList.remove('is-danger');
-    e.target.nextElementSibling.style.display = 'none';
   }
 };
 
-const addErrorHTML = (target) => {
-  target.classList.add('is-danger');
-  target.nextElementSibling.style.display = 'block';
-  if (target === fullNameInput) {
-    target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
-  } else if (target === passwordInput) {
-    target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
-  } else if (target === emailInput) {
-    target.nextElementSibling.innerHTML = '이메일 형식이 맞지 않습니다.';
-  } else if (target === passwordConfirmInput) {
-    target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
-  }
-};
-
-const viewDetailModal = (success, message = '회원가입 성공') => {
+const viewDetailModal = (success, message = '로그인 성공') => {
   const modalTitle = getNode('.modal-card-title');
   const confirmIcon = getNode('.cofirm-icon');
   const modalCardFooter = getNode('.modal-card-foot');
@@ -92,7 +71,8 @@ async function handleSubmit(e) {
   const isPasswordValid = password.length >= 4;
 
   if (!isEmailValid || !isPasswordValid) {
-    return alert('비밀번호가 4글자 이상인지, 이메일 형태가 맞는지 확인해 주세요.');
+    viewDetailModal(false, '아이디와 비밀번호 입력을 확인하세요.');
+    return;
   }
 
   // 로그인 api 요청
