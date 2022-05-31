@@ -63,7 +63,6 @@
               <span>비밀번호를 입력해주세요.</span>
             </div>
           </div>
-
         </div>
 
         <div class="field" style="display: none;">
@@ -140,6 +139,31 @@
       </form>
     </div>
   </main>
+
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">비밀번호 확인</p>
+        <button class="delete close-button" aria-label="close"></button>
+      </header>
+      <form>
+        <section class="modal-card-body">
+          <div class="field">
+            <label class="checkPassword" for="checkPassword">비밀번호</label>
+            <div class="control">
+              <input class="input is-medium passwd checkPasswordInput" id="checkPassword" type="password"
+                placeholder="현재 비밀번호를 입력해주세요." />
+            </div>
+          </div>
+
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-fullwidth is-black check-password-confirm-button">확인</button>
+        </footer>
+      </form>
+    </div>
+  </div>
 
   <footer class="footer">
   </footer>

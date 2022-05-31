@@ -30,7 +30,31 @@ const currentPasswordInput = getNode('.passwd');
 const currentPasswordCheck = getNode('.passwd-check');
 const newPasswordInput = getNode('.new-passwd');
 const passwordToggle = getNode('.passwd-modify');
+const modal = getNode('.modal');
+const modalButton = getNode('.close-button');
+const modalBackground = getNode('.modal-background');
 let toggle = false;
+
+// const viewDetailModal = (success, message = '로그인 성공') => {
+//   const modalTitle = getNode('.modal-card-title');
+//   const confirmIcon = getNode('.cofirm-icon');
+//   const modalCardFooter = getNode('.modal-card-foot');
+
+//   modal.classList.add('is-active');
+//   modalTitle.innerHTML = message;
+
+//   if (success) {
+//     confirmIcon.innerHTML = 'check_circle_outline';
+//   } else {
+//     confirmIcon.innerHTML = 'replay';
+//     modalCardFooter.style.display = 'none';
+//   }
+// };
+
+const closeModal = () => {
+  modal.classList.remove('is-active');
+  // window.location.href = '/';
+};
 
 const validationInput = (e) => {
   if (e.target.value === '') {
@@ -98,7 +122,10 @@ const renderUserInfo = (data) => {
 };
 
 const changeSubmitButton = (e) => {
-  console.log(e.target);
+  e.preventDefault();
+  modal.classList.add('is-active');
+  const checkPasswordConfirmButton = getNode('.check-password-confirm-button');
+  checkPasswordConfirmButton.addEventListener('click', checkUserPassword);
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
@@ -123,7 +150,8 @@ function addAllEvents() {
   currentPasswordInput.addEventListener('input', validationInput);
   currentPasswordCheck.addEventListener('input', validationInput);
   newPasswordInput.addEventListener('input', validationInput);
-
+  modalButton.addEventListener('click', closeModal);
+  modalBackground.addEventListener('click', closeModal);
 }
 
 const onDeleteOrder = async (e) => {
@@ -229,7 +257,7 @@ const getUserInfo = async () => {
     const result = await Api.get('/api/users');
     const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = result.data.phoneNumber?.split('-') || [];
     const { postalCode, address1, address2 } = result.data?.address || {};
-    const fullPhoneNumber = phoneNumberFirst && `${phoneNumberFirst} - ${phoneNumberSecond} - ${phoneNumberThird}`;
+    const fullPhoneNumber = phoneNumberFirst && `${phoneNumberFirst}-${phoneNumberSecond}-${phoneNumberThird}`;
 
     const userInfo = {
       fullName: result.data.fullName,
@@ -324,6 +352,17 @@ const getOrderList = async () => {
   try {
     const result = await Api.get('/api/orders');
     renderAllOrderList(result);
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const checkUserPassword = async (e) => {
+  e.preventDefault();
+  const currentPassword = e.target.parentNode.parentNode.querySelector('.checkPasswordInput').value;
+  try {
+    const result = await Api.post('/api/users/password', { currentPassword });
+    console.log(result);
   } catch (err) {
     console.log(err.message);
   }
