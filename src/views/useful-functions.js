@@ -1,3 +1,5 @@
+import e from 'express';
+
 // 문자열+숫자로 이루어진 랜덤 5글자 반환
 export const randomId = () => {
   return Math.random().toString(36).substring(2, 7);
@@ -42,16 +44,23 @@ export const getAuthorizationObj = () => {
 };
 
 export const setCookie = (key, value, exp) => {
-  let todayDate = new Date(0);
-  todayDate.setUTCSeconds(exp);
+  let newCookie;
+  if (exp !== null) {
+    let todayDate = new Date(0);
+    todayDate.setUTCSeconds(exp);
+    newCookie = key + '=' + value + ';expires=' + todayDate.toUTCString() + ';path=/';
+  } else {
+    newCookie = key + '=' + value;
+  }
 
-  let cookie = encodeURIComponent(key) + '=' + encodeURIComponent(value) + '; expires=' + todayDate.toUTCString() + ';';
-  document.cookie = cookie;
+  document.cookie = newCookie;
 };
 
 export const getCookie = (cookieName) => {
-  let matches = document.cookie.match(
-    new RegExp('(?:^|; )' + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
-  );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+  const cookieValue = document.cookie.split(';').find((row) => row.startsWith(cookieName));
+
+  if (cookieValue) {
+    cookieValue.split('=')[1];
+  }
+  return cookieValue;
 };

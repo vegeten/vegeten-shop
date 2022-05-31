@@ -85,9 +85,8 @@ async function handleSubmit(e) {
 
     // 로그인 성공, 토큰을 세션 스토리지에 저장
     // 물론 다른 스토리지여도 됨
-    localStorage.setItem('token', token);
-    localStorage.setItem('refreshToken', refreshToken);
     setCookie('accessToken', token, exp);
+    setCookie('refreshToken', refreshToken, null);
 
     viewDetailModal(true);
     // 로그인 페이지 이동
