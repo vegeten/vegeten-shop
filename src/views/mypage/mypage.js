@@ -3,12 +3,6 @@ import { logOut, renderNav } from "../components/nav.js";
 import { addCommas, getAuthorizationObj, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
-window.onpageshow = function (event) {
-  if (event.persisted) {
-    window.location.reload();
-  }
-};
-
 const { isLogin } = getAuthorizationObj();
 
 if (!isLogin) {
@@ -37,22 +31,6 @@ const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
 let newPasswordToggle = false;
 let changeUserFormFlag = false;
-
-// const viewDetailModal = (success, message = '로그인 성공') => {
-//   const modalTitle = getNode('.modal-card-title');
-//   const confirmIcon = getNode('.cofirm-icon');
-//   const modalCardFooter = getNode('.modal-card-foot');
-
-//   modal.classList.add('is-active');
-//   modalTitle.innerHTML = message;
-
-//   if (success) {
-//     confirmIcon.innerHTML = 'check_circle_outline';
-//   } else {
-//     confirmIcon.innerHTML = 'replay';
-//     modalCardFooter.style.display = 'none';
-//   }
-// };
 
 const onModCancel = (e) => {
   e.preventDefault();
@@ -412,9 +390,6 @@ const checkUserPassword = async (e) => {
     window.location.reload();
   }
 };
-
-
-
 
 renderNav();
 renderFooter();
