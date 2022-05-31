@@ -8,8 +8,8 @@ function loginRequired(req, res, next) {
   // 토큰이 "null" 일 경우, login_required 가 필요한 서비스 사용을 제한함.
   if (!userToken || userToken === 'null') {
     console.log('서비스 사용 요청이 있습니다.하지만, Authorization 토큰: 없음');
-    res.status(403).json({
-      status: 403,
+    res.status(401).json({
+      status: 401,
       result: 'forbidden-approach',
       message: '로그인한 유저만 사용할 수 있는 서비스입니다.',
     });
@@ -32,8 +32,8 @@ function loginRequired(req, res, next) {
   } catch (error) {
     // jwt.verify 함수가 에러를 발생시키는 경우는 토큰이 정상적으로 decode 안되었을 경우임.
     // 403 코드로 JSON 형태로 프론트에 전달함.
-    res.status(403).json({
-      status: 403,
+    res.status(401).json({
+      status: 401,
       result: 'forbidden-approach',
       message: '정상적인 토큰이 아닙니다.',
     });
