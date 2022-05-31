@@ -21,7 +21,6 @@ async function getCategoriesFromApi() {
   productByCategory();
 }
 getCategoriesFromApi();
-
 // 카테고리 모달 렌더링 - Api.get 통신
 async function getModalCategory() {
   const data = await Api.get('/api/categories');
@@ -46,7 +45,6 @@ async function getModalCategory() {
   addCategoryTrigger.addEventListener("click", showAddCategoryForm);
 };
 getModalCategory();
-
 // 카테고리 추가하기 Form
 function showAddCategoryForm() {
   const addSection = getNode('#modal-editCategory footer');
@@ -64,8 +62,7 @@ async function addCatgoryToApi() {
   getModalCategory();
   showAddCategoryForm();
 }
-// 카테고리 삭제 - Api.delete통신 
-// 
+// 카테고리 삭제 - Api.delete통신  
 async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id'); 
@@ -103,7 +100,6 @@ async function updateCategory(e) {
     }
   }
 }
-
 // 카테고리별로 제목 바꾸기
 async function productByCategory () {
   // 렌더링된 상품목록으로 title 변경하기 
@@ -130,7 +126,6 @@ async function productByCategory () {
     };
   }  
 }
-
 // 전체 상품조회하기 => 인자 api 통신을 받은 데이터, 카테고리명 
 function showProducts (data ,categoryName ='') {
   const productList = getNode('#product-list');
@@ -156,6 +151,7 @@ function showProducts (data ,categoryName ='') {
   const pagenationLink = document.querySelectorAll('.pagination-link');
   for(let i=0; i<data.totalPage; i++) {
     // 전체보기가 아닐떄 
+    // 카테고리 id 값으로 
     if(categoryName !== '전체보기' && categoryName !== '') {
       pagenationLink[i].addEventListener("click", () => {
         getProductCategory(i+1, categoryName)
@@ -169,13 +165,12 @@ function showProducts (data ,categoryName ='') {
   }
 }
 // 카테고리별 상품목록 + 페이네이션 하기- Api.get 통신
-async function getProductCategory (page, categoryName ) {
+async function getProductCategory (page, categoryName) {
   const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`);
   const data = await datas.json();
   console.log('카테고리별 상품목록', datas)
   showProducts(data.data, categoryName);
 }
-
 // 전체보기 상품목록 + 페이지네이션 - Api.get 통신
 async function getProductAll (page) {
  const datas = await fetch(`/api/products?page=${page}`);
@@ -184,8 +179,6 @@ async function getProductAll (page) {
   showProducts(data.data)
 }
 getProductAll(1)
-
-
 // 상품추가 모달
 function addPostModal () {
   getOptionCategory();
@@ -229,8 +222,6 @@ async function postProductToApi () {
   await Api.post('/api/products',data);
   location.reload();
 }
-
-
 // 닫기 아이콘 클릭시 모달창 비활성화
 const editClose = getNode('#modal-editCategory button.delete'); //닫기버튼
 editClose.onclick = () => {
