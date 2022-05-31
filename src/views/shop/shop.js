@@ -15,7 +15,7 @@ async function getCategoriesFromApi() {
   const categoryList = document.querySelector('#category-list');
   for (let i = 0; i < data.data.length; i++) {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
-    categoryList.innerHTML += `<div class="category">${data.data[i].category}</div>`;
+    categoryList.innerHTML += `<div class="category">${data.data[i].label}</div>`;
   }
   // 카테고리별로 상품제목 바꾸기 
   productByCategory();
@@ -27,7 +27,7 @@ async function getModalCategory() {
   const categoryModalList = document.querySelector('.category-modal-list'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
-    categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i]._id}" name="categoryName">${data.data[i].category}</td>
+    categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
     <td><button class="button is-warning edit-category-button">수정</button></td>
     <td><button class="button is-danger del-category-button">삭제</button></td>
     </tr>`;
@@ -56,7 +56,8 @@ function showAddCategoryForm() {
 // 카테고리 추가 - Api.post통신 
 async function addCatgoryToApi() {
   const addCategoryName = getNode('.addCategoryName').value;  
-  await Api.post('/api/categories', {category: addCategoryName});
+  console.log('추가하려는 카테고리',addCategoryName);
+  await Api.post('/api/categories', {label: addCategoryName});
   const categoryModalList = document.querySelector('.category-modal-list');
   categoryModalList.innerHTML="";
   getModalCategory();
