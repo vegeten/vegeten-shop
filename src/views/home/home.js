@@ -2,14 +2,6 @@ import renderFooter from "../components/footer.js";
 import { renderNav } from "../components/nav.js";
 import { getNode } from "../useful-functions.js";
 
-window.onpageshow = function (event) {
-  if (event.persisted) {
-    window.location.reload();
-  }
-};
-renderNav();
-renderFooter();
-
 const carouselSlide = getNode('.carousel-slide');
 const prevBtn = getNode('#prevBtn');
 const nextBtn = getNode('#nextBtn');
@@ -17,8 +9,7 @@ const slideLength = 3;
 let counter = 0;
 let size = carouselSlide.clientWidth;
 
-const setSlideSize = (e) => {
-  console.log(e);
+const setSlideSize = () => {
   size = carouselSlide.clientWidth;
 };
 
@@ -42,6 +33,16 @@ const prevSlideEvent = () => {
   carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
 };
 
-nextBtn.addEventListener('click', nextSlideEvent);
-prevBtn.addEventListener('click', prevSlideEvent);
-window.addEventListener("resize", setSlideSize);
+const getNewArrival = async () => {
+
+};
+
+function addAllEvents() {
+  nextBtn.addEventListener('click', nextSlideEvent);
+  prevBtn.addEventListener('click', prevSlideEvent);
+  window.addEventListener("resize", setSlideSize);
+}
+
+renderNav();
+renderFooter();
+addAllEvents();
