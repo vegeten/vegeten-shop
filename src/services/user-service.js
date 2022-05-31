@@ -59,6 +59,45 @@ class UserService {
     console.log(exp);
     return { token, refreshToken, exp };
   }
+
+  // admin 로그인
+  async getAdminToken(loginInfo) {
+    // 객체 destructuring
+    const { email, password } = loginInfo;
+    // 우선 해당 이메일의 사용자 정보가  db에 존재하는지 확인
+    const user = await this.userModel.findByEmail(email);
+    if (!user) {
+      const e = new Error('해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+      e.status = 404;
+      throw e;
+    }
+    // 이제 이메일은 문제 없는 경우이므로, 비밀번호를 확인함
+    // 비밀번호 일치 여부 확인
+    const correctPasswordHash = user.password; // db에 저장되어 있는 암호화된 비밀번호
+    // 매개변수의 순서 중요 (1번째는 프론트가 보내온 비밀번호, 2번쨰는 db에 있떤 암호화된 비밀번호)
+    const isPasswordCorrect = await bcrypt.compare(password, correctPasswordHash);
+    if (!isPasswordCorrect) {
+      const e = new Error('비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.');
+      e.status = 400;
+      throw e;
+    }
+    // 이 계정이 admin 계정인지 확인하고 아니면 에러 던짐
+    if (user.role !== 'admin') {
+      const e = new Error('관리자만 접근 가능합니다.');
+      e.status = 403;
+      throw e;
+    }
+
+    // access token, refresh token 발급
+    const token = sign(user);
+    const refreshToken = refresh();
+    const exp = jwt.decode(token).exp;
+    // const userId = user._id;
+    //redisClient.set(userId.toString(), refreshToken);
+    console.log(exp);
+    return { token, refreshToken, exp };
+  }
+
   // 사용자 목록을 받음.
   async getUsers() {
     const users = await this.userModel.findAll();
