@@ -5,7 +5,9 @@ class ReviewService {
   }
 
   async getReviewlist() {
+    console.log(reviewModel);
     const reviews = await this.reviewModel.findAll();
+
     return reviews;
   }
 

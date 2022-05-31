@@ -6,7 +6,7 @@ import { reviewService } from '../services';
 
 const reviewRouter = Router();
 
-reviewRouter('/', async (req, res, next) => {
+reviewRouter.get('/', async (req, res, next) => {
   try {
     const reviews = await reviewService.getReviewlist();
     res.status(200).json({

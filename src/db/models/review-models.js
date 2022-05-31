@@ -1,9 +1,9 @@
 import { model } from 'mongoose';
-import { ReviewsSchema } from '../schemas/reviews-schema';
-const Review = model('reviews', ReviewsSchema);
-export class ReviewsModel {
+import { ReviewSchema } from '../schemas/review-schema';
+const Review = model('reviews', ReviewSchema);
+export class ReviewModel {
   async findAll() {
-    return await Review.find({}).sort({ createdAt: -1 });
+    return await Review.find({});
   }
   async findByUser(userId) {
     return await Review.find({ userId: userId });
@@ -21,5 +21,5 @@ export class ReviewsModel {
     return await Review.findOneAndDelete({ reviewId: shortId });
   }
 }
-const reviewModel = new reviewModel();
+const reviewModel = new ReviewModel();
 export { reviewModel };
