@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
-import { userService } from '../services'
+import { userService } from '../services';
 const secret = process.env.JWT_SECRET_KEY;
 // import { redisClient } from './redis';
 
@@ -31,9 +31,8 @@ const verify = (token) => {
   } catch (err) {
     return {
       ok: false,
-      message: err.message
-    }
-
+      message: err.message,
+    };
   }
 };
 
@@ -43,26 +42,27 @@ const refresh = async (userId) => {
     expiresIn: '14d',
   });
 
-  await userService.setUserPartially({ userId }, {
-    refresh: refreshToken
-  })
-  return refreshToken
+  await userService.setUserPartially(
+    { userId },
+    {
+      refresh: refreshToken,
+    }
+  );
+  return refreshToken;
 };
 
 const refreshVerify = async (token, userId) => {
-  
   try {
     const user = await userService.getUser(userId);
     const savedRefreshToken = user.refresh;
-    if (token === savedRefreshToken){
+    if (token === savedRefreshToken) {
       try {
         const decoded = jwt.verify(token, secret);
         return true;
       } catch (error) {
         return false;
       }
-    } 
-    else{
+    } else {
       return false;
     }
   } catch (err) {
