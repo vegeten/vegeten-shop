@@ -11,7 +11,7 @@ function adminAuth(req, res, next) {
     res.status(401).json({
       status: 401,
       result: 'forbidden-approach',
-      message: '로그인한 유저만 사용할 수 있는 서비스입니다.',
+      reason: '로그인한 유저만 사용할 수 있는 서비스입니다.',
     });
 
     return;
@@ -26,7 +26,7 @@ function adminAuth(req, res, next) {
       res.status(403).json({
         status: 403,
         result: 'forbidden-approach',
-        message: '관리자만 접근 가능합니다.',
+        reason: '관리자만 접근 가능합니다.',
       });
     }
 
@@ -43,7 +43,7 @@ function adminAuth(req, res, next) {
     res.status(401).json({
       status: 401,
       result: 'forbidden-approach',
-      message: '정상적인 토큰이 아닙니다.',
+      reason: '정상적인 토큰이 아닙니다.',
     });
 
     return;

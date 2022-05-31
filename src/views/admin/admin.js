@@ -150,7 +150,8 @@ const getOrderAllList = async () => {
     const result = await Api.get('/api/orders/list');
     renderAllOrderAllList(result);
   } catch (err) {
-    console.log(err);
+    alert(err.message);
+    window.location.href = '/admin/login';
   }
 };
 
@@ -159,7 +160,7 @@ const getOrderDetail = async (orderId) => {
     const result = await Api.get('/api/orders', orderId);
     renderOrderModal(result.data);
   } catch (err) {
-    console.log(err.message);
+    console.log(err);
   }
 };
 
