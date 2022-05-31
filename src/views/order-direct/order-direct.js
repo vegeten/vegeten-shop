@@ -215,7 +215,7 @@ function handleSubmit() {
     return;
   }
 
-  aTag.setAttribute('href');
+  aTag.setAttribute('href', '/order/complete');
   postOrder();
   if (setDefaultAddress.checked) {
     changeAddress();
