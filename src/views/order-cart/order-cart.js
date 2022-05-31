@@ -1,5 +1,5 @@
 import * as Api from '/api.js';
-import { getNode, addCommas } from '../../useful-functions.js';
+import { getNode, addCommas, checkToken } from '../../useful-functions.js';
 
 // elements
 const totalCostElement = getNode('#total-cost');
@@ -43,8 +43,33 @@ payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
 // 회원 정보 받아오기
 let userId;
 
+// async function getUserInfo() {
+//   if (!checkToken()) {
+//     alert('로그인이 필요합니다.');
+//     window.location.href = '/login';
+//   } else {
+//     const res = await Api.get('/api/users');
+//     const userData = res.data;
+//     userId = userData._id;
+//     nameInput.value = userData.fullName;
+//     console.log(userData);
+
+//     const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] =
+//       userData.phoneNumber?.split('-') || [];
+//     const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
+//     const { postalCode = '', address1: baseAddress1 = '', address2: baseAddress2 = '' } = userData?.address || {};
+
+//     postalCodeInput.value = postalCode;
+//     address1.value = baseAddress1;
+//     address2.value = baseAddress2;
+
+//     phoneInput.forEach((phone, idx) => {
+//       phone.value = phoneNumbers[idx];
+//     });
+//   }
+// }
 async function getUserInfo() {
-  const res = await Api.get('/api/users');
+  const res = await Api.getYseToken('/api/users');
   const userData = res.data;
   userId = userData._id;
   nameInput.value = userData.fullName;
@@ -196,9 +221,14 @@ async function changeAddress() {
     address1: address1.value,
     address2: address2.value,
   };
-
-  const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
-  console.log('정보수정 잘 되었어요!', res);
+  // false면 refreshtoken이 만료되었다는거
+  if (!checkToken()) {
+    alert('로그인이 필요합니다.');
+    window.location.href = '/login';
+  } else {
+    const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
+    console.log('정보수정 잘 되었어요!', res);
+  }
 }
 
 const aTag = getNode('#move-page');

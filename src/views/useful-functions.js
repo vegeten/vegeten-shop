@@ -50,15 +50,45 @@ export const getCookie = (cookieName) => {
   const decodedCookieName = decodeURIComponent(cookieName);
   const idx = document.cookie.indexOf(decodedCookieName);
 
-  const cookieValue = document.cookie
-    .slice(idx)
-    .split(';')
-    .find((row) => row.startsWith(decodedCookieName))
-    .split('=')[1];
+  if (idx === -1) {
+    return null;
+  } else {
+    const cookieValue = document.cookie
+      .slice(idx)
+      .split(';')
+      .find((row) => row.startsWith(decodedCookieName))
+      .split('=')[1];
 
-  return cookieValue;
+    return cookieValue;
+  }
 };
 
 export const deleteCookie = (cookieName) => {
   document.cookie = decodeURIComponent(cookieName) + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };
+
+export async function checkToken() {
+  const exp = localStorage.getItem('accessToken_exp');
+  let expDate = new Date(0);
+  expDate.setUTCSeconds(exp);
+  let todayDate = new Date();
+  const time_diff = 300000;
+
+  if (expDate - todayDate.getTime() <= time_diff) {
+    const res = await fetch('/api/users/refresh', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getCookie('accessToken')}`,
+        Refresh: `Bearer ${getCookie('refreshToken')}`,
+      },
+    });
+    if (!res.refresh) return false;
+    else if (res.resfresh && !res.access) {
+      localStorage.setItem('accessToken_exp', res.data.exp);
+      setCookie('accessToken', res.data.newAccessToken);
+      return true;
+    }
+  }
+
+  return true;
+}
