@@ -4,6 +4,7 @@ const redisClient = createClient(process.env.REDIS_PORT);
 
 const clientConnect = async () => {
   await redisClient.connect();
+  console.log(`redis connected ${process.env.REDIS_PORT}`);
 };
 
 const set = (key, value) => {

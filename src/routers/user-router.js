@@ -1,9 +1,14 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired, adminAuth } from '../middlewares';
+import { loginRequired, adminAuth, refresh_ } from '../middlewares';
 import { userService } from '../services';
+
 const userRouter = Router();
+
+//refresh
+userRouter.get('/refresh', refresh_);
+
 
 // 회원가입 (/api/users/register)
 userRouter.post('/register', async (req, res, next) => {
@@ -139,7 +144,7 @@ userRouter.patch('/address', loginRequired, async function (req, res, next) {
     };
 
     // 사용자 정보를 업데이트함.
-    const updatedUserInfo = await userService.setUserAddress(userInfoRequired, toUpdate);
+    const updatedUserInfo = await userService.setUserPartially(userInfoRequired, toUpdate);
 
     // 업데이트 이후의 유저 데이터를 프론트에 보내 줌
     res.status(201).json({

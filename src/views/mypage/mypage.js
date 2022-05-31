@@ -1,14 +1,7 @@
 import renderFooter from '../components/footer.js';
 import { logOut, renderNav } from "../components/nav.js";
-import { addCommas, getAuthorizationObj, getNode } from '../useful-functions.js';
+import { addCommas, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
-
-const { isLogin } = getAuthorizationObj();
-
-if (!isLogin) {
-  alert('로그인이 필요한 서비스입니다.');
-  window.location.href = '/login';
-}
 
 const orderWrapper = getNode('.order-list');
 const fullNameInput = getNode('.name-input');
@@ -162,7 +155,7 @@ function addAllEvents() {
 
   btnWithdraw.addEventListener('click', submitWithdrawUser);
   btnPasswordConfirm.addEventListener('click', changeSubmitButton);
-  // btnModify.addEventListener('click', submitModifyUserInfo);
+
   passwordToggle.addEventListener('click', onPasswordToggle);
   fullNameInput.addEventListener('input', validationInput);
   currentPasswordInput.addEventListener('input', validationInput);
@@ -277,7 +270,6 @@ const getUserInfo = async () => {
     const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = result.data.phoneNumber?.split('-') || [];
     const { postalCode, address1, address2 } = result.data?.address || {};
     const fullPhoneNumber = phoneNumberFirst && `${phoneNumberFirst}-${phoneNumberSecond}-${phoneNumberThird}`;
-
     const userInfo = {
       fullName: result.data.fullName,
       email: result.data.email,
@@ -289,11 +281,11 @@ const getUserInfo = async () => {
       address1: address1 || '등록된 주소가 없습니다.',
       address2: address2 || '등록된 상세주소가 없습니다.'
     };
-
     renderUserInfo(userInfo);
-
   } catch (err) {
     console.log(err.message);
+    alert(err.message);
+    window.location.href = '/';
   }
 };
 
@@ -311,6 +303,8 @@ const submitWithdrawUser = async (e) => {
     logOut();
   } catch (err) {
     console.log(err.message);
+    alert(err.message);
+    window.location.reload();
   }
 };
 
@@ -366,6 +360,7 @@ const submitModifyUserInfo = async (e) => {
     window.location.reload();
   } catch (err) {
     console.log(err.message);
+    alert(err.message);
   }
 };
 
@@ -387,8 +382,7 @@ const checkUserPassword = async (e) => {
     changeUserForm(changeUserFormFlag);
     closeModal();
   } catch (err) {
-    console.log(err.message);
-    alert('비밀번호가 틀렸습니다.');
+    alert(err.message);
     window.location.reload();
   }
 };
