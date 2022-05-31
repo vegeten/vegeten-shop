@@ -26,17 +26,23 @@
   <div class="login-form-container 	">
     <form class="box login-form-box has-background-light" id="loginForm">
       <div class="field">
-        <label class="label" for="emailInput">이메일</label>
+        <label for="emailInput">이메일</label>
         <div class="control">
-          <input class="input" id="emailInput" type="email" placeholder="abc@example.com" autocomplete="on" />
+          <input class="input is-medium is-danger" id="emailInput" type="email" placeholder="이메일을 입력해주세요."
+            autocomplete="off" />
         </div>
       </div>
 
-      <div class="field mb-5">
-        <label class="label" for="passwordInput">비밀번호</label>
+      <div class="field">
+        <label for="passwordInput">비밀번호</label>
         <div class="control">
-          <input class="input" id="passwordInput" type="password" placeholder="********" autocomplete="on" />
+          <input class="input is-medium is-danger" id="passwordInput" type="password" placeholder="비밀번호를 입력해주세요."
+            autocomplete="off" />
         </div>
+      </div>
+
+      <div id="password-msg" class="help is-danger">
+        <span></span>
       </div>
 
       <div class="btn-wrapper">
@@ -51,8 +57,27 @@
           </a>
         </div>
       </div>
-
     </form>
+  </div>
+
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"></p>
+        <button class="delete close-button" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+          </span>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <a class="button is-black" href="/shop">쇼핑 하러가기</a>
+        <a class="button is-white" href="/">홈 화면으로가기</a>
+      </footer>
+    </div>
   </div>
 
   <footer class="footer"></footer>
