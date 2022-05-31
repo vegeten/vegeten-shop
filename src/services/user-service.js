@@ -16,7 +16,7 @@ class UserService {
     // 이메일 중복 확인
     const user = await this.userModel.findByEmail(email);
     if (user) {
-      const error = new Error( '이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.');
+      const error = new Error('이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.');
       error.status = 409;
       throw error;
     }
