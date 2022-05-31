@@ -75,7 +75,7 @@ function showProducts (data ,categoryId ='') {
     // 카테고리 id 값으로 
     if(categoryId !== '') {
       pagenationLink[i].addEventListener("click", () => {
-        getProductCategory(i+1, categoryName)
+        getProductCategory(i+1, categoryId)
       })
     } else {
       pagenationLink[i].addEventListener("click", () => {
