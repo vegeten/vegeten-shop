@@ -1,17 +1,6 @@
 import * as Api from '/api.js';
-import { validateEmail, getAuthorizationObj, getNode } from '/useful-functions.js';
-import renderFooter from '../components/footer.js';
-import { renderNav } from '../components/nav.js';
+import { validateEmail, getNode } from '/useful-functions.js';
 
-const { isLogin } = getAuthorizationObj();
-
-if (isLogin) {
-  alert('이미 로그인 되어 있습니다.');
-  window.location.href = '/';
-}
-
-renderNav();
-renderFooter();
 
 // 요소(element), input 혹은 상수
 const emailInput = getNode('#emailInput');
@@ -47,7 +36,7 @@ const viewDetailModal = (success, message = '로그인 성공') => {
 
 const closeModal = () => {
   modal.classList.remove('is-active');
-  window.location.href = '/login';
+  window.location.href = '/admin/login';
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
@@ -79,7 +68,7 @@ async function handleSubmit(e) {
   try {
     const data = { email, password };
 
-    const result = await Api.post('/api/users/login', data);
+    const result = await Api.post('/api/admin/login', data);
     const { token, refreshToken } = result;
 
     // 로그인 성공, 토큰을 세션 스토리지에 저장

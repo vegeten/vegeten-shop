@@ -86,9 +86,15 @@
   justify-content: space-between;
 }
 
+.btn-mod-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
 .password-wrap {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
 }
 
 .password-wrap button {
@@ -149,4 +155,8 @@ input[type=number] {
 
 .content {
   color: rgb(76, 76, 246);
+}
+
+.change-form {
+  display: none;
 }
