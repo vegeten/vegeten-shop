@@ -1,3 +1,7 @@
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 .login-form-container {
   display: flex;
   align-items: center;
@@ -12,7 +16,6 @@
 .login-form-box .title {
   text-align: center;
 }
-
 
 .btn-wrapper {
   display: flex;
