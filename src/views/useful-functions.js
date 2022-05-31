@@ -40,3 +40,18 @@ export const getAuthorizationObj = () => {
     isAdmin: false,
   };
 };
+
+export const setCookie = (key, value, exp) => {
+  let todayDate = new Date(0);
+  todayDate.setUTCSeconds(exp);
+
+  let cookie = encodeURIComponent(key) + '=' + encodeURIComponent(value) + '; expires=' + todayDate.toUTCString() + ';';
+  document.cookie = cookie;
+};
+
+export const getCookie = (cookieName) => {
+  let matches = document.cookie.match(
+    new RegExp('(?:^|; )' + cookieName.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+};

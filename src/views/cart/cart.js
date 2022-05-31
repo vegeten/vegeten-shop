@@ -15,7 +15,7 @@ const productsContainer = getNode('#products-container');
 const cartListMarkUp = (cartList) => {
   // 장바구니에 상품이 있을 경우
   let markUp = '';
-  if (cartList !== null) {
+  if (cartList !== null && cartList.length !== 0) {
     cartList.forEach((product) => {
       markUp += `
       <div class="cart-element">

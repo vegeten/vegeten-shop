@@ -1,6 +1,6 @@
-import renderFooter from "../components/footer.js";
-import { renderNav } from "../components/nav.js";
-import { getNode } from "../useful-functions.js";
+import renderFooter from '../components/footer.js';
+import { renderNav } from '../components/nav.js';
+import { getNode, getCookie } from '../useful-functions.js';
 
 window.onpageshow = function (event) {
   if (event.persisted) {
@@ -9,6 +9,8 @@ window.onpageshow = function (event) {
 };
 renderNav();
 renderFooter();
+
+console.log('토큰', getCookie('accessToken'));
 
 const $carouselSlide = getNode('.carousel-slide');
 const $prevBtn = getNode('#prevBtn');
@@ -27,9 +29,9 @@ const nextSlideEvent = () => {
     counter = 0;
   } else {
     counter++;
-  };
-  $carouselSlide.style.transition = "transform 0.4s ease-in-out";
-  $carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+  }
+  $carouselSlide.style.transition = 'transform 0.4s ease-in-out';
+  $carouselSlide.style.transform = 'translateX(' + -size * counter + 'px)';
 };
 
 const prevSlideEvent = () => {
@@ -37,11 +39,11 @@ const prevSlideEvent = () => {
     counter = slideLength;
   } else {
     counter--;
-  };
-  $carouselSlide.style.transition = "transform 0.4s ease-in-out";
-  $carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+  }
+  $carouselSlide.style.transition = 'transform 0.4s ease-in-out';
+  $carouselSlide.style.transform = 'translateX(' + -size * counter + 'px)';
 };
 
 $nextBtn.addEventListener('click', nextSlideEvent);
 $prevBtn.addEventListener('click', prevSlideEvent);
-window.addEventListener("resize", setSlideSize);
+window.addEventListener('resize', setSlideSize);
