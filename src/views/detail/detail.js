@@ -30,7 +30,7 @@ async function getProductDetail () {
     const price = convertToNumber(getNode('#price').textContent);
     totalPrice.innerHTML = (selected * price).toLocaleString() + ' 원';
     //구매하기 버튼에 링크
-    getNode('.buyProduct').href = `/order?product=${datas.data._id}&amount=${selected}`;
+    getNode('.buyProduct').href = `/order?product=${datas.data.shortId}&amount=${selected}`;
   });
 }
 getProductDetail();
@@ -48,6 +48,7 @@ function addToCart() {
   if(existCartEntry === null) {
     existCartEntry = [];
   } 
+  const selections = getNode('#total-count'); // select 드롭박스
   const selected = Number(selections.value.replace('개', ''));
   const cartEntry = {
     check: false,
