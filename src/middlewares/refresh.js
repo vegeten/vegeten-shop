@@ -18,7 +18,7 @@ async function refresh_ (req, res, next) {
     if (decoded === null) {
       res.status(401).send({
         ok: false,
-        message: 'No authorized!',
+        reason: 'No authorized!',
       });
       return;
     };

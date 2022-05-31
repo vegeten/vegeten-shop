@@ -2,11 +2,22 @@
   font-family: "Roboto", sans-serif;
 }
 
+.admin-login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  height: 85vh;
+}
+
+.admin-login-title {
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 5rem;
+}
+
 .login-form-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 85vh;
 }
 
 .login-form-box {

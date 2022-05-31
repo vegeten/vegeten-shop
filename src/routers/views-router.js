@@ -9,6 +9,7 @@ viewsRouter.use('/login', serveStatic('login'));
 viewsRouter.use('/mypage', serveStatic('mypage'));
 viewsRouter.use('/about', serveStatic('about'));
 viewsRouter.use('/admin', serveStatic('admin'));
+viewsRouter.use('/admin/login', serveStatic('admin-login'));
 viewsRouter.use('/shop', serveStatic('shop'));
 viewsRouter.use('/shop/:productId', serveStatic('detail'));
 viewsRouter.use('/order/cartlist', serveStatic('order-cart'));
