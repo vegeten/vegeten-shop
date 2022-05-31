@@ -1,5 +1,3 @@
-import e from 'express';
-
 // 문자열+숫자로 이루어진 랜덤 5글자 반환
 export const randomId = () => {
   return Math.random().toString(36).substring(2, 7);
@@ -38,29 +36,38 @@ export const getNode = (selector) => {
 // JWT 토큰 여부로 로그인 상태를 판단하여 객체로 전달해줌.
 export const getAuthorizationObj = () => {
   return {
-    isLogin: localStorage.getItem('token') ? true : false,
+    isLogin: document.cookie.indexOf('accessToken') > -1 ? true : false,
     isAdmin: false,
   };
 };
 
 export const setCookie = (key, value, exp) => {
   let newCookie;
-  if (exp !== null) {
+  if (exp) {
     let todayDate = new Date(0);
     todayDate.setUTCSeconds(exp);
-    newCookie = key + '=' + value + ';expires=' + todayDate.toUTCString() + ';path=/';
+    newCookie =
+      encodeURIComponent(key) + '=' + encodeURIComponent(value) + ';expires=' + todayDate.toUTCString() + ';path=/';
   } else {
-    newCookie = key + '=' + value;
+    newCookie = encodeURIComponent(key) + '=' + encodeURIComponent(value);
   }
 
   document.cookie = newCookie;
 };
 
 export const getCookie = (cookieName) => {
-  const cookieValue = document.cookie.split(';').find((row) => row.startsWith(cookieName));
+  const decodedCookieName = decodeURIComponent(cookieName);
+  const idx = document.cookie.indexOf(decodedCookieName);
 
-  if (cookieValue) {
-    cookieValue.split('=')[1];
-  }
+  const cookieValue = document.cookie
+    .slice(idx)
+    .split(';')
+    .find((row) => row.startsWith(decodedCookieName))
+    .split('=')[1];
+
   return cookieValue;
+};
+
+export const deleteCookie = (cookieName) => {
+  document.cookie = decodeURIComponent(cookieName) + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 };

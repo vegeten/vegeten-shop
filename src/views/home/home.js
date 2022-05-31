@@ -10,9 +10,6 @@ window.onpageshow = function (event) {
 renderNav();
 renderFooter();
 
-// console.log('엑세스: ', getCookie('accessToken'));
-// console.log('리프레시: ', getCookie('refreshToken'));
-
 const $carouselSlide = getNode('.carousel-slide');
 const $prevBtn = getNode('#prevBtn');
 const $nextBtn = getNode('#nextBtn');
