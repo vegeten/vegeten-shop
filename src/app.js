@@ -1,9 +1,7 @@
 import cors from 'cors';
 import express from 'express';
-import { viewsRouter, userRouter, adminRouter, orderRouter, productRouter, categoryRouter } from './routers';
-import { errorHandler } from './middlewares';
-// import session from 'express-session';
-// let RedisStore = require('connect-redis')(session);
+import { viewsRouter, userRouter, orderRouter, productRouter, categoryRouter, adminRouter } from './routers';
+import { errorHandler, refresh_ } from './middlewares';
 // import { clientConnect } from './utils';
 
 const app = express();

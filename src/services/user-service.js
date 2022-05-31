@@ -34,6 +34,7 @@ class UserService {
     const { email, password } = loginInfo;
     // 우선 해당 이메일의 사용자 정보가  db에 존재하는지 확인
     const user = await this.userModel.findByEmail(email);
+    console.log(user);
     if (!user) {
       const e = new Error('해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
       e.status = 404;
@@ -52,11 +53,10 @@ class UserService {
 
     // access token, refresh token 발급
     const token = sign(user);
-    const refreshToken = refresh();
+    const refreshToken = refresh(user.shortId);
     const exp = jwt.decode(token).exp;
     // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
-    console.log(exp);
     return { token, refreshToken, exp };
   }
 
@@ -144,7 +144,7 @@ class UserService {
     return user;
   }
 
-  async setUserAddress(userInfoRequired, toUpdate) {
+  async setUserPartially(userInfoRequired, toUpdate) {
     const { userId } = userInfoRequired;
     let user = await this.userModel.findById(userId);
     // db에서 찾지 못한 경우, 에러 메시지 반환

@@ -3,7 +3,7 @@ import { UserSchema } from '../schemas/user-schema';
 const User = model('users', UserSchema);
 export class UserModel {
   async findByEmail(email) {
-    return await User.findOne({ email });
+    return await User.findOne({ email: email });
   }
   async findById(userId) {
     return await User.findOne({ shortId: userId });
