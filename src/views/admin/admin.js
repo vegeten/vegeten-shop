@@ -1,22 +1,11 @@
-import { addCommas, getAuthorizationObj, getNode } from '../useful-functions.js';
+import { addCommas, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
-window.onpageshow = function (event) {
-  if (event.persisted) {
-    window.location.reload();
-  }
-};
-
-const deleteButton = getNode('.delete-button');
 const orderList = getNode('.order-list');
 const modal = getNode('.modal');
 const modalButton = getNode('.close-button');
 const orderlistWrap = getNode('.orderlist-wrap');
 const modalBody = getNode('.modal-card-body');
-
-const deleteSubmit = () => {
-  alert('정말 주문은 삭제하시겠습니까?');
-};
 
 const createOrderDetail = (products) => {
   return products.map(product => {
@@ -41,7 +30,7 @@ const createOrderModal = (item) => {
   return `
   <div class="body-wrap">
           <div class="order-detail-info">
-            <span class="info-order-number">No. ${shortId}</span>
+            <span class="info-order-number">No. <strong>${shortId}</strong></span>
             <span class="info-order-date">${createdAt.substr(0, 10)}</span>
           </div>
           <div class="order-detail-list">
@@ -72,19 +61,43 @@ const createOrderModal = (item) => {
           </div>
           <hr>
           <div class="order-detail-account">
+            <button class="button is-danger is-small order-delete-button">주문 삭제</button>
             <span><strong>총 주문금액: ${addCommas(totalPrice)}</strong></span>
           </div>
         </div>
   `;
 };
 
+const onDeleteOrder = async (e) => {
+  e.preventDefault();
+
+
+  const ok = window.confirm('주문 내역을 정말 삭제하시겠습니까?');
+  if (!ok) return;
+
+  try {
+    const orderId = e.target.parentNode.parentNode.querySelector('.info-order-number strong').innerText;
+    console.log(orderId);
+    await Api.delete('/api/orders', orderId);
+    alert('주문 내역이 삭제되었습니다.');
+    window.location.reload();
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const addOrderDeleteEvent = () => {
+  getNode('.order-delete-button').addEventListener('click', onDeleteOrder);
+};
+
 const renderOrderModal = (item) => {
   modalBody.innerHTML = createOrderModal(item);
+  addOrderDeleteEvent();
 };
 
 const viewDetailModal = (e) => {
   if (!e.target.classList.contains('open-modal')) return;
-  const orderId = e.target.parentNode.parentNode.querySelector('.ordershortId').innerText;
+  const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.ordershortId').innerText;
   const orderDate = getNode('.order_date').innerText;
   modalBody.innerHTML = '';
   getOrderDetail(orderId, orderDate);
@@ -96,7 +109,6 @@ const closeModal = () => {
 };
 
 function addAllEvents() {
-  deleteButton.addEventListener('click', deleteSubmit);
   modalButton.addEventListener('click', closeModal);
   orderList.addEventListener('click', viewDetailModal);
 }
@@ -109,11 +121,11 @@ const createOrderListElement = (item) => {
   const tr = document.createElement('tr');
 
   tr.innerHTML = `
-    <td><input type="checkbox" name="check"></td>
     <th class="ordershortId">${shortId}</th>
     <td>${products.length ?? '1'} 건의 주문내역</td>
     <td class="order_date">${createdAt.substr(0, 10)}</td>
-      <a class="order-detail-button">
+    <td>
+    <a class="order-detail-button">
         <span class="material-icons open-modal">
           open_in_full
         </span>
@@ -135,7 +147,7 @@ const renderAllOrderAllList = (orderList) => {
 
 const getOrderAllList = async () => {
   try {
-    const result = await Api.get('/api/admin/orders');
+    const result = await Api.get('/api/orders/list');
     renderAllOrderAllList(result);
   } catch (err) {
     console.log(err);
@@ -144,7 +156,7 @@ const getOrderAllList = async () => {
 
 const getOrderDetail = async (orderId) => {
   try {
-    const result = await Api.get('/api/admin/orders', orderId);
+    const result = await Api.get('/api/orders', orderId);
     renderOrderModal(result.data);
   } catch (err) {
     console.log(err.message);
