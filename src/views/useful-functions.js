@@ -36,22 +36,13 @@ export const getNode = (selector) => {
 // JWT 토큰 여부로 로그인 상태를 판단하여 객체로 전달해줌.
 export const getAuthorizationObj = () => {
   return {
-    isLogin: document.cookie.indexOf('accessToken') > -1 ? true : false,
+    isLogin: document.cookie.indexOf('refreshToken') === -1 ? false : true,
     isAdmin: false,
   };
 };
 
-export const setCookie = (key, value, exp) => {
-  let newCookie;
-  if (exp) {
-    let todayDate = new Date(0);
-    todayDate.setUTCSeconds(exp);
-    newCookie =
-      encodeURIComponent(key) + '=' + encodeURIComponent(value) + ';expires=' + todayDate.toUTCString() + ';path=/';
-  } else {
-    newCookie = encodeURIComponent(key) + '=' + encodeURIComponent(value);
-  }
-
+export const setCookie = (key, value) => {
+  let newCookie = encodeURIComponent(key) + '=' + encodeURIComponent(value) + ';path=/';
   document.cookie = newCookie;
 };
 

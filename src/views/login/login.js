@@ -1,10 +1,9 @@
 import * as Api from '/api.js';
-import { validateEmail, getAuthorizationObj, getNode, setCookie } from '/useful-functions.js';
+import { validateEmail, getAuthorizationObj, getNode, setCookie, getCookie } from '/useful-functions.js';
 import renderFooter from '../components/footer.js';
 import { renderNav } from '../components/nav.js';
 
 const { isLogin } = getAuthorizationObj();
-
 if (isLogin) {
   alert('이미 로그인 되어 있습니다.');
   window.location.href = '/';
@@ -80,13 +79,13 @@ async function handleSubmit(e) {
     const data = { email, password };
 
     const result = await Api.post('/api/users/login', data);
-    console.log(result);
     const { token, refreshToken, exp } = result;
 
-    // 로그인 성공, 토큰을 세션 스토리지에 저장
-    // 물론 다른 스토리지여도 됨
-    setCookie('accessToken', token, exp);
-    setCookie('refreshToken', refreshToken, null);
+    // 로그인 성공 시 엑세스토큰과 리프레시토큰을 쿠키에 저장
+    // 엑세스토큰 만료시간은 로컬스토리지에 저장
+    localStorage.setItem('accessToken_exp', exp);
+    setCookie('accessToken', token);
+    setCookie('refreshToken', refreshToken);
 
     viewDetailModal(true);
     // 로그인 페이지 이동
