@@ -18,27 +18,21 @@ const sign = (user) => {
   });
 };
 
-const verify = (userToken) => {
-  // access token 검증
+const verify = (token) => {
+  let decoded = null;
   try {
-    const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
-    const jwtDecoded = jwt.verify(userToken, secretKey);
+    decoded = jwt.verify(token, secret);
+    return {
+      ok: true,
+      userId: decoded.userId,
+      role: decoded.role,
+    };
+  } catch (err) {
+    return {
+      ok: false,
+      message: err.message
+    }
 
-    const userId = jwtDecoded.userId;
-
-    // 라우터에서 req.currentUserId를 통해 유저의 id에 접근 가능하게 됨
-    req.currentUserId = userId;
-
-    next();
-  } catch (error) {
-    // jwt.verify 함수가 에러를 발생시키는 경우는 토큰이 정상적으로 decode 안되었을 경우임.
-    // 403 코드로 JSON 형태로 프론트에 전달함.
-    res.status(403).json({
-      result: 'forbidden-approach',
-      reason: '정상적인 토큰이 아닙니다.',
-    });
-
-    return;
   }
 };
 
@@ -64,4 +58,4 @@ const refreshVerify = async (token, userId) => {
   }
 };
 
-export { sign, verify, refresh, refreshVerify };
+export { sign, verify, refresh, refreshVerify, secret };
