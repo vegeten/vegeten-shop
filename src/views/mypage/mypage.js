@@ -19,6 +19,7 @@ if (!isLogin) {
 const orderWrapper = getNode('.order-list');
 const fullNameInput = getNode('.name-input');
 const emailInput = getNode('.email-input');
+const fullPhoneNumberInput = getNode('.fullPhoneNumber');
 const numberFirstInput = getNode('.number-1');
 const numberSecondInput = getNode('.number-2');
 const numberThirdInput = getNode('.number-3');
@@ -76,6 +77,7 @@ const renderUserInfo = (data) => {
   const {
     fullName,
     email,
+    fullPhoneNumber,
     phoneNumberFirst,
     phoneNumberSecond,
     phoneNumberThird,
@@ -86,12 +88,17 @@ const renderUserInfo = (data) => {
 
   fullNameInput.value = fullName;
   emailInput.value = email;
+  fullPhoneNumberInput.value = fullPhoneNumber;
   numberFirstInput.value = phoneNumberFirst;
   numberSecondInput.value = phoneNumberSecond;
   numberThirdInput.value = phoneNumberThird;
   addressCodeInput.value = postalCode;
   addressTitleInput.value = address1;
   addressDetailInput.value = address2;
+};
+
+const changeSubmitButton = (e) => {
+  console.log(e.target);
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
@@ -107,9 +114,10 @@ function addAllEvents() {
     }).open();
   });
   const btnWithdraw = getNode('.btn-withdraw');
-  const btnModify = getNode('.btn-modify');
+  const btnPasswordConfirm = getNode('.btn-password-confirm');
   btnWithdraw.addEventListener('click', submitWithdrawUser);
-  btnModify.addEventListener('click', submitModifyUserInfo);
+  btnPasswordConfirm.addEventListener('click', changeSubmitButton);
+  // btnModify.addEventListener('click', submitModifyUserInfo);
   passwordToggle.addEventListener('click', onPasswordToggle);
   fullNameInput.addEventListener('input', validationInput);
   currentPasswordInput.addEventListener('input', validationInput);
@@ -148,7 +156,7 @@ const createOrderDetailListElement = (array) => {
 
 const createOrderListElement = (item) => {
   const {
-    _id,
+    shortId,
     products,
     totalPrice,
     createdAt
@@ -167,7 +175,7 @@ const createOrderListElement = (item) => {
     <div class="order-info">
       <div class="order-id-wrap">
         <div><strong>주문 번호</strong></div>
-        <div class="order-id content">${_id}</div>
+        <div class="order-id content">${shortId}</div>
       </div>
       <div class="order-date">
         <div><strong>주문 날짜</strong></div>
@@ -209,8 +217,8 @@ const addOrderDeleteEvent = () => {
 
 const renderAllOrderList = (orderList) => {
   orderWrapper.innerHTML = '';
-  orderList.data.forEach(({ products, totalPrice, _id, createdAt }) => {
-    const orders = createOrderListElement({ totalPrice, _id, createdAt, products });
+  orderList.data.forEach(({ products, totalPrice, shortId, createdAt }) => {
+    const orders = createOrderListElement({ totalPrice, shortId, createdAt, products });
     orderWrapper.appendChild(orders);
   });
   addOrderDeleteEvent();
@@ -220,16 +228,19 @@ const getUserInfo = async () => {
   try {
     const result = await Api.get('/api/users');
     const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = result.data.phoneNumber?.split('-') || [];
-    const { postalCode = '', address1 = '', address2 = '' } = result.data?.address || {};
+    const { postalCode, address1, address2 } = result.data?.address || {};
+    const fullPhoneNumber = phoneNumberFirst && `${phoneNumberFirst} - ${phoneNumberSecond} - ${phoneNumberThird}`;
+
     const userInfo = {
       fullName: result.data.fullName,
       email: result.data.email,
+      fullPhoneNumber: fullPhoneNumber || '등록된 휴대폰 번호가 없습니다.',
       phoneNumberFirst,
       phoneNumberSecond,
       phoneNumberThird,
-      postalCode,
-      address1,
-      address2
+      postalCode: postalCode || '등록된 우편번호가 없습니다.',
+      address1: address1 || '등록된 주소가 없습니다.',
+      address2: address2 || '등록된 상세주소가 없습니다.'
     };
 
     renderUserInfo(userInfo);

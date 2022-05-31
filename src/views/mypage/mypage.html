@@ -42,7 +42,7 @@
         <label for="fullNameInput">이름</label>
         <div class="control">
           <input class="input is-medium name-input" id="fullNameInput" type="text" placeholder="이름을 입력해주세요."
-            autocomplete="off" />
+            autocomplete="off" disabled />
           <div id="name-msg" class="help is-danger">
             <span>이름을 입력해주세요.</span>
           </div>
@@ -51,11 +51,11 @@
         <div class="field">
           <label for="emailInput">이메일</label>
           <div class="control">
-            <input class="input is-medium email-input" id="emailInput" type="email" autocomplete="off" readonly />
+            <input class="input is-medium email-input" id="emailInput" type="email" autocomplete="off" disabled />
           </div>
         </div>
 
-        <div class="field">
+        <div class="field" style="display: none;">
           <label class="passwordInput" for="passwordInput">비밀번호</label>
           <div class="control">
             <input class="input is-medium passwd" id="passwordInput" type="password" placeholder="현재 비밀번호를 입력해주세요." />
@@ -66,18 +66,7 @@
 
         </div>
 
-        <div class="field">
-          <label class="passwordInput" for="passwordInput">비밀번호 확인</label>
-          <div class="control">
-            <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
-              placeholder="현재 비밀번호를 확인해주세요." />
-            <div id="password-check-msg" class="help is-danger">
-              <span>비밀번호 확인을 입력해주세요.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="field">
+        <div class="field" style="display: none;">
           <label class="passwordInput" for="passwordInput">새 비밀번호</label>
           <div class="password-wrap control">
             <input class="input is-medium new-passwd mb-3" id="passwordModify" type="password"
@@ -86,14 +75,32 @@
           </div>
         </div>
 
+        <div class="field" style="display: none;">
+          <label class="passwordInput" for="passwordInput">비밀번호 확인</label>
+          <div class="control">
+            <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
+              placeholder="새로운 비밀번호를 확인해주세요." />
+            <div id="password-check-msg" class="help is-danger">
+              <span>비밀번호 확인을 입력해주세요.</span>
+            </div>
+          </div>
+        </div>
+
         <div class="field">
           <label for="phoneInput">휴대폰 번호</label>
           <div class="phone-wrap control">
-            <input id="phoneInput" class="input is-medium phone number-1" type="number" maxlength="3" />
+            <input id="fullPhoneInput" class="input is-medium phone fullPhoneNumber" disabled />
+          </div>
+        </div>
+
+        <div class="field" style="display: none;">
+          <label for="phoneInput">휴대폰 번호</label>
+          <div class="phone-wrap control">
+            <input id="phoneInput" class="input is-medium phone number-1" type="number" maxlength="3" disabled />
             <span>-</span>
-            <input class="input is-medium phone number-2" type="number" maxlength="4" />
+            <input class="input is-medium phone number-2" type="number" maxlength="4" disabled />
             <span>-</span>
-            <input class="input is-medium phone number-3" type="number" maxlength="4" />
+            <input class="input is-medium phone number-3" type="number" maxlength="4" disabled />
           </div>
           <div id="phone-msg" class="help is-danger">
             <span>휴대폰 번호를 입력해주세요.</span>
@@ -103,23 +110,22 @@
         <div class="field">
           <label class="label-input" for="address-search">우편번호</label>
           <div class="addr-wrap control">
-            <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" readonly />
-            <button id="kakao_address" class="button is-medium is-responsive">주소찾기</button>
+            <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" disabled />
+            <button id="kakao_address" class="button is-medium is-responsive" style="display: none;">주소찾기</button>
           </div>
         </div>
 
         <div class="field">
           <label class="label-input" for="address">주소</label>
           <div class="control">
-            <input class="input is-medium address" type="text" autocomplete="off" readonly />
+            <input class="input is-medium address" type="text" autocomplete="off" disabled />
           </div>
         </div>
 
         <div class="field">
           <label class="label-input" for="addressDetail">상세 주소</label>
           <div class="control">
-            <input class="input is-medium address-detail" id="addressDetail" type="text" placeholder="상세 주소를 입력해주세요."
-              autocomplete="off" />
+            <input class="input is-medium address-detail" id="addressDetail" type="text" autocomplete="off" disabled />
           </div>
         </div>
 
@@ -127,8 +133,8 @@
           <button class="button is-danger is-medium mt-3 mb-3 btn-withdraw">
             탈퇴하기
           </button>
-          <button class="button is-black is-medium mt-3 mb-3 btn-modify" type="submit" id="submitButton">
-            변경 사항 저장하기
+          <button class="button is-warning is-medium mt-3 mb-3 btn-password-confirm" type="submit" id="submitButton">
+            회원 정보 수정
           </button>
         </div>
       </form>
