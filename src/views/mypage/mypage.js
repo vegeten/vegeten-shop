@@ -27,13 +27,16 @@ const addressCodeInput = getNode('.address-code');
 const addressTitleInput = getNode('.address');
 const addressDetailInput = getNode('.address-detail');
 const currentPasswordInput = getNode('.passwd');
-const currentPasswordCheck = getNode('.passwd-check');
+const newPasswordCheck = getNode('.passwd-check');
 const newPasswordInput = getNode('.new-passwd');
 const passwordToggle = getNode('.passwd-modify');
+const btnModCancel = getNode('.btn-mod-cancel');
+const btnPasswordConfirm = getNode('.btn-password-confirm');
 const modal = getNode('.modal');
 const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
-let toggle = false;
+let newPasswordToggle = false;
+let changeUserFormFlag = false;
 
 // const viewDetailModal = (success, message = '로그인 성공') => {
 //   const modalTitle = getNode('.modal-card-title');
@@ -51,9 +54,40 @@ let toggle = false;
 //   }
 // };
 
+const onModCancel = (e) => {
+  e.preventDefault();
+  changeUserFormFlag = false;
+  changeUserForm(changeUserFormFlag);
+};
+
+const changeUserForm = (flag) => {
+  const changeFormArray = document.querySelectorAll('.change-form');
+  if (flag) {
+    fullPhoneNumberInput.parentNode.parentNode.style.display = 'none';
+    changeFormArray.forEach(item => item.style.display = 'block');
+    fullNameInput.disabled = false;
+    addressCodeInput.disabled = false;
+    addressCodeInput.value = '';
+    addressTitleInput.disabled = false;
+    addressTitleInput.value = '';
+    addressDetailInput.disabled = false;
+    addressDetailInput.value = '';
+    btnPasswordConfirm.removeEventListener('click', changeSubmitButton);
+    btnPasswordConfirm.addEventListener('click', submitModifyUserInfo);
+  } else {
+    fullPhoneNumberInput.parentNode.parentNode.style.display = 'block';
+    changeFormArray.forEach(item => item.style.display = 'none');
+    fullNameInput.disabled = true;
+    addressCodeInput.disabled = true;
+    addressTitleInput.disabled = true;
+    addressDetailInput.disabled = true;
+    btnPasswordConfirm.removeEventListener('click', submitModifyUserInfo);
+    btnPasswordConfirm.addEventListener('click', changeSubmitButton);
+  }
+};
+
 const closeModal = () => {
   modal.classList.remove('is-active');
-  // window.location.href = '/';
 };
 
 const validationInput = (e) => {
@@ -73,26 +107,30 @@ const addErrorHTML = (target) => {
   if (target === fullNameInput) {
     target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
   } else if (target === currentPasswordInput) {
-    target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
-  } else if (target === currentPasswordCheck) {
+    target.nextElementSibling.innerHTML = '비밀번호는 필수 입력사항입니다.';
+  } else if (target === newPasswordCheck) {
     target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
   }
 };
 
 const onPasswordToggle = (e) => {
   e.preventDefault();
-  toggle = !toggle;
-  if (toggle) {
+  newPasswordToggle = !newPasswordToggle;
+  if (newPasswordToggle) {
     e.target.classList.remove('is-warning');
     e.target.classList.add('is-danger');
     newPasswordInput.readOnly = false;
     newPasswordInput.placeholder = '새 비밀번호를 입력해주세요.';
+    newPasswordCheck.readOnly = false;
+    newPasswordCheck.placeholder = '새 비밀번호 확인을 입력해주세요.';
     newPasswordInput.focus();
   } else {
     e.target.classList.remove('is-danger');
     e.target.classList.add('is-warning');
     newPasswordInput.placeholder = '비밀번호 변경 버튼을 누르세요.';
     newPasswordInput.readOnly = true;
+    newPasswordCheck.readOnly = true;
+    newPasswordCheck.placeholder = '비밀번호 변경 버튼을 누르세요.';
   }
 
 };
@@ -141,17 +179,18 @@ function addAllEvents() {
     }).open();
   });
   const btnWithdraw = getNode('.btn-withdraw');
-  const btnPasswordConfirm = getNode('.btn-password-confirm');
+
   btnWithdraw.addEventListener('click', submitWithdrawUser);
   btnPasswordConfirm.addEventListener('click', changeSubmitButton);
   // btnModify.addEventListener('click', submitModifyUserInfo);
   passwordToggle.addEventListener('click', onPasswordToggle);
   fullNameInput.addEventListener('input', validationInput);
   currentPasswordInput.addEventListener('input', validationInput);
-  currentPasswordCheck.addEventListener('input', validationInput);
+  newPasswordCheck.addEventListener('input', validationInput);
   newPasswordInput.addEventListener('input', validationInput);
   modalButton.addEventListener('click', closeModal);
   modalBackground.addEventListener('click', closeModal);
+  btnModCancel.addEventListener('click', () => onModCancel);
 }
 
 const onDeleteOrder = async (e) => {
@@ -288,6 +327,7 @@ const submitWithdrawUser = async (e) => {
 
   try {
     await Api.delete('/api/users');
+    alert('회원정보가 삭제되었습니다.');
     logOut();
   } catch (err) {
     console.log(err.message);
@@ -300,12 +340,13 @@ const submitModifyUserInfo = async (e) => {
   let validateFlag = true;
   const fullName = fullNameInput.value;
   const password = currentPasswordInput.value;
-  const passwordConfirm = currentPasswordCheck.value;
+  const newPassword = newPasswordInput.value;
+  const newPasswordConfirm = newPasswordCheck.value;
   const phoneNumber = `${numberFirstInput.value}-${numberSecondInput.value}-${numberThirdInput.value}`;
 
   const isFullNameValid = fullName.length >= 2;
   const isPasswordValid = password.length >= 4;
-  const isPasswordSame = password === passwordConfirm;
+  const isPasswordSame = newPassword === newPasswordConfirm;
 
   if (!isFullNameValid) {
     addErrorHTML(fullNameInput);
@@ -318,7 +359,7 @@ const submitModifyUserInfo = async (e) => {
   }
 
   if (!isPasswordSame) {
-    addErrorHTML(currentPasswordCheck);
+    addErrorHTML(newPasswordCheck);
     validateFlag = false;
   }
 
@@ -361,10 +402,14 @@ const checkUserPassword = async (e) => {
   e.preventDefault();
   const currentPassword = e.target.parentNode.parentNode.querySelector('.checkPasswordInput').value;
   try {
-    const result = await Api.post('/api/users/password', { currentPassword });
-    console.log(result);
+    await Api.post('/api/users/password', { currentPassword });
+    changeUserFormFlag = true;
+    changeUserForm(changeUserFormFlag);
+    closeModal();
   } catch (err) {
     console.log(err.message);
+    alert('비밀번호가 틀렸습니다.');
+    window.location.reload();
   }
 };
 
