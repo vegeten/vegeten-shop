@@ -38,7 +38,7 @@ async function refresh_ (req, res, next) {
     next();
   } else {
     // access token 또는 refresh token이 헤더에 없는 경우
-    res.status(400).send({
+    res.status(400).json({
       ok: false,
       message: 'Access token and refresh token are need for refresh!',
     });
