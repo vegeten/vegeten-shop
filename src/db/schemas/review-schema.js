@@ -21,6 +21,10 @@ const ReviewSchema = new Schema(
       required: false,
       default: null,
     },
+    score: {
+      type: Number,
+      required: false,
+    },
   },
   {
     collection: 'reviews',

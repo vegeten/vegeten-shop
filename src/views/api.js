@@ -1,8 +1,11 @@
-import { checkToken, getCookie } from './useful-functions.js';
+import { checkToken, deleteCookie, getCookie } from './useful-functions.js';
 
 // api 로 GET 요청 (/endpoint/params 형태로 요청함)
+//isTokenRequired=false
 async function getYesToken(endpoint, params = '') {
-  if (!checkToken()) {
+  const status = await checkToken();
+  if (!status) {
+    deleteCookie('refreshToken');
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;
@@ -48,7 +51,8 @@ async function getNoToken(endpoint, params = '') {
 
 // api 로 POST 요청 (/endpoint 로, JSON 데이터 형태로 요청함)
 async function postYesToken(endpoint, data) {
-  if (!checkToken()) {
+  const status = await checkToken();
+  if (!status()) {
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;
@@ -110,7 +114,8 @@ async function postNoToken(endpoint, data) {
 
 // api 로 PATCH 요청 (/endpoint/params 로, JSON 데이터 형태로 요청함)
 async function patchYesToken(endpoint, params = '', data) {
-  if (!checkToken()) {
+  const status = await checkToken();
+  if (!status()) {
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;
@@ -145,41 +150,36 @@ async function patchYesToken(endpoint, params = '', data) {
 }
 
 async function patchNoToken(endpoint, params = '', data) {
-  if (!checkToken()) {
-    alert('로그인이 필요합니다.');
-    window.location.href = '/login';
-    return;
-  } else {
-    const apiUrl = `${endpoint}/${params}`;
+  const apiUrl = `${endpoint}/${params}`;
 
-    // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
-    // 예시: {name: "Kim"} => {"name": "Kim"}
-    const bodyData = JSON.stringify(data);
-    console.log(`%cPATCH 요청: ${apiUrl}`, 'color: #059c4b;');
-    console.log(`%cPATCH 요청 데이터: ${bodyData}`, 'color: #059c4b;');
+  // JSON.stringify 함수: Javascript 객체를 JSON 형태로 변환함.
+  // 예시: {name: "Kim"} => {"name": "Kim"}
+  const bodyData = JSON.stringify(data);
+  console.log(`%cPATCH 요청: ${apiUrl}`, 'color: #059c4b;');
+  console.log(`%cPATCH 요청 데이터: ${bodyData}`, 'color: #059c4b;');
 
-    const res = await fetch(apiUrl, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: bodyData,
-    });
+  const res = await fetch(apiUrl, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: bodyData,
+  });
 
-    // 응답 코드가 4XX 계열일 때 (400, 403 등)
-    if (!res.ok) {
-      const errorContent = await res.json();
-      const { reason } = errorContent;
+  // 응답 코드가 4XX 계열일 때 (400, 403 등)
+  if (!res.ok) {
+    const errorContent = await res.json();
+    const { reason } = errorContent;
 
-      throw new Error(reason);
-    }
-    const result = await res.json();
-    return result;
+    throw new Error(reason);
   }
+  const result = await res.json();
+  return result;
 }
 
 async function deleteYesToken(endpoint, params = '', data = {}) {
-  if (!checkToken()) {
+  const status = await checkToken();
+  if (!status) {
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;

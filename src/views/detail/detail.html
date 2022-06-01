@@ -1,79 +1,78 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Team-Ten</title>
-    <!-- 폰트 -->
-    <link rel=“preconnect” href=“https://fonts.googleapis.com”> <link rel=“preconnect” href=“https://fonts.gstatic.com”
-    crossorigin> <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
-    <!-- 아이콘 -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <!-- bulma css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-    <!-- 폰트 어썸: 아이콘 -->
-    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-    <!-- 커스텀 css, js -->
-    <link rel="stylesheet" href="detail.css" />
-    <script src="detail.js" type="module" defer></script>
-  </head>
-  <body>
-    <nav class="navbar is-light" role="navigation" aria-label="main navigation"></nav>
-    <article class="container">
-      <!-- 대표상품 설명 -->
-      <div class="intro-item">
-        <div class="img_box">
-          <img
-            id="image"
-            src=""
-            alt=""
-          />
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Team-Ten</title>
+  <!-- 폰트 -->
+  <link rel=“preconnect” href=“https://fonts.googleapis.com”>
+  <link rel=“preconnect” href=“https://fonts.gstatic.com” crossorigin>
+  <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
+  <!-- 아이콘 -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- bulma css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 폰트 어썸: 아이콘 -->
+  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+  <!-- 커스텀 css, js -->
+  <link rel="stylesheet" href="detail.css" />
+  <script src="detail.js" type="module" defer></script>
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation"></nav>
+  <article class="container">
+    <!-- 대표상품 설명 -->
+    <div class="intro-item">
+      <div class="img_box">
+        <img id="image" src="" alt="" />
+      </div>
+      <div class="text_box" id="productId" name="">
+        <div class="title" id="productName"></div>
+        <div class="title is-4" id="company"></div>
+        <hr />
+        <div class="title is-5" id="price"></div>
+        <div class="description" id="description">
         </div>
-        <div class="text_box" id="productId" name="">
-          <div class="title" id="productName"></div>
-          <div class="title is-4" id="company"></div>
-          <hr />
-          <div class="title is-5" id="price"></div>
-          <div class="description" id="description">
+        <div class="delivery">
+          <span class="title is-6">배송정보</span>
+          <span>배송비 무료 (지역에 따라 상이할 수 있습니다.)</span>
+        </div>
+        <hr />
+        <!-- 수량선택 -->
+        <div class="product-count">
+          <div>수량선택</div>
+          <div class="select">
+            <select id="total-count">
+              <option selected>1개</option>
+              <option>2개</option>
+              <option>3개</option>
+              <option>4개</option>
+              <option>5개</option>
+              <option>6개</option>
+              <option>7개</option>
+              <option>8개</option>
+              <option>9개</option>
+              <option>10개</option>
+            </select>
           </div>
-          <div class="delivery">
-            <span class="title is-6">배송정보</span>
-            <span>배송비 무료 (지역에 따라 상이할 수 있습니다.)</span>
-          </div>
-          <hr />
-          <!-- 수량선택 -->
-          <div class="product-count">
-            <div>수량선택</div>
-              <div class="select">
-                <select id="total-count">
-                  <option selected>1개</option>
-                  <option>2개</option>
-                  <option>3개</option>
-                  <option>4개</option>
-                  <option>5개</option>
-                  <option>6개</option>
-                  <option>7개</option>
-                  <option>8개</option>
-                  <option>9개</option>
-                  <option>10개</option>
-                </select>
-              </div>
-          </div>
-          <!-- 수량선택 끝 -->
-          <!-- 총액 -->
-          <div class="total-price">
-            <div>총 금액</div>
-            <div id="totalPrice"></div>
-          </div>
-          <!-- 버튼 -->
-          <div class="button-group">
-            <a href="" class="button is-black is-medium buyProduct">구매하기</a>
-            <button class="button is-medium addCart" data-target="cart-modal">장바구니에 담기</button>
-            <!-- modal -->
-            <div class="modal" id="cart-modal">
-              <div class="modal-background"></div>
-              <div class="modal-card">
+        </div>
+        <!-- 수량선택 끝 -->
+        <!-- 총액 -->
+        <div class="total-price">
+          <div>총 금액</div>
+          <div id="totalPrice"></div>
+        </div>
+        <!-- 버튼 -->
+        <div class="button-group">
+          <a href="" class="button is-black is-medium buyProduct">구매하기</a>
+          <button class="button is-medium addCart" data-target="cart-modal">장바구니에 담기</button>
+          <!-- modal -->
+          <div class="modal" id="cart-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
               <section class="modal-card-body">
                 <!-- Content ... -->
                 <div class="material-icons">
@@ -81,27 +80,24 @@
                 </div>
                 <p class="modal-card-title">장바구니에 담겼습니다!</p>
               </section>
-                <footer class="modal-card-foot">
-                  <a href="/cart" class="button is-dark moveCart">장바구니로 이동</a>
-                  <a href="/shop" class="button">쇼핑 계속하기</a>
-                </footer>
-              </div>
+              <footer class="modal-card-foot">
+                <a href="/cart" class="button is-dark moveCart">장바구니로 이동</a>
+                <a href="/shop" class="button">쇼핑 계속하기</a>
+              </footer>
             </div>
           </div>
         </div>
       </div>
-      <!-- 대표상품 설명 끝-->
-      <hr />
-      <div class="detail-item">
-        <div class="img_box_detail">
-          <img
-            src=""
-            alt=""
-            id="detailImage"
-          />
-        </div>
+    </div>
+    <!-- 대표상품 설명 끝-->
+    <hr />
+    <div class="detail-item">
+      <div class="img_box_detail">
+        <img src="" alt="" id="detailImage" />
       </div>
-    </article>
-    <footer class="footer"></footer>
-  </body>
+    </div>
+  </article>
+  <footer class="footer"></footer>
+</body>
+
 </html>

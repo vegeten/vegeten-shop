@@ -92,10 +92,37 @@ article .title {
 .search-wrap {
   display: flex;
   flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: right;
+}
+
+.search-wrap form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search-input {
-  width: 200px;
+  height: 40px;
+  width: 250px;
+  border: none;
+  font-size: 1rem;
+  border-bottom: 1px solid gray;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.search-button {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.search-button:focus {
+  outline: 0;
 }
 
 article button.addProduct {
