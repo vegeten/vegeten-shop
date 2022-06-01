@@ -45,7 +45,6 @@ userRouter.post('/login', async function (req, res, next) {
 
     res.cookie('refreshToken', refreshToken, {
       expires: new Date(Date.now() + 1209600000),
-      // httpOnly: true,
     });
     res.json({ message: 'login success', data: { accessToken, refreshToken, exp } });
   } catch (error) {
