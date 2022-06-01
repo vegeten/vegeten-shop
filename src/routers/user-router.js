@@ -42,7 +42,7 @@ userRouter.post('/login', async function (req, res, next) {
     // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
 
     res.cookie('refreshToken', refreshToken, {
-      expires: new Date(Date.now() + 900000),
+      expires: new Date(Date.now() + 1209600000),
       httpOnly: true,
     });
     res.json({ message: 'login success', data: { accessToken, exp } });
