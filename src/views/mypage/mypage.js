@@ -1,5 +1,5 @@
 import renderFooter from '../components/footer.js';
-import { logOut, renderNav } from "../components/nav.js";
+import { logOut, renderNav } from '../components/nav.js';
 import { addCommas, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
@@ -35,7 +35,7 @@ const changeUserForm = (flag) => {
   const changeFormArray = document.querySelectorAll('.change-form');
   if (flag) {
     fullPhoneNumberInput.parentNode.parentNode.style.display = 'none';
-    changeFormArray.forEach(item => item.style.display = 'block');
+    changeFormArray.forEach((item) => (item.style.display = 'block'));
     fullNameInput.disabled = false;
     addressCodeInput.disabled = false;
     addressTitleInput.disabled = false;
@@ -44,7 +44,7 @@ const changeUserForm = (flag) => {
     btnPasswordConfirm.addEventListener('click', submitModifyUserInfo);
   } else {
     fullPhoneNumberInput.parentNode.parentNode.style.display = 'block';
-    changeFormArray.forEach(item => item.style.display = 'none');
+    changeFormArray.forEach((item) => (item.style.display = 'none'));
     fullNameInput.disabled = true;
     addressCodeInput.disabled = true;
     addressTitleInput.disabled = true;
@@ -67,7 +67,6 @@ const validationInput = (e) => {
     e.target.nextElementSibling.style.display = 'none';
   }
 };
-
 
 const addErrorHTML = (target) => {
   target.classList.add('is-danger');
@@ -105,7 +104,6 @@ const onPasswordToggle = (e) => {
     newPasswordCheck.readOnly = true;
     newPasswordCheck.placeholder = '비밀번호 변경 버튼을 누르세요.';
   }
-
 };
 
 const renderUserInfo = (data) => {
@@ -118,7 +116,7 @@ const renderUserInfo = (data) => {
     phoneNumberThird,
     postalCode,
     address1,
-    address2
+    address2,
   } = data;
 
   fullNameInput.value = fullName;
@@ -174,7 +172,7 @@ const onDeleteOrder = async (e) => {
 
   try {
     const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
-    await Api.delete('/api/orders', orderId);
+    await Api.deleteYesToken('/api/orders', orderId);
     alert('주문 내역이 삭제되었습니다.');
     window.location.reload();
   } catch (err) {
@@ -183,24 +181,21 @@ const onDeleteOrder = async (e) => {
 };
 
 const createOrderDetailListElement = (array) => {
-  return array.map(({ productImg, productName, count }) => {
-    return `
+  return array
+    .map(({ productImg, productName, count }) => {
+      return `
     <tr>
       <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
       <td>${productName}</td>
       <td>${count}개</td>
     </tr>
       `;
-  }).join("");
+    })
+    .join('');
 };
 
 const createOrderListElement = (item) => {
-  const {
-    shortId,
-    products,
-    totalPrice,
-    createdAt
-  } = item;
+  const { shortId, products, totalPrice, createdAt } = item;
 
   let orderDetail = '';
 
@@ -250,7 +245,7 @@ const createOrderListElement = (item) => {
 };
 
 const addOrderDeleteEvent = () => {
-  document.querySelectorAll('.order-delete-button').forEach(item => {
+  document.querySelectorAll('.order-delete-button').forEach((item) => {
     item.addEventListener('click', onDeleteOrder);
   });
 };
@@ -266,8 +261,9 @@ const renderAllOrderList = (orderList) => {
 
 const getUserInfo = async () => {
   try {
-    const result = await Api.get('/api/users');
-    const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = result.data.phoneNumber?.split('-') || [];
+    const result = await Api.getYesToken('/api/users');
+    const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] =
+      result.data.phoneNumber?.split('-') || [];
     const { postalCode, address1, address2 } = result.data?.address || {};
     const fullPhoneNumber = phoneNumberFirst && `${phoneNumberFirst}-${phoneNumberSecond}-${phoneNumberThird}`;
     const userInfo = {
@@ -279,7 +275,7 @@ const getUserInfo = async () => {
       phoneNumberThird,
       postalCode: postalCode || '등록된 우편번호가 없습니다.',
       address1: address1 || '등록된 주소가 없습니다.',
-      address2: address2 || '등록된 상세주소가 없습니다.'
+      address2: address2 || '등록된 상세주소가 없습니다.',
     };
     renderUserInfo(userInfo);
   } catch (err) {
@@ -289,16 +285,14 @@ const getUserInfo = async () => {
   }
 };
 
-
-
 const submitWithdrawUser = async (e) => {
   e.preventDefault();
 
-  const ok = window.confirm("정말로 탈퇴하시겠습니까?");
+  const ok = window.confirm('정말로 탈퇴하시겠습니까?');
   if (!ok) return;
 
   try {
-    await Api.delete('/api/users');
+    await Api.deleteYesToken('/api/users');
     alert('회원정보가 삭제되었습니다.');
     logOut();
   } catch (err) {
@@ -339,8 +333,7 @@ const submitModifyUserInfo = async (e) => {
 
   if (!validateFlag) return;
 
-
-  const ok = window.confirm("정말 수정하시겠습니까?");
+  const ok = window.confirm('정말 수정하시겠습니까?');
   if (!ok) return;
 
   try {
@@ -350,13 +343,13 @@ const submitModifyUserInfo = async (e) => {
       address: {
         postalCode: addressCodeInput.value,
         address1: addressTitleInput.value,
-        address2: addressDetailInput.value
+        address2: addressDetailInput.value,
       },
       phoneNumber,
       password: newPasswordInput.value,
     };
 
-    await Api.patch('/api/users', '', data);
+    await Api.patchYesToken('/api/users', '', data);
     window.location.reload();
   } catch (err) {
     console.log(err.message);
@@ -366,7 +359,7 @@ const submitModifyUserInfo = async (e) => {
 
 const getOrderList = async () => {
   try {
-    const result = await Api.get('/api/orders');
+    const result = await Api.getYesToken('/api/orders');
     renderAllOrderList(result);
   } catch (err) {
     console.log(err.message);
@@ -377,7 +370,7 @@ const checkUserPassword = async (e) => {
   e.preventDefault();
   const currentPassword = e.target.parentNode.parentNode.querySelector('.checkPasswordInput').value;
   try {
-    await Api.post('/api/users/password', { currentPassword });
+    await Api.postYesToken('/api/users/password', { currentPassword });
     changeUserFormFlag = true;
     changeUserForm(changeUserFormFlag);
     closeModal();

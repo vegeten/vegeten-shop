@@ -129,7 +129,7 @@ async function handleSubmit(e) {
   try {
     const data = { fullName, email, password };
 
-    await Api.post('/api/users/register', data);
+    await Api.postNoToken('/api/users/register', data);
 
     viewDetailModal(true);
     // 로그인 페이지 이동

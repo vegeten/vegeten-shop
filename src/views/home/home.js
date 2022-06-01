@@ -1,6 +1,6 @@
-import renderFooter from "../components/footer.js";
-import { renderNav } from "../components/nav.js";
-import { getNode } from "../useful-functions.js";
+import renderFooter from '../components/footer.js';
+import { renderNav } from '../components/nav.js';
+import { getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
 const carouselSlide = getNode('.carousel-slide');
@@ -19,9 +19,9 @@ const nextSlideEvent = () => {
     counter = 0;
   } else {
     counter++;
-  };
-  carouselSlide.style.transition = "transform 0.4s ease-in-out";
-  carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+  }
+  carouselSlide.style.transition = 'transform 0.4s ease-in-out';
+  carouselSlide.style.transform = 'translateX(' + -size * counter + 'px)';
 };
 
 const prevSlideEvent = () => {
@@ -29,9 +29,9 @@ const prevSlideEvent = () => {
     counter = slideLength;
   } else {
     counter--;
-  };
-  carouselSlide.style.transition = "transform 0.4s ease-in-out";
-  carouselSlide.style.transform = 'translateX(' + (-size * counter) + 'px)';
+  }
+  carouselSlide.style.transition = 'transform 0.4s ease-in-out';
+  carouselSlide.style.transform = 'translateX(' + -size * counter + 'px)';
 };
 
 const createItemListElement = (item) => {
@@ -48,12 +48,11 @@ const createItemListElement = (item) => {
   return li;
 };
 
-
 const renderNewArrival = (result) => {
   const items = result.data.products.slice(0, 3);
   const itemList = getNode('.item-list');
   itemList.innerHTML = '';
-  items.forEach(item => {
+  items.forEach((item) => {
     const element = createItemListElement(item);
     itemList.appendChild(element);
   });
@@ -61,7 +60,7 @@ const renderNewArrival = (result) => {
 
 const getNewArrival = async () => {
   try {
-    const result = await Api.get('/api/products');
+    const result = await Api.getNoToken('/api/products');
     renderNewArrival(result);
   } catch (err) {
     console.log(err.message);
@@ -71,7 +70,7 @@ const getNewArrival = async () => {
 function addAllEvents() {
   nextBtn.addEventListener('click', nextSlideEvent);
   prevBtn.addEventListener('click', prevSlideEvent);
-  window.addEventListener("resize", setSlideSize);
+  window.addEventListener('resize', setSlideSize);
 }
 
 renderNav();

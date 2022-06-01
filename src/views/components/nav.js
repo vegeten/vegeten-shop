@@ -1,8 +1,8 @@
-import { getAuthorizationObj, getNode } from '../useful-functions.js';
+import { getAuthorizationObj, getNode, deleteCookie } from '../useful-functions.js';
 
 const logOut = () => {
-  localStorage.removeItem('token');
-  localStorage.removeItem('refreshToken');
+  deleteCookie('accessToken');
+  deleteCookie('refreshToken');
   window.location.href = '/';
 };
 
