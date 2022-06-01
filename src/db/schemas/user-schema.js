@@ -52,11 +52,16 @@ const UserSchema = new Schema(
       required: false,
       default: 'basic-user',
     },
-    refresh:{
+    refresh: {
       type: String,
       required: false,
-      default: null
-    }
+      default: null,
+    },
+    passwordReseted: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   {
     collection: 'users',
