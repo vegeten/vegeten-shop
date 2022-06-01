@@ -51,12 +51,12 @@ class UserService {
     }
 
     // access token, refresh token 발급
-    const token = sign(user);
+    const accessToken = sign(user);
     const refreshToken = await refresh(user.shortId);
-    const exp = jwt.decode(token).exp;
+    const exp = jwt.decode(accessToken).exp;
     // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
-    return { token, refreshToken, exp };
+    return { accessToken, refreshToken, exp };
   }
 
   // admin 로그인
