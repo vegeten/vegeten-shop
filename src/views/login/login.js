@@ -14,12 +14,18 @@ renderNav();
 renderFooter();
 
 // 요소(element), input 혹은 상수
+const modalStatus = {
+  loginSuccess: 'login success',
+  loginFail: 'login fail',
+  reset: 'password reset',
+  resetSuccess: 'password reset success',
+  resetFail: 'password reset fail'
+};
 const emailInput = getNode('#emailInput');
 const passwordInput = getNode('#passwordInput');
 const submitButton = getNode('#submitButton');
 const modal = getNode('.modal');
-const modalButton = getNode('.close-button');
-const modalBackground = getNode('.modal-background');
+const resetPasswordButton = getNode('.reset-password-title');
 
 const validationInput = (e) => {
   if (e.target.value === '') {
@@ -29,20 +35,89 @@ const validationInput = (e) => {
   }
 };
 
-const viewDetailModal = (success, message = '로그인 성공') => {
-  const modalTitle = getNode('.modal-card-title');
-  const confirmIcon = getNode('.cofirm-icon');
+const createModalElement = (status, title) => {
+  const modalCardTitle = getNode('.modal-card-title');
+  const modalCardBody = getNode('.modal-card-body');
   const modalCardFooter = getNode('.modal-card-foot');
 
-  modal.classList.add('is-active');
-  modalTitle.innerHTML = message;
+  modalCardTitle.innerHTML = title;
 
-  if (success) {
-    confirmIcon.innerHTML = 'check_circle_outline';
-  } else {
-    confirmIcon.innerHTML = 'replay';
-    modalCardFooter.style.display = 'none';
+  switch (status) {
+    case modalStatus.loginSuccess:
+      modalCardBody.innerHTML = `
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+            check_circle_outline
+          </span>
+        </div>
+      `;
+      modalCardFooter.innerHTML = `
+        <a class="button is-black" href="/shop">쇼핑 하러가기</a>
+        <a class="button is-white" href="/">홈 화면으로가기</a>
+      `;
+      break;
+    case modalStatus.loginFail:
+      modalCardBody.innerHTML = `
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+            replay
+          </span>
+        </div>
+      `;
+      break;
+    case modalStatus.reset:
+      const button = document.createElement('button');
+      button.classList = 'button is-black';
+      button.innerHTML = '비밀번호 초기화';
+      button.addEventListener('click', resetPassword);
+
+      modalCardBody.innerHTML = `
+        <form class="reset-password-form">
+          <label for="current-email">이메일(아이디): </label >
+          <input id="current-email" class="input is-medium current-email" placeholder="사용 중인 이메일을 입력해주세요.">
+          <div id="email-msg" class="help" style="display: none;">
+            <span>올바른 이메일 형식인지 확인해주세요.</span>
+          </div>
+        </form>
+      `;
+      modalCardFooter.appendChild(button);
+      break;
+    case modalStatus.resetSuccess:
+      modalCardBody.innerHTML = `
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+            check_circle_outline
+          </span>
+        </div>
+      `;
+      modalCardFooter.innerHTML = `
+        <a class="button is-black" href="/login">로그인 페이지로 가기</a>
+      `;
+      break;
+    case modalStatus.resetFail:
+      modalCardBody.innerHTML = `
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+            replay
+          </span>
+        </div>
+      `;
+      modalCardFooter.innerHTML = '';
+      break;
   }
+};
+
+const addEventInModal = () => {
+  const modalButton = getNode('.close-button');
+  const modalBackground = getNode('.modal-background');
+  modalButton.addEventListener('click', closeModal);
+  modalBackground.addEventListener('click', closeModal);
+};
+
+const viewDetailModal = (status, message = '') => {
+  modal.classList.add('is-active');
+  createModalElement(status, message);
+  addEventInModal();
 };
 
 const closeModal = () => {
@@ -50,14 +125,23 @@ const closeModal = () => {
   window.location.href = '/login';
 };
 
+const resetPasswordModal = () => {
+  viewDetailModal(modalStatus.reset, '비밀번호 초기화.');
+};
+
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
   submitButton.addEventListener('click', handleSubmit);
-  modalButton.addEventListener('click', closeModal);
-  modalBackground.addEventListener('click', closeModal);
   emailInput.addEventListener('input', validationInput);
   passwordInput.addEventListener('input', validationInput);
+  resetPasswordButton.addEventListener('click', resetPasswordModal);
 }
+
+const addErrorHTML = () => {
+  const resetEmailInput = getNode('#email-msg');
+  resetEmailInput.style.display = 'block';
+  resetEmailInput.classList.add('is-danger');
+};
 
 // 로그인 진행
 async function handleSubmit(e) {
@@ -71,7 +155,7 @@ async function handleSubmit(e) {
   const isPasswordValid = password.length >= 4;
 
   if (!isEmailValid || !isPasswordValid) {
-    viewDetailModal(false, '아이디와 비밀번호 입력을 확인하세요.');
+    viewDetailModal(modalStatus.loginFail, '아이디와 비밀번호 입력을 확인하세요.');
     return;
   }
 
@@ -87,12 +171,27 @@ async function handleSubmit(e) {
     localStorage.setItem('token', accessToken);
     localStorage.setItem('exp', exp);
 
-    viewDetailModal(true);
+    viewDetailModal(modalStatus.loginSuccess, '로그인이 완료되었습니다.');
     // 로그인 페이지 이동
   } catch (err) {
-    console.error(err.stack);
-    viewDetailModal(false, err.message);
+    viewDetailModal(modalStatus.loginFail, err.message);
   }
 }
+const resetPassword = async () => {
+  const currentEmail = getNode('.current-email').value;
+  const isEmailValid = validateEmail(currentEmail);
+
+  if (!isEmailValid) {
+    addErrorHTML();
+    return;
+  }
+
+  try {
+    const result = await Api.post('/api/users/reset-password', { email: currentEmail });
+    viewDetailModal(modalStatus.resetSuccess, result.message);
+  } catch (err) {
+    viewDetailModal(modalStatus.resetFail, err.message);
+  }
+};
 
 addAllEvents();
