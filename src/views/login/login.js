@@ -164,7 +164,6 @@ async function handleSubmit(e) {
 
     const result = await Api.postNoToken('/api/users/login', data);
     const { accessToken, exp } = result.data;
-    console.log(result);
 
     // 로그인 성공 시 리프레시토큰을 쿠키에 저장
     // 엑세스토큰과 엑세스토큰 만료시간은 로컬스토리지에 저장
@@ -187,7 +186,7 @@ const resetPassword = async () => {
   }
 
   try {
-    const result = await Api.post('/api/users/reset-password', { email: currentEmail });
+    const result = await Api.postNoToken('/api/users/reset-password', { email: currentEmail });
     viewDetailModal(modalStatus.resetSuccess, result.message);
   } catch (err) {
     viewDetailModal(modalStatus.resetFail, err.message);
