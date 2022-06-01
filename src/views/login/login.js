@@ -78,8 +78,9 @@ async function handleSubmit(e) {
   try {
     const data = { email, password };
 
-    const result = await Api.post('/api/users/login', data);
+    const result = await Api.postNoToken('/api/users/login', data);
     const { token, refreshToken, exp } = result;
+    console.log(result);
 
     // 로그인 성공 시 엑세스토큰과 리프레시토큰을 쿠키에 저장
     // 엑세스토큰 만료시간은 로컬스토리지에 저장

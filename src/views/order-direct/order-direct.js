@@ -21,7 +21,7 @@ const productId = productUrl[1].split('&')[0];
 
 let productInfo;
 async function getProductInfo(productId) {
-  const res = await Api.get(`/api/products/${productId}`);
+  const res = await Api.getNoToken(`/api/products/${productId}`);
   productInfo = res.data;
 
   let markUp = '';
@@ -49,7 +49,7 @@ getProductInfo(productId);
 let userId;
 
 async function getUserInfo() {
-  const result = await Api.get('/api/users');
+  const result = await Api.getYesToken('/api/users');
   const userData = result.data;
   userId = userData._id;
 
@@ -191,7 +191,7 @@ async function postOrder() {
     userId: userId,
   };
 
-  const res = await Api.post('/api/orders', orderInfo);
+  const res = await Api.postYesToken('/api/orders', orderInfo);
 }
 
 // 기본배송지 설정 눌렀을 때 주소정보 수정 patch 요청
@@ -202,7 +202,7 @@ async function changeAddress() {
     address2: address2.value,
   };
 
-  const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
+  const res = await Api.patchYesToken('/api/users/address', '', { address: newAddressInfo });
   console.log('정보수정 잘 되었어요!', res);
 }
 

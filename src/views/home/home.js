@@ -60,7 +60,7 @@ const renderNewArrival = (result) => {
 
 const getNewArrival = async () => {
   try {
-    const result = await Api.get('/api/products');
+    const result = await Api.getNoToken('/api/products');
     renderNewArrival(result);
   } catch (err) {
     console.log(err.message);
