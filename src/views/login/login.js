@@ -164,12 +164,12 @@ async function handleSubmit(e) {
     const data = { email, password };
 
     const result = await Api.post('/api/users/login', data);
-    const { token, refreshToken } = result;
+    const { accessToken, exp } = result.data;
 
     // 로그인 성공, 토큰을 세션 스토리지에 저장
     // 물론 다른 스토리지여도 됨
-    localStorage.setItem('token', token);
-    localStorage.setItem('refreshToken', refreshToken);
+    localStorage.setItem('token', accessToken);
+    localStorage.setItem('exp', exp);
 
     viewDetailModal(modalStatus.loginSuccess, '로그인이 완료되었습니다.');
     // 로그인 페이지 이동
@@ -177,7 +177,6 @@ async function handleSubmit(e) {
     viewDetailModal(modalStatus.loginFail, err.message);
   }
 }
-
 const resetPassword = async () => {
   const currentEmail = getNode('.current-email').value;
   const isEmailValid = validateEmail(currentEmail);
