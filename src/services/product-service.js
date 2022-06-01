@@ -66,6 +66,11 @@ class ProductService {
 
     return product;
   }
+
+  // 상품 검색
+  async searchByProductName(keyword, page, perPage) {
+    return await this.productModel.findByKeyword(keyword, page, perPage);
+  }
 }
 
 const productService = new ProductService(productModel);
