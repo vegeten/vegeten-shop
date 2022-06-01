@@ -100,8 +100,19 @@
         </div>
       </div>
       <!-- 모달끝 -->
-            <button class="button is-medium is-info">상품 수정</button>
-            <button class="button is-medium is-info">상품 삭제</button>
+            <button class="button is-medium is-info editProductBtn">상품 편집</button>
+            <div class="modal productEditModal">
+              <div class="modal-background"></div>
+              <div class="modal-card">
+                <header class="modal-card-head">
+                  <p class="modal-card-title">상품 편집</p>
+                  <button class="close-button delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+          
+                </section>
+              </div>
+            </div>
           </div>
         </div>
         <div class="main-order-mod-wrap">
@@ -126,7 +137,7 @@
       </div>
   </main>
 
-  <div class="modal">
+  <div class="modal orderModal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">

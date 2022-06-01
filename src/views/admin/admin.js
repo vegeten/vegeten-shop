@@ -2,10 +2,10 @@ import { addCommas, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
 const orderList = getNode('.order-list');
-const modal = getNode('.modal');
-const modalButton = getNode('.close-button');
+const modal = getNode('.orderModal');
+const modalButton = getNode('.orderModal .close-button');
 const orderlistWrap = getNode('.orderlist-wrap');
-const modalBody = getNode('.modal-card-body');
+const modalBody = getNode('.orderModal .modal-card-body');
 
 const createOrderDetail = (products) => {
   return products.map(product => {
@@ -78,12 +78,12 @@ const onDeleteOrder = async (e) => {
   try {
     const orderId = e.target.parentNode.parentNode.querySelector('.info-order-number strong').innerText;
     console.log(orderId);
-    await Api.delete('/api/orders', orderId);
+    await Api.deleteYesToken('/api/orders', orderId);
     alert('주문 내역이 삭제되었습니다.');
     window.location.reload();
   } catch (err) {
     console.log(err.message);
-  }
+  }ƒ
 };
 
 const addOrderDeleteEvent = () => {
@@ -147,7 +147,7 @@ const renderAllOrderAllList = (orderList) => {
 
 const getOrderAllList = async () => {
   try {
-    const result = await Api.get('/api/orders/list');
+    const result = await Api.getYesToken('/api/orders/list');
     renderAllOrderAllList(result);
   } catch (err) {
     alert(err.message);
@@ -157,7 +157,7 @@ const getOrderAllList = async () => {
 
 const getOrderDetail = async (orderId) => {
   try {
-    const result = await Api.get('/api/orders', orderId);
+    const result = await Api.getYesToken('/api/orders', orderId);
     renderOrderModal(result.data);
   } catch (err) {
     console.log(err);
@@ -167,7 +167,6 @@ const getOrderDetail = async (orderId) => {
 getOrderAllList();
 addAllEvents();
 
-// 상품추가 모달
 // 상품추가 모달창 활성화하기
 const addProduct = getNode('.addProduct');
 const modalAddProduct = getNode('.modal-addProduct');
@@ -190,21 +189,16 @@ function addPostModal () {
 addPostModal();
 // 상품추가 - 카테고리 옵션 렌더링
 async function getOptionCategory() {
-  const data = await Api.get('/api/categories');
+  const data = await Api.getYesToken('/api/categories');
   const categoryOptions = getNode('.category-option'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
     if(i===0)categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
     else categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
   }
-  // postProductToApi();
-  // categoryOptions.addEventListener("change", ()=> {
-  //   alert(categoryOptions.value)
-  // })  
 }
 // 상품 추가하기 - Api.post 통신
 async function postProductToApi () {
-  
   const image = document.getElementsByName('image')[0].value;
   const detailImage = document.getElementsByName('detailImage')[0].value;
   const category = getNode('.category-option').value;
@@ -222,14 +216,27 @@ async function postProductToApi () {
     price: price,
     company: company,
   }
-  await Api.post('/api/products',data);
+  await Api.postYesToken('/api/products',data);
   location.reload();
 }
 
-// 카테고리편집 모달
+// 상품 수정하기 모달 
+const editProductBtn = getNode('.editProductBtn');
+const productEditModal = getNode('.productEditModal');
+const closeProductEdit = getNode('.productEditModal .delete');
+editProductBtn.addEventListener("click", () => {
+  productEditModal.classList.add('is-active');
+})
+closeProductEdit.addEventListener("click", () => {
+  productEditModal.classList.remove('is-active');
+})
+
+
+
+
 // 카테고리 모달 렌더링 - Api.get 통신
 async function getModalCategory() {
-  const data = await Api.get('/api/categories');
+  const data = await Api.getYesToken('/api/categories');
   const categoryModalList = document.querySelector('.category-modal-list'); // 모달 카테고리 표
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
@@ -247,7 +254,7 @@ async function getModalCategory() {
   };
 
   // 카테고리 추가하기
-  const addCategoryTrigger = getNode('.add-category-trigger');
+const addCategoryTrigger = getNode('.add-category-trigger');
   addCategoryTrigger.addEventListener("click", showAddCategoryForm);
 };
 getModalCategory();
@@ -266,7 +273,7 @@ function showAddCategoryForm() {
 async function addCatgoryToApi() {
   const addCategoryName = getNode('.addCategoryName').value;  
   console.log('추가하려는 카테고리',addCategoryName);
-  await Api.post('/api/categories', {label: addCategoryName});
+  await Api.postYesToken('/api/categories', {label: addCategoryName});
   const categoryModalList = document.querySelector('.category-modal-list');
   categoryModalList.innerHTML="";
   getModalCategory();
@@ -278,7 +285,7 @@ async function delCategory(e) {
   const categoryId = categoryNode.getAttribute('id'); 
   const categoryName = categoryNode.textContent;
   // console.log()
-  await Api.delete('/api/categories', categoryId,{categoryName})
+  await Api.deleteYesToken('/api/categories', categoryId,{categoryName})
   const categoryModalList = document.querySelector('.category-modal-list');
   categoryModalList.innerHTML="";
   getModalCategory();
@@ -300,11 +307,8 @@ async function updateCategory(e) {
     const updatedName = getNode('.editName').value;
     categoryNode.innerHTML = updatedName;
     e.target.innerHTML = '수정';
-    // console.log('categoryId',categoryId,updatedName);
-    //API 통신
     try {
-      //get으로전체 조회 => 쭉돌면서 -> category가 상의가 같을때 push해주기 -> 
-      await Api.patch('/api/categories',categoryId,{label:updatedName});
+      await Api.patchYesToken('/api/categories',categoryId,{label:updatedName});
     } catch (error) {
       console.log(error.message);
     }
