@@ -51,15 +51,9 @@ class UserService {
     }
 
     // access token, refresh token 발급
-<<<<<<< HEAD
-    const token = sign(user);
-    const refreshToken = await refresh(user.shortId);
-    const exp = jwt.decode(token).exp;
-=======
     const accessToken = sign(user);
     const refreshToken = await refresh(user.shortId);
     const exp = jwt.decode(accessToken).exp;
->>>>>>> dev
     // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
     return { accessToken, refreshToken, exp };
