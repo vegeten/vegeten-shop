@@ -14,9 +14,16 @@ adminRouter.post('/login', async function (req, res, next) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
     // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-    const userToken = await userService.getAdminToken(req.body);
+    const userToken = await userService.getUserToken(req.body);
+    const { token, refreshToken, exp } = userToken;
+    const accessToken = token;
+    // console.log(token, refreshToken, exp);
     // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
-    res.status(200).json(userToken);
+
+    res.cookie('refreshToken', refreshToken, {
+      expires: new Date(Date.now() + 1209600000),
+    });
+    res.json({ message: 'login success', data: { accessToken, refreshToken, exp } });
   } catch (error) {
     next(error);
   }
