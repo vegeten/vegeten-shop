@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,15 +16,13 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
   <!-- 폰트 어썸: 아이콘 -->
   <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-      <!-- bulma css -->
-      <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
-    <!-- 커스텀 css, js -->
-    <link rel="stylesheet" href="shop.css" />
-    <script src="shop.js" type="module" defer></script>
+  <!-- bulma css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 커스텀 css, js -->
+  <link rel="stylesheet" href="shop.css" />
+  <script src="shop.js" type="module" defer></script>
 </head>
+
 <body>
   <!-- 헤더 -->
   <nav class="navbar is-light" role="navigation" aria-label="main navigation"></nav>
@@ -35,27 +34,31 @@
     </nav>
     <!-- <h2>전체보기</h2> -->
     <article class="container">
-      <div class="title is-size-4 category-name">전체보기</div>
+      <div class="title-wrap">
+        <div class="title is-size-4 category-name">전체보기</div>
+        <form class="search-wrap">
+          <input class="input is-small search-input" type="text" placeholder="상품명을 입력하세요.">
+          <button class="button is-small search-button">
+            <span class="material-icons">
+              search
+            </span>
+          </button>
+        </form>
+      </div>
       <div id="product-list">
-          
+
       </div>
       <!-- pagination -->
       <div class="bottom">
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
           <ul class="pagination-list">
-            <!-- <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-            <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-            <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 86">86</a></li> -->
           </ul>
         </nav>
       </div>
     </article>
-    
+
   </main>
   <footer class="footer"></footer>
 </body>
+
 </html>

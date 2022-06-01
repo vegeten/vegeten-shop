@@ -1,14 +1,17 @@
-*{
+* {
   font-family: 'Roboto', sans-serif;
 }
+
 a {
   color: black;
 }
+
 main {
   display: flex;
   margin-top: 4%;
   justify-content: center;
 }
+
 .category-nav {
   display: flex;
   flex-direction: column;
@@ -16,80 +19,108 @@ main {
   font-size: 1.3rem;
   margin-top: 5%;
 }
+
 .category-nav div.category {
   cursor: pointer;
   color: black;
   margin-left: 20%;
 }
+
 .category-nav .all {
   margin-bottom: 10%;
 }
+
 .category-nav #category-list div.active {
   font-weight: 700;
 }
+
 .category-nav #category-list div:hover {
   font-weight: 700;
 }
-.category-nav button {
-  margin: 30px 0;
-  margin-left: 80px;
-  width: 150px;
-}
+
 .category-nav #modal-editCategory table {
   width: 90%;
   text-align: center;
 }
-#modal-editCategory table button{
+
+#modal-editCategory table button {
   margin: 0;
 }
-#modal-editCategory input{
+
+#modal-editCategory input {
   width: 60%;
   margin: 0;
 }
-#modal-editCategory footer span.material-icons{
+
+#modal-editCategory footer span.material-icons {
   margin: auto;
   font-size: 40px;
   cursor: pointer;
 }
+
 .category-nav #modal-editCategory button.add-category-button {
   width: 30%;
 }
+
 article {
   position: relative;
 }
+
 article .bottom {
   width: 80%;
   margin: 3%;
   /* border: 1px solid black; */
-  
+
 }
+
+/* 
 article .title {
   position: absolute;
   left: 40%;
   margin: 5% auto;
   margin-right: 40%;
+} */
+
+.title-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5% 12% 0 0;
 }
+
+.search-wrap {
+  display: flex;
+  flex-direction: row;
+}
+
+.search-input {
+  width: 200px;
+}
+
 article button.addProduct {
   position: absolute;
   left: 75%;
   top: 5%;
 }
-article #product-list{
+
+article #product-list {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  margin-top: 10%;
+  margin-top: 5%;
   /* justify-content: center; */
   /* border: 1px solid black; */
 }
+
 #product-list .item-card {
-  margin: 3% 2%;
   margin: 3% 2%;
   width: 300px;
   height: 400px;
   border-radius: 2%;
   cursor: pointer;
 }
+
 .item-card .img-box {
   /* border: 1px solid black; */
   width: 100%;
@@ -97,11 +128,13 @@ article #product-list{
   overflow: hidden;
   text-align: center;
 }
-.item-card .img-box  img{
+
+.item-card .img-box img {
   height: 100%;
   width: auto;
   object-fit: cover;
 }
+
 .item-card .productName {
   /* border: 1px solid black; */
   margin-top: 4%;
