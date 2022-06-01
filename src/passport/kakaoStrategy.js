@@ -7,7 +7,7 @@ export default () => {
   passport.use(
     new KakaoStrategy(
       {
-        clientID: process.env.KAKAO_ID, // 카카오 로그인에서 발급받은 REST API 키
+        clientID: process.env.KAKAO_REST_API_KEY, // 카카오 로그인에서 발급받은 REST API 키
         callbackURL: '/users/kakao/callback', // 카카오 로그인 Redirect URI 경로
       },
       /*
@@ -28,7 +28,7 @@ export default () => {
             done(null, exUser); // 로그인 인증 완료
           } else {
             // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
-            const newUser = await create({
+            const newUser = await User.create({
               email: profile._json && profile._json.kakao_account_email,
               nick: profile.displayName,
               snsId: profile.id,
