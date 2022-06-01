@@ -82,12 +82,10 @@ async function handleSubmit(e) {
     const { accessToken, exp } = result.data;
     console.log(result);
 
-    // 로그인 성공 시 엑세스토큰과 리프레시토큰을 쿠키에 저장
-    // 엑세스토큰 만료시간은 로컬스토리지에 저장
+    // 로그인 성공 시 리프레시토큰을 쿠키에 저장
+    // 엑세스토큰과 엑세스토큰 만료시간은 로컬스토리지에 저장
     localStorage.setItem('accessToken_exp', exp);
     localStorage.setItem('accessToken', accessToken);
-    // setCookie('accessToken', token);
-    // setCookie('refreshToken', refreshToken);
 
     viewDetailModal(true);
     // 로그인 페이지 이동

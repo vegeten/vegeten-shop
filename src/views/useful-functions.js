@@ -47,8 +47,9 @@ export const setCookie = (key, value) => {
 };
 
 export const getCookie = (cookieName) => {
-  const decodedCookieName = decodeURIComponent(cookieName);
-  const idx = document.cookie.indexOf(decodedCookieName);
+  // const decodedCookieName = decodeURIComponent(cookieName);
+  // const idx = document.cookie.indexOf(decodedCookieName);
+  const idx = document.cookie.indexOf(cookieName);
 
   if (idx === -1) {
     return null;
@@ -72,11 +73,9 @@ export async function checkToken() {
   let expDate = new Date(0);
   expDate.setUTCSeconds(exp);
   let todayDate = new Date();
-  // const time_diff = 300000;
-  const time_diff = 60 * 60 * 1000;
+  const time_diff = 300000;
 
   if (expDate - todayDate.getTime() <= time_diff) {
-    console.log('흠');
     const res = await fetch('/api/users/refresh', {
       headers: {
         'Content-Type': 'application/json',
@@ -84,12 +83,12 @@ export async function checkToken() {
         Refresh: `Bearer ${getCookie('refreshToken')}`,
       },
     });
-    console.log(res);
-    if (!res.refresh) return false;
-    else if (res.resfresh && !res.access) {
+    const result = await res.json();
+    if (!result.refresh) return false;
+    else if (result.resfresh && !result.access) {
       console.log('액세스토큰 갱신!!');
-      localStorage.setItem('accessToken_exp', res.data.exp);
-      localStorage.setItem('accessToken', res.data.newAccessToken);
+      localStorage.setItem('accessToken_exp', result.data.exp);
+      localStorage.setItem('accessToken', result.data.newAccessToken);
       return true;
     }
   }
