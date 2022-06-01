@@ -3,6 +3,8 @@ import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
 import { loginRequired, adminAuth, refresh_ } from '../middlewares';
 import { userService } from '../services';
+import { sendMail } from '../utils/send-mail';
+import bcrypt from 'bcrypt';
 
 const userRouter = Router();
 
@@ -36,8 +38,38 @@ userRouter.post('/login', async function (req, res, next) {
     }
     // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
     const userToken = await userService.getUserToken(req.body);
+    const { accessToken, refreshToken, exp } = userToken;
     // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
-    res.status(200).json(userToken);
+
+    res.cookie('refreshToken', refreshToken, {
+      expires: new Date(Date.now() + 1209600000),
+      httpOnly: true,
+    });
+    res.json({ message: 'login success', data: { accessToken, exp } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+userRouter.post('/reset-password', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await userService.getUserByEmail(email);
+    if (!user) {
+      throw new Error('해당 메일로 가입된 사용자가 없습니다.');
+    }
+
+    // 랜덤 패스워드 생성하기
+    const randomPassword = Math.floor(Math.random() * 10 ** 8)
+      .toString()
+      .padStart(8, '0');
+
+    const hashedPassword = await bcrypt.hash(randomPassword, 10);
+    await userService.setUserPartially({ userId: user.shortId }, { password: hashedPassword });
+
+    // 패스워드 발송하기
+    await sendMail(email, '비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
+    res.status(200).json({ status: 200, message: '임시 비밀번호가 이메일로 전송되었습니다.' });
   } catch (error) {
     next(error);
   }
@@ -62,7 +94,6 @@ userRouter.get('/list', adminAuth, async function (req, res, next) {
 // 유저 정보 조회 (/api/users/)
 userRouter.get('/', loginRequired, async function (req, res, next) {
   const userId = req.currentUserId;
-  console.log(userId);
   try {
     // 특정 id에 맞는 사용자 정보를 얻음
     const user = await userService.getUser(userId);
@@ -136,7 +167,6 @@ userRouter.patch('/address', loginRequired, async function (req, res, next) {
 
     const { address } = req.body;
     const userInfoRequired = { userId };
-    console.log(userId);
 
     const toUpdate = {
       ...(address && { address }),

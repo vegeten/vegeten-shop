@@ -10,8 +10,9 @@ import {
   searchRouter,
   reviewRouter,
 } from './routers';
-import { errorHandler, refresh_ } from './middlewares';
-// import { clientConnect } from './utils';
+import { errorHandler } from './middlewares';
+
+import cookieParser from 'cookie-parser';
 
 const app = express();
 // CORS 에러 방지
@@ -19,19 +20,10 @@ app.use(cors());
 
 // Content-Type: application/json 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.json());
-// app.use(
-//   session({
-//     store: new RedisStore({ client: redisClient }),
-//     saveUninitialized: false,
-//     secret: 'keyboard cat',
-//     resave: false,
-//   })
-// );
 
 // Content-Type: application/x-www-form-urlencoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.urlencoded({ extended: false }));
-
-// clientConnect();
+app.use(cookieParser());
 
 // html, css, js 라우팅
 app.use(viewsRouter);
