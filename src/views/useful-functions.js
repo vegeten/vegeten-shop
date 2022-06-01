@@ -57,7 +57,7 @@ export const getCookie = (cookieName) => {
     const cookieValue = document.cookie
       .slice(idx)
       .split(';')
-      .find((row) => row.startsWith(decodedCookieName))
+      .find((row) => row.startsWith(cookieName))
       .split('=')[1];
 
     return cookieValue;
@@ -87,7 +87,7 @@ export const checkToken = async () => {
       // json() 할 때는 await 필요 없을 듯
       const result = await res.json();
       if (!result.refresh) return false;
-      else if (result.resfresh && !result.access) {
+      else if (!result.access) {
         console.log('액세스토큰 갱신!!');
         localStorage.setItem('accessToken_exp', result.data.exp);
         localStorage.setItem('accessToken', result.data.newAccessToken);
