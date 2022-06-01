@@ -15,9 +15,11 @@ renderFooter();
 
 // 요소(element), input 혹은 상수
 const modalStatus = {
-  loginSuccess: '로그인 성공',
-  loginFail: '로그인 실패',
-  reset: '비밀번호 초기화'
+  loginSuccess: 'login success',
+  loginFail: 'login fail',
+  reset: 'password reset',
+  resetSuccess: 'password reset success',
+  resetFail: 'password reset fail'
 };
 const emailInput = getNode('#emailInput');
 const passwordInput = getNode('#passwordInput');
@@ -64,17 +66,43 @@ const createModalElement = (status, title) => {
       `;
       break;
     case modalStatus.reset:
-      modalCardBody.innerHTML = `
-        <form class="reset-password-form">
-          <label for="current-email">이메일</label >
-          <input id="current-email" class="input is-medium" placeholder="사용 중인 이메일을 입력하세요.">
-        </form>
-      `;
       const button = document.createElement('button');
       button.classList = 'button is-black';
       button.innerHTML = '비밀번호 초기화';
       button.addEventListener('click', resetPassword);
+
+      modalCardBody.innerHTML = `
+        <form class="reset-password-form">
+          <label for="current-email">이메일</label >
+          <input id="current-email" class="input is-medium current-email" placeholder="">
+          <div id="email-msg" class="help" style="display: none;">
+            <span>올바른 이메일 형식인지 확인해주세요.</span>
+          </div>
+        </form>
+      `;
       modalCardFooter.appendChild(button);
+      break;
+    case modalStatus.resetSuccess:
+      modalCardBody.innerHTML = `
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+            check_circle_outline
+          </span>
+        </div>
+      `;
+      modalCardFooter.innerHTML = `
+        <a class="button is-black" href="/login">로그인 페이지로 가기</a>
+      `;
+      break;
+    case modalStatus.resetFail:
+      modalCardBody.innerHTML = `
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons">
+            replay
+          </span>
+        </div>
+      `;
+      modalCardFooter.innerHTML = '';
       break;
   }
 };
@@ -97,7 +125,7 @@ const closeModal = () => {
   window.location.href = '/login';
 };
 
-const resetPasswordModal = (e) => {
+const resetPasswordModal = () => {
   viewDetailModal(modalStatus.reset, '비밀번호 초기화.');
 };
 
@@ -108,6 +136,12 @@ function addAllEvents() {
   passwordInput.addEventListener('input', validationInput);
   resetPasswordButton.addEventListener('click', resetPasswordModal);
 }
+
+const addErrorHTML = () => {
+  const resetEmailInput = getNode('#email-msg');
+  resetEmailInput.style.display = 'block';
+  resetEmailInput.classList.add('is-danger');
+};
 
 // 로그인 진행
 async function handleSubmit(e) {
@@ -140,13 +174,25 @@ async function handleSubmit(e) {
     viewDetailModal(modalStatus.loginSuccess, '로그인이 완료되었습니다.');
     // 로그인 페이지 이동
   } catch (err) {
-    console.error(err.stack);
     viewDetailModal(modalStatus.loginFail, err.message);
   }
 }
 
-const resetPassword = (e) => {
-  console.log(e.target);
+const resetPassword = async () => {
+  const currentEmail = getNode('.current-email').value;
+  const isEmailValid = validateEmail(currentEmail);
+
+  if (!isEmailValid) {
+    addErrorHTML();
+    return;
+  }
+
+  try {
+    const result = await Api.post('/api/users/reset-password', { email: currentEmail });
+    viewDetailModal(modalStatus.resetSuccess, result.message);
+  } catch (err) {
+    viewDetailModal(modalStatus.resetFail, err.message);
+  }
 };
 
 addAllEvents();
