@@ -13,7 +13,7 @@ async function getYesToken(endpoint, params = '') {
     const res = await fetch(apiUrl, {
       // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
       headers: {
-        Authorization: `Bearer ${getCookie('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     });
 
@@ -64,7 +64,7 @@ async function postYesToken(endpoint, data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
       body: bodyData,
     });
@@ -127,7 +127,7 @@ async function patchYesToken(endpoint, params = '', data) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
       body: bodyData,
     });
@@ -194,7 +194,7 @@ async function deleteYesToken(endpoint, params = '', data = {}) {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
       body: bodyData,
     });

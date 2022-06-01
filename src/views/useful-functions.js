@@ -72,20 +72,24 @@ export async function checkToken() {
   let expDate = new Date(0);
   expDate.setUTCSeconds(exp);
   let todayDate = new Date();
-  const time_diff = 300000;
+  // const time_diff = 300000;
+  const time_diff = 60 * 60 * 1000;
 
   if (expDate - todayDate.getTime() <= time_diff) {
+    console.log('흠');
     const res = await fetch('/api/users/refresh', {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getCookie('accessToken')}`,
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         Refresh: `Bearer ${getCookie('refreshToken')}`,
       },
     });
+    console.log(res);
     if (!res.refresh) return false;
     else if (res.resfresh && !res.access) {
+      console.log('액세스토큰 갱신!!');
       localStorage.setItem('accessToken_exp', res.data.exp);
-      setCookie('accessToken', res.data.newAccessToken);
+      localStorage.setItem('accessToken', res.data.newAccessToken);
       return true;
     }
   }
