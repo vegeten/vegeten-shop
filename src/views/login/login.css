@@ -22,6 +22,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.reset-password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: underline;
+  font-size: 0.7rem;
 }
 
 .modal {

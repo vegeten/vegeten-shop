@@ -28,13 +28,91 @@
         <div class="mod-wrap">
           <div class="main-category-mod-wrap">
             <span class="wrap-title">카테고리 관리</span>
-            <button class="button is-medium is-warning">카테고리 수정/추가/삭제</button>
+            <button class="button is-medium is-warning editCategory" data-target="modal-editCategory">카테고리 수정/추가/삭제</button>
+            <div id="modal-editCategory" class="modal">
+              <div class="modal-background"></div>
+              <div class="modal-card">
+                <header class="modal-card-head">
+                  <p class="modal-card-title">카테고리 편집</p>
+                  <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                  <table class="table is-large">
+                    <thead>
+                      <tr>
+                        <th>카테고리명</th>
+                        <th>수정</th>
+                        <th>삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody class="category-modal-list">
+                    </tbody>
+                  </table>
+                </section>
+                <footer class="modal-card-foot">
+                  <span class="material-icons add-category-trigger">
+                    add_circle
+                  </span>
+                </footer>
+              </div>
+            </div>
           </div>
           <div class="main-product-mod-wrap">
             <span class="wrap-title">상품내역 관리</span>
-            <button class="button is-medium is-info">상품 수정</button>
-            <button class="button is-medium is-info">상품 추가</button>
-            <button class="button is-medium is-info">상품 삭제</button>
+            <button class="button is-medium is-info addProduct" data-target="modal-ter" aria-haspopup="true">상품 추가</button>
+            <!-- 모달 -->
+      <div class="modal modal-addProduct">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">상품추가하기</p>
+            <button class="delete" aria-label="close"></button>
+          </header>
+            <section class="modal-card-body">
+              <!-- Content ... -->
+              <div class="is-size-5">대표이미지</div>
+              <input class="input" type="text" name="image" value="https://picsum.photos/200">
+              
+              <div class="is-size-5">상세이미지</div>
+              <input class="input" type="text" name="detailImage" value="https://picsum.photos/200">
+              
+              <div>카테고리</div>
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select id="total-count" class="category-option">
+                   
+                  </select>
+                </div>
+              </div>
+              <div>상품이름</div>
+              <input class="input" type="text" name="productName" >
+              <div>상품설명</div>
+              <input class="input" type="textarea" name="description">
+              <div>price</div>
+              <input class="input" type="number" name="price">
+              <div>제조사</div>
+              <input class="input" type="text" name="company">
+
+            </section>
+            <footer class="modal-card-foot">
+              <input class="button is-success addProductBtn" value="상품추가하기"></input>
+            </footer>
+        </div>
+      </div>
+      <!-- 모달끝 -->
+            <button class="button is-medium is-info editProductBtn">상품 편집</button>
+            <div class="modal productEditModal">
+              <div class="modal-background"></div>
+              <div class="modal-card">
+                <header class="modal-card-head">
+                  <p class="modal-card-title">상품 편집</p>
+                  <button class="close-button delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+          
+                </section>
+              </div>
+            </div>
           </div>
         </div>
         <div class="main-order-mod-wrap">
@@ -59,7 +137,7 @@
       </div>
   </main>
 
-  <div class="modal">
+  <div class="modal orderModal">
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">

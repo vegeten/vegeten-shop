@@ -25,7 +25,7 @@
 
 <body>
   <!-- 헤더 -->
-  <nav class="navbar is-light" role="navigation" aria-label="main navigation"></nav>
+  <nav class="navbar" role="navigation" aria-label="main navigation"></nav>
   <main>
     <nav class="category-nav">
       <div id="category-list">
@@ -36,14 +36,16 @@
     <article class="container">
       <div class="title-wrap">
         <div class="title is-size-4 category-name">전체보기</div>
-        <form class="search-wrap">
-          <input class="input is-small search-input" type="text" placeholder="상품명을 입력하세요.">
-          <button class="button is-small search-button">
-            <span class="material-icons">
-              search
-            </span>
-          </button>
-        </form>
+        <div class="search-wrap">
+          <form>
+            <input class="is-medium search-input " type="text" placeholder="상품명을 입력하세요.">
+            <button class="is-medium search-button" type="submit">
+              <span class="material-icons">
+                search
+              </span>
+            </button>
+          </form>
+        </div>
       </div>
       <div id="product-list">
 

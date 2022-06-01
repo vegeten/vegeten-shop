@@ -34,7 +34,7 @@ async function getSearchResult(target) {
 
 // 카테고리 렌더링 - Api.get 통신
 async function getCategoriesFromApi() {
-  const data = await Api.get('/api/categories');
+  const data = await Api.getNoToken('/api/categories');
   // 카테고리 렌더링
   const categoryList = document.querySelector('#category-list');
   for (let i = 0; i < data.data.length; i++) {
@@ -64,7 +64,7 @@ async function productByCategory() {
       }
 
       // 카테고리별 상품조회 api
-      const datas = await Api.get('/api/categories/products', e.target.id);
+      const datas = await Api.getNoToken('/api/categories/products', e.target.id);
       showProducts(datas.data, e.target.id);
       searchInput.value = '';
     };

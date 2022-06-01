@@ -111,7 +111,7 @@ a {
 }
 
 .item-list {
-  width: 100%;
+  width: 80%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -123,6 +123,7 @@ a {
   height: 400px;
   border-radius: 2%;
   cursor: pointer;
+  text-align: center;
 }
 
 .item-card .img-box {

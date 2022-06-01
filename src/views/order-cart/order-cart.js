@@ -1,5 +1,5 @@
 import * as Api from '/api.js';
-import { getNode, addCommas } from '../../useful-functions.js';
+import { getNode, addCommas, checkToken } from '../../useful-functions.js';
 
 // elements
 const totalCostElement = getNode('#total-cost');
@@ -44,11 +44,10 @@ payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
 let userId;
 
 async function getUserInfo() {
-  const res = await Api.get('/api/users');
+  const res = await Api.getYesToken('/api/users');
   const userData = res.data;
   userId = userData._id;
   nameInput.value = userData.fullName;
-  console.log(userData);
 
   const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = userData.phoneNumber?.split('-') || [];
   const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
@@ -186,7 +185,7 @@ async function postOrder() {
     userId: userId,
   };
 
-  const res = await Api.post('/api/orders', orderInfo);
+  const res = await Api.postYesToken('/api/orders', orderInfo);
 }
 
 // 기본배송지 설정 눌렀을 때 주소정보 수정 patch 요청
@@ -196,8 +195,7 @@ async function changeAddress() {
     address1: address1.value,
     address2: address2.value,
   };
-
-  const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
+  const res = await Api.patchYesToken('/api/users/address', '', { address: newAddressInfo });
   console.log('정보수정 잘 되었어요!', res);
 }
 
