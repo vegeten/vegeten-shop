@@ -73,8 +73,8 @@ const createModalElement = (status, title) => {
 
       modalCardBody.innerHTML = `
         <form class="reset-password-form">
-          <label for="current-email">이메일</label >
-          <input id="current-email" class="input is-medium current-email" placeholder="">
+          <label for="current-email">이메일(아이디): </label >
+          <input id="current-email" class="input is-medium current-email" placeholder="사용 중인 이메일을 입력해주세요.">
           <div id="email-msg" class="help" style="display: none;">
             <span>올바른 이메일 형식인지 확인해주세요.</span>
           </div>
