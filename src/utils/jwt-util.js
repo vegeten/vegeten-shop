@@ -15,7 +15,7 @@ const sign = (user) => {
   return jwt.sign(payload, secret, {
     // secret으로 sign하여 발급하고 return
     algorithm: 'HS256', // 암호화 알고리즘
-    expiresIn: '30s', // 유효기간
+    expiresIn: '1h', // 유효기간
   });
 };
 
@@ -39,7 +39,7 @@ const verify = (token) => {
 const refresh = async (userId) => {
   const refreshToken = jwt.sign({}, secret, {
     algorithm: 'HS256',
-    expiresIn: '2m',
+    expiresIn: '14d',
   });
 
   await userService.setUserPartially(

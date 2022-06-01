@@ -34,7 +34,6 @@ class UserService {
     const { email, password } = loginInfo;
     // 우선 해당 이메일의 사용자 정보가  db에 존재하는지 확인
     const user = await this.userModel.findByEmail(email);
-    console.log(user);
     if (!user) {
       const e = new Error('해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
       e.status = 404;
@@ -52,12 +51,18 @@ class UserService {
     }
 
     // access token, refresh token 발급
+<<<<<<< HEAD
     const token = sign(user);
     const refreshToken = await refresh(user.shortId);
     const exp = jwt.decode(token).exp;
+=======
+    const accessToken = sign(user);
+    const refreshToken = await refresh(user.shortId);
+    const exp = jwt.decode(accessToken).exp;
+>>>>>>> dev
     // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
-    return { token, refreshToken, exp };
+    return { accessToken, refreshToken, exp };
   }
 
   // admin 로그인
@@ -90,11 +95,10 @@ class UserService {
 
     // access token, refresh token 발급
     const token = sign(user);
-    const refreshToken = refresh(user.shortId);
+    const refreshToken = await refresh(user.shortId);
     const exp = jwt.decode(token).exp;
     // const userId = user._id;
     //redisClient.set(userId.toString(), refreshToken);
-    console.log(exp);
     return { token, refreshToken, exp };
   }
 
@@ -106,6 +110,11 @@ class UserService {
   // 특정 사용자 정보를 받음
   async getUser(userId) {
     const user = await this.userModel.findById(userId);
+    return user;
+  }
+  // 특정 사용자 정보를 받음
+  async getUserByEmail(Email) {
+    const user = await this.userModel.findByEmail(Email);
     return user;
   }
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.
