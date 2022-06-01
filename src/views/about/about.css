@@ -59,11 +59,9 @@
   height: 40%;
   height: auto;
   overflow: hidden;
-
+  box-shadow: 5px 5px 10px grey;
 }
 
 .contents img {
   object-fit: cover;
-  box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25),
-    0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
