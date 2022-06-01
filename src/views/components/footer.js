@@ -2,7 +2,10 @@ import { getNode } from "../useful-functions.js";
 
 const renderFooter = () => {
   const $footer = getNode(".footer");
-
+  $footer.style.padding = "3rem 1.5rem";
+  $footer.style.backgroundColor = 'white';
+  // $footer.style.boxShadow = 'inset 0 2px 4px 0 rgb(0 0 0 / 6%)';
+  $footer.style.borderTop = '1px solid rgb(0 0 0 / 6%)';
   $footer.innerHTML = `
     <div class="content has-text-centered">
       <p>
