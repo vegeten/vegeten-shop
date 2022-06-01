@@ -68,13 +68,13 @@ async function handleSubmit(e) {
   try {
     const data = { email, password };
 
-    const result = await Api.post('/api/admin/login', data);
-    const { token, refreshToken } = result;
+    const result = await Api.postNoToken('/api/admin/login', data);
+    const { accessToken, exp } = result.data;
 
-    // 로그인 성공, 토큰을 세션 스토리지에 저장
-    // 물론 다른 스토리지여도 됨
-    localStorage.setItem('token', token);
-    localStorage.setItem('refreshToken', refreshToken);
+    // 로그인 성공 시 리프레시토큰을 쿠키에 저장
+    // 엑세스토큰과 엑세스토큰 만료시간은 로컬스토리지에 저장
+    localStorage.setItem('accessToken_exp', exp);
+    localStorage.setItem('accessToken', accessToken);
 
     viewDetailModal(true);
     // 로그인 페이지 이동
