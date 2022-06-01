@@ -12,7 +12,7 @@ const productUrl = window.location.href.split('/');
 const productId = productUrl[productUrl.length-2];
 // 상품상세 렌더링
 async function getProductDetail () {
-  const datas = await Api.get('/api/products',productId);
+  const datas = await Api.getYesToken('/api/products',productId);
   getNode('#productId').name = datas.data._id;
   getNode('#image').src = datas.data.image;
   getNode('#detailImage').src = datas.data.detailImage;
