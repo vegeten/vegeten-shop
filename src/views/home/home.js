@@ -42,7 +42,6 @@ const createItemListElement = (item) => {
     <a href="/shop/${shortId}">
       <div class="img-box"><img src=${image} alt=${productName} 이미지></div>
       <div class="productName">${productName}</div>
-      <div>${price} 원</div>
     </a>
   `;
   return li;
