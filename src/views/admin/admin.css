@@ -70,6 +70,23 @@
   justify-content: center;
 }
 
+.modal-card-body .table {
+  text-align: center;
+  margin: auto;
+  width: 60%;
+}
+.modal-card footer.modal-card-foot {
+  text-align: center;
+  justify-content: center;
+} 
+.modal-card footer input{
+  width: 50%;
+  margin: 0 2%;
+  
+}
+.modal-card-body .table input{
+  width: 70%;
+}
 .main-product-mod-wrap {
   margin-bottom: 4rem;
   display: flex;
