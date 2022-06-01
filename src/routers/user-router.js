@@ -76,6 +76,35 @@ userRouter.post('/reset-password', async (req, res, next) => {
   }
 });
 
+userRouter.post('/password', loginRequired, async function (req, res, next) {
+  try {
+    // content-type 을 application/json 로 프론트에서
+    // 설정 안 하고 요청하면, body가 비어 있게 됨.
+    if (is.emptyObject(req.body)) {
+      throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
+    }
+
+    // params로부터 id를 가져옴
+    const userId = req.currentUserId;
+    // body data 로부터 업데이트할 사용자 정보를 추출함.
+    const { currentPassword } = req.body;
+    if (!currentPassword) {
+      throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
+    }
+
+    const userInfoRequired = { userId, currentPassword };
+
+    // 비밀번호 일치 여부를 확인 후 프론트에게 보내줌
+    await userService.matchPassword(userInfoRequired);
+    res.status(200).json({
+      status: 200,
+      message: '비밀번호가 일치합니다.',
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // 전체 유저 목록 조회 (/api/users/list) ⇒ admin 한정
 userRouter.get('/list', adminAuth, async function (req, res, next) {
   try {
