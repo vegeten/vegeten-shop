@@ -130,8 +130,8 @@ async function getProductCategory(page, categoryName) {
 async function getProductAll(page) {
   const datas = await fetch(`/api/products?page=${page}`);
   const data = await datas.json();
-  const activeData = data.data.products.filter(ele => ele.categoryId !== null);
-  showProducts(activeData);
+  console.log(data);
+  showProducts(data.data);
 }
 
 function addAllEvents() {

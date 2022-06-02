@@ -21,7 +21,7 @@ const nav = (isLogin, isAdmin) => {
   <div class="container mt-3">
     <div cit lass="navbar-brand">
       <a class="navbar-item" href="/">
-        <img src="/vegeten-logo2.png" width="200" style="max-height:2.5em" alt="LOGO" />
+        <img src="/img/vegeten-logo2.png" width="200" style="max-height:2.5em" alt="LOGO" />
       </a>
     
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -38,18 +38,9 @@ const nav = (isLogin, isAdmin) => {
       <a class="navbar-item" href="/shop">
         <span>Shop</span>
       </a>
-      ${isLogin
-      ? `${isAdmin
-        ? `<div class="navbar-item has-dropdown is-hoverable">
-          <span class="material-icons navbar-link">
-            account_circle
-          </span>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="/admin">Admin</a>
-            <a class="navbar-item logout">Log out</a>
-          </div>
-        </div>`
-        : `
+      ${
+        isLogin
+          ? `
             <div class="navbar-item has-dropdown is-hoverable">
               <span class="material-icons navbar-link">
                 account_circle
@@ -65,9 +56,7 @@ const nav = (isLogin, isAdmin) => {
                 shopping_bag
               </span>
             </a>
-          `
-      }`
-      : `
+          `: `
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
@@ -84,6 +73,14 @@ const nav = (isLogin, isAdmin) => {
   </div>`;
 
   $navbar.innerHTML = template;
+  const aTag = document.querySelectorAll('a.navbar-item');
+  for(let i=0; i<aTag.length; i++) {
+    aTag[i].addEventListener("mouseover", () => {
+      aTag[i].style.backgroundColor = 'rgba(255, 255, 255, 0)';
+    })
+
+  }
+  
 };
 
 const renderNav = () => {
