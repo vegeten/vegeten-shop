@@ -1,4 +1,5 @@
 import { productModel } from '../db';
+import { customError } from '../middlewares/error/customError';
 
 class ProductService {
   // 본 파일의 맨 아래에서, new ProductService(productModel) 하면, 이 함수의 인자로 전달됨
@@ -28,9 +29,7 @@ class ProductService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!product) {
-      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
     }
 
     return product;
@@ -43,9 +42,7 @@ class ProductService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!product) {
-      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
     }
 
     // 상품 업데이트 진행
@@ -59,9 +56,7 @@ class ProductService {
   async deleteProduct(productId) {
     let product = await productModel.delete(productId);
     if (!product) {
-      const e = new Error('해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 상품의 id가 없습니다. 다시 한 번 확인해 주세요.');
     }
 
     return product;
