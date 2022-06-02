@@ -3,10 +3,12 @@ import { convertToNumber, addCommas } from '../../useful-functions.js';
 import { getNode } from '../../useful-functions.js';
 import { renderNav } from '../../components/nav.js';
 import renderFooter from '../../components/footer.js';
-renderNav();
-renderFooter();
 
-
+const newReview = getNode('.new-review');
+const cancelReviewButton = getNode('.cancel-button');
+const drawStar = getNode('.draw-star');
+const newReviewForm = getNode('.new-review-form');
+const reviewBodyWrap = getNode('.review-body-wrap');
 // url 주소로 현재 상품 id 알아내기 
 const productUrl = window.location.href.split('/');
 const productId = productUrl[productUrl.length - 2];
@@ -35,9 +37,214 @@ async function getProductDetail() {
     getNode('.buyProduct').href = `/order?product=${datas.data.shortId}&amount=${selected}`;
   });
 }
+
+async function deleteReview(reviewId) {
+  try {
+    await Api.deleteYesToken('/api/reviews', reviewId);
+    alert('리뷰가 삭제되었습니다.');
+  } catch (err) {
+    console.log(err.message);
+    alert(err.message);
+  } finally {
+    window.location.reload();
+  }
+}
+
+async function registerModReview(e, reviewId) {
+  e.preventDefault();
+  const score = e.target.querySelector('.draw-star').value;
+  const comment = e.target.querySelector('.review-text').value;
+  const image = e.target.querySelector('.file-name').value || '';
+
+
+  try {
+    const result = await Api.patchYesToken('/api/reviews', reviewId, {
+      comment,
+      image,
+      score
+    });
+    alert(result.message);
+    window.location.reload();
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+function modReviewForm(target) {
+  const reviewId = target.querySelector('.review-id').innerText;
+  const score = target.querySelector('.review-score-value').innerText;
+  const comment = target.querySelector('.content-review').innerText;
+  const imgSrc = target.querySelector('.img-review').src;
+  const newReviewBodyWrap = getNode('.new-review-body-wrap');
+  newReviewBodyWrap.style.display = 'block';
+  newReviewBodyWrap.querySelector('.draw-star').value = score;
+  newReviewBodyWrap.querySelector('.star-input span').style.width = `${score * 20}%`;
+  newReviewBodyWrap.querySelector('.review-text').innerText = comment;
+  newReviewBodyWrap.querySelector('.file-name').innerText = imgSrc;
+  getNode('.new-review-form').removeEventListener('submit', registerNewReview);
+
+  getNode('.new-review-form').addEventListener('submit', (e) => registerModReview(e, reviewId));
+
+  newReviewBodyWrap.querySelector('.review-text').focus();
+}
+
+function getReviewButton(e) {
+  e.preventDefault();
+  if (e.target.classList.contains('modify-button')) {
+    modReviewForm(e.target.parentNode.parentNode);
+  } else if (e.target.classList.contains('delete-button')) {
+    const reviewId = e.target.parentNode.parentNode.querySelector('.review-id').innerHTML;
+    deleteReview(reviewId);
+  } else return;
+}
+
+async function registerNewReview(e) {
+  e.preventDefault();
+  const score = e.target.querySelector('.draw-star').value;
+  const comment = e.target.querySelector('.review-text').value;
+  const image = e.target.querySelector('.file-name').value || '';
+
+  try {
+    const result = await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    alert(result.message);
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    window.location.reload();
+  }
+}
+
+function drawStarInput(e) {
+  const starInput = getNode('.star-input span');
+  starInput.style.width = `${e.target.value * 20}%`;
+};
+
+async function getProductReview() {
+  try {
+    let res = null;
+    if (localStorage.getItem('accessToken')) {
+      res = await fetch(`/api/reviews/product/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+    } else {
+      res = await fetch(`/api/reviews/product/${productId}`);
+    }
+    const result = await res.json();
+    renderProductReview(result.data);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
+
+function onToggleReview(e) {
+  e.preventDefault();
+  const newReviewBodyWrap = getNode('.new-review-body-wrap');
+
+  if (e.target.classList.contains('new-review')) {
+    newReviewBodyWrap.style.display = 'block';
+    newReview.style.display = 'none';
+  }
+  else {
+    newReviewBodyWrap.style.display = 'none';
+    newReview.style.display = 'block';
+  }
+}
+
 getProductDetail();
+getProductReview();
 
+function createScoreElement(score) {
+  const max = 5;
+  const stars = [];
+  for (let i = 0; i < max; i++) {
+    if (i < score) {
+      stars.push(`
+        <span class="material-icons star">
+          star
+        </span>
+      `);
+    } else {
+      stars.push(`
+        <span class="material-icons star">
+          star_border
+        </span>
+      `);
+    }
+  }
+  return stars.join('');
+}
 
+function checkUser(userId, currentUserId) {
+  return userId === currentUserId;
+}
+
+function checkUsersReview(userId, currentUserId) {
+  const result = checkUser(userId, currentUserId);
+  const buttonWrap = `
+    <button class="button is-small is-warning modify-button">수정</button>
+    <button class="button is-small is-danger delete-button">삭제</button>
+  `;
+  if (result) return buttonWrap;
+  return '';
+}
+
+function createReviewBodyElement(review, currentUserId) {
+  const { userId, fullName, comment, image, score, createdAt, shortId } = review;
+  const scoreElement = createScoreElement(score);
+  const modifyButton = checkUsersReview(userId, currentUserId);
+  const form = document.createElement('form');
+
+  form.classList = 'review-body card';
+  form.innerHTML = `
+  <div class="review-info">
+    <div class="info-score">
+      ${scoreElement}
+    </div>
+    <div class="info-username">
+      <span>${fullName[0]} * *</span>
+    </div>
+    <div class="info-date">
+      <span>${createdAt.substr(0, 10)}</span>
+    </div>
+    <div class="review-score-value">${score}</div>
+    <div class="review-id">${shortId}</div>
+  </div >
+  <div class="review-content">
+    <span class="content-review">${comment}</span>
+  </div>
+  <div class="review-image">
+    <img class="img-review" src="${image}" width="80px">
+  </div>
+  <div class="review-modify">
+    ${modifyButton}
+  </div>
+  `;
+
+  return form;
+}
+
+function createReviewScoreElement(count, averageScore) {
+  return `
+    <span class="review-score" > ${Number(averageScore).toFixed(1)} / 5</span>
+    <span class="review-count">(${count}개의 후기)</span>
+    `;
+}
+
+function renderProductReview(items) {
+  if (!items.reviews.length) return;
+  const reviewBodyWrap = getNode('.review-body-wrap');
+  const reviewScoreWrap = getNode('.review-score-wrap');
+  reviewBodyWrap.innerHTML = '';
+  reviewScoreWrap.innerHTML = '';
+  const reviewScore = createReviewScoreElement(items.reviews.length, items.averageScore);
+  reviewScoreWrap.innerHTML = reviewScore;
+  items.reviews.forEach(item => {
+    const reviewBody = createReviewBodyElement(item, items.currentUserId);
+    reviewBodyWrap.appendChild(reviewBody);
+  });
+}
 
 // 장바구니 버튼 클릭 
 const addCartBtn = getNode('.addCart');
@@ -90,16 +297,21 @@ function buyProduct() {
 
   const selections = getNode('#total-count'); // select 드롭박스
   const selected = Number(selections.value.replace('개', ''));
-  console.log("갯수!!", selected);
   const cartEntry = {
     count: selected,
     productId: getNode('#productId').name,
   };
   // 'cart' 라는 key값에 넣어주기 
   localStorage.setItem('buy', JSON.stringify(cartEntry));
-
+};
+function addAllEvents() {
+  newReview.addEventListener('click', onToggleReview);
+  cancelReviewButton.addEventListener('click', onToggleReview);
+  drawStar.addEventListener('input', drawStarInput);
+  newReviewForm.addEventListener('submit', registerNewReview);
+  reviewBodyWrap.addEventListener('click', getReviewButton);
 }
 
-//
-// 상품수정하기 
-
+renderNav();
+renderFooter();
+addAllEvents();

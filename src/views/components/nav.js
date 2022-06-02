@@ -1,8 +1,10 @@
 import { getAuthorizationObj, getNode, deleteCookie } from '../useful-functions.js';
 
 const logOut = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('accessToken_exp');
   deleteCookie('refreshToken');
-  window.location.href = '/';
+  window.location.href = '/login';
 };
 
 const addLogOutEvent = (isLogin) => {
@@ -36,11 +38,9 @@ const nav = (isLogin, isAdmin) => {
       <a class="navbar-item" href="/shop">
         <span>Shop</span>
       </a>
-      ${
-        isLogin
-          ? `${
-              isAdmin
-                ? `<div class="navbar-item has-dropdown is-hoverable">
+      ${isLogin
+      ? `${isAdmin
+        ? `<div class="navbar-item has-dropdown is-hoverable">
           <span class="material-icons navbar-link">
             account_circle
           </span>
@@ -49,7 +49,7 @@ const nav = (isLogin, isAdmin) => {
             <a class="navbar-item logout">Log out</a>
           </div>
         </div>`
-                : `
+        : `
             <div class="navbar-item has-dropdown is-hoverable">
               <span class="material-icons navbar-link">
                 account_circle
@@ -66,8 +66,8 @@ const nav = (isLogin, isAdmin) => {
               </span>
             </a>
           `
-            }`
-          : `
+      }`
+      : `
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
@@ -79,7 +79,7 @@ const nav = (isLogin, isAdmin) => {
         </span>
       </a>
       `
-      } 
+    } 
     </div>
   </div>`;
 
