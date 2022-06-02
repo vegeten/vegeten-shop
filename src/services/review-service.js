@@ -4,8 +4,10 @@ class ReviewService {
     this.reviewModel = reviewModel;
   }
 
+  async getReview(reviewId) {
+    return await this.reviewModel.findById(reviewId);
+  }
   async getReviewlist() {
-    console.log(reviewModel);
     const reviews = await this.reviewModel.findAll();
 
     return reviews;
@@ -21,7 +23,7 @@ class ReviewService {
     return reviews;
   }
 
-  async getReviewsByProduct(userId) {
+  async getReviewsByProduct(productId) {
     const reviews = await this.reviewModel.findByProduct(productId);
     if (!productId || productId === null) {
       const e = new Error('product not found');
@@ -46,11 +48,13 @@ class ReviewService {
       e.status = 404;
       throw e;
     }
+    const updatedReview = await this.reviewModel.update(toUpdate);
+    return updatedReview;
   }
 
   async deleteReview(reviewId) {
     let review = await this.reviewModel.delete(reviewId);
-    if (!order || order === null) {
+    if (!review || review === null) {
       const e = new Error('해당 리뷰의 id가 없습니다. 다시 한 번 확인해 주세요.');
       e.status = 404;
       throw e;

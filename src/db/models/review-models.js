@@ -17,8 +17,12 @@ export class ReviewModel {
   async create(reviewsInfo) {
     return await Review.create(reviewsInfo);
   }
+
+  async update(reviewInfo) {
+    return await Review.updateOne(reviewInfo);
+  }
   async delete(reviewId) {
-    return await Review.findOneAndDelete({ reviewId: shortId });
+    return await Review.findOneAndDelete({ shortId: reviewId });
   }
 }
 const reviewModel = new ReviewModel();
