@@ -74,7 +74,6 @@ const nav = (isLogin, isAdmin) => {
 
   $navbar.innerHTML = template;
   const aTag = document.querySelectorAll('a.navbar-item');
-  console.log('a태그!!!', aTag)
   for(let i=0; i<aTag.length; i++) {
     aTag[i].addEventListener("mouseover", () => {
       aTag[i].style.backgroundColor = 'rgba(255, 255, 255, 0)';

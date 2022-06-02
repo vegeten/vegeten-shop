@@ -72,6 +72,19 @@ function addAllEvents() {
   window.addEventListener('resize', setSlideSize);
 }
 
+function scrollEvents() {
+  const navBar = document.querySelector('.navbar')
+  window.addEventListener("scroll", () => {
+    if(document.documentElement.scrollTop >100) {
+      navBar.style.backgroundColor = "rgba(255, 255, 255, 0.7)"
+    } else {
+      navBar.style.backgroundColor = "rgba(255, 255, 255, 0)"
+      
+    }
+
+  })
+}
+scrollEvents()
 renderNav();
 renderFooter();
 addAllEvents();

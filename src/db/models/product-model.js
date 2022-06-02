@@ -6,13 +6,14 @@ export class ProductModel {
   async findAll(page, perPage) {
     // total, posts 를 Promise.all 을 사용해 동시에 호출하기
     const [total, products] = await Promise.all([
-      Product.countDocuments({}).populate({ path: 'categoryId', match: { active: 'active' } }),
-      Product.find()
+      Product.countDocuments({}),
+      Product.find({ path: 'categoryId',match:{active:"active"} })
+        .populate({ path: 'categoryId', match:{active:"active"} })
         .sort({ createdAt: -1 }) //최신순
         .skip(perPage * (page - 1)) // 생략할
-        .limit(perPage)
-        .populate({ path: 'categoryId', match: { active: 'active' } }),
+        .limit(perPage),
     ]);
+
     const totalPage = Math.ceil(total / perPage);
 
     return { products, total, totalPage };
