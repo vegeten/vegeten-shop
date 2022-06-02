@@ -70,7 +70,8 @@ const addErrorHTML = (target) => {
       target.nextElementSibling.innerHTML = '이름은 2글자 이상이어야 합니다.';
       break;
     case passwordInput:
-      target.nextElementSibling.innerHTML = '비밀번호는 4글자 이상이어야 합니다.';
+      target.nextElementSibling.innerHTML =
+        '영문,숫자,특수문자 포함 8자리이상 15자리이하  (가능한 특수문자: ~!@#$%^&*)';
       break;
     case emailInput:
       target.nextElementSibling.innerHTML = '이메일 형식이 맞지 않습니다.';
@@ -94,6 +95,26 @@ function addAllEvents() {
   modalBackground.addEventListener('click', closeModal);
 }
 
+// 공백없어야함, 숫자&문자&특수문자 (8자 이상 15자 이하)
+function checkPassword(pwd) {
+  let pattern1 = /[0-9]/;
+  let pattern2 = /[a-zA-z]/;
+  let pattern3 = /[~!@#$%^&*]/;
+
+  if (
+    pwd.search(/\s/) !== -1 ||
+    !pattern1.test(pwd) ||
+    !pattern2.test(pwd) ||
+    !pattern3.test(pwd) ||
+    pwd.length < 8 ||
+    pwd.length > 15
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 // 회원가입 진행
 async function handleSubmit(e) {
   e.preventDefault();
@@ -106,7 +127,7 @@ async function handleSubmit(e) {
   // 잘 입력했는지 확인
   const isFullNameValid = fullName.length >= 2;
   const isEmailValid = validateEmail(email);
-  const isPasswordValid = password.length >= 4;
+  const isPasswordValid = checkPassword(password);
   const isPasswordSame = password === passwordConfirm;
 
   if (!isFullNameValid) {
