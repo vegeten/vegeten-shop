@@ -23,5 +23,6 @@ export class UserModel {
     return await User.findOneAndDelete({ shortId: userId });
   }
 }
+
 const userModel = new UserModel();
 export { userModel, User };

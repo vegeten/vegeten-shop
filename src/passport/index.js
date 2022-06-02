@@ -1,35 +1,20 @@
-const passport = require('passport');
-const KakaoStrategy = require('passport-kakao').Strategy;
-const { User } = require('../db');
+import { serializeUser, deserializeUser } from 'passport';
+import kakao from './kakao-strategy'; // 카카오서버로 로그인할때
+import passport from 'passport';
 
-module.exports = (app) => {
-  app.use(passport.initialize());
-  passport.use(
-    new KakaoStrategy(
-      {
-        clientID: process.env.KAKAO_REST_API_KEY,
-        callbackURL: process.env.REDIRECT_URI, // 카카오 로그인 Redirect URI 경로
-      },
-      // clientID에 카카오 앱 아이디 추가
-      // callbackURL: 카카오 로그인 후 카카오가 결과를 전송해줄 URL
-      // accessToken, refreshToken : 로그인 성공 후 카카오가 보내준 토큰
-      // profile: 카카오가 보내준 유저 정보. profile의 정보를 바탕으로 회원가입
-      function (accessToken, refreshToken, profile, done) {
-        const result = {
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-          profile: profile,
-        };
-        console.log('KakaoStrategy', result);
-        done.result = result;
-        return done;
-      }
-    )
-  );
+import { User } from '../db';
+
+module.exports = () => {
   passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id);
   });
-  passport.deserializeUser((user, done) => {
-    done(null, user);
+
+  passport.deserializeUser((id, done) => {
+    //? 두번 inner 조인해서 나를 팔로우하는 followerid와 내가 팔로우 하는 followingid를 가져와 테이블을 붙인다
+    User.findOne({ where: { id } })
+      .then((user) => done(null, user))
+      .catch((err) => done(err));
   });
+
+  kakao();
 };
