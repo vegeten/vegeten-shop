@@ -1,7 +1,6 @@
 import { getAuthorizationObj, getNode, deleteCookie } from '../useful-functions.js';
 
 const logOut = () => {
-  deleteCookie('accessToken');
   deleteCookie('refreshToken');
   window.location.href = '/';
 };

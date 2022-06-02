@@ -42,6 +42,7 @@
                       <tr>
                         <th>카테고리명</th>
                         <th>수정</th>
+                        <th>활성화</th>
                         <th>삭제</th>
                       </tr>
                     </thead>
@@ -71,10 +72,10 @@
             <section class="modal-card-body">
               <!-- Content ... -->
               <div class="is-size-5">대표이미지</div>
-              <input class="input" type="text" name="image" value="https://picsum.photos/200">
+              <input class="input image" type="text" name="image" value="https://picsum.photos/200">
               
               <div class="is-size-5">상세이미지</div>
-              <input class="input" type="text" name="detailImage" value="https://picsum.photos/200">
+              <input class="input detailImage" type="text" name="detailImage" value="https://picsum.photos/200">
               
               <div>카테고리</div>
               <div class="control has-icons-left">
@@ -85,17 +86,17 @@
                 </div>
               </div>
               <div>상품이름</div>
-              <input class="input" type="text" name="productName" >
+              <input class="input productName" type="text" name="productName" >
               <div>상품설명</div>
-              <input class="input" type="textarea" name="description">
+              <input class="input description" type="textarea" name="description">
               <div>price</div>
-              <input class="input" type="number" name="price">
+              <input class="input price" type="number" name="price">
               <div>제조사</div>
-              <input class="input" type="text" name="company">
+              <input class="input company" name="company">
 
             </section>
             <footer class="modal-card-foot">
-              <input class="button is-success addProductBtn" value="상품추가하기"></input>
+              <button class="button is-success addProductBtn">상품추가하기</button>
             </footer>
         </div>
       </div>
@@ -109,8 +110,41 @@
                   <button class="close-button delete" aria-label="close"></button>
                 </header>
                 <section class="modal-card-body">
-          
+                  <div class="search-wrap">
+                    <form>
+                      <div>
+                        <input class="is-medium search-input " type="text" placeholder="상품명을 입력하세요.">
+                        <button class="is-medium search-button" type="submit">
+                          <span class="material-icons">
+                            search
+                          </span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <table class="table is-hoverable is-fullwidth productTable">
+                    <thead>
+                      <tr>
+                        <th>수정</th>
+                        <th>상품명</th>
+                        <th>제조사</th>
+                        <th>등록일자</th>
+                        <th>삭제</th>
+                      </tr>
+                    </thead>
+                    <tbody class="productList">
+                    </tbody>
+                  </table>
                 </section>
+                <footer class="modal-card-foot">
+                   <!-- pagination -->
+                  <div class="bottom">
+                    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                      <ul class="pagination-list">
+                      </ul>
+                    </nav> 
+                  </div>
+                </footer>
               </div>
             </div>
           </div>

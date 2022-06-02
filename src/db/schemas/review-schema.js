@@ -8,6 +8,10 @@ const ReviewSchema = new Schema(
       type: String,
       required: true,
     },
+    fullName: {
+      type: String,
+      required: true,
+    },
     productId: {
       type: String,
       required: true,
@@ -20,6 +24,11 @@ const ReviewSchema = new Schema(
       type: String,
       required: false,
       default: null,
+    },
+    score: {
+      type: Number,
+      required: false,
+      default: 5,
     },
   },
   {
