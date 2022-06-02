@@ -9,6 +9,11 @@ const cancelReviewButton = getNode('.cancel-button');
 const drawStar = getNode('.draw-star');
 const newReviewForm = getNode('.new-review-form');
 const reviewBodyWrap = getNode('.review-body-wrap');
+const fileInput = getNode('.file-input');
+const imgPriview = getNode('.img-preview');
+const fileName = getNode('.file-name');
+const cancelImg = getNode('.cancel-img');
+const imgData = new FormData();
 // url 주소로 현재 상품 id 알아내기 
 const productUrl = window.location.href.split('/');
 const productId = productUrl[productUrl.length - 2];
@@ -38,6 +43,20 @@ async function getProductDetail() {
   });
 }
 
+function deletePreviewImg() {
+  imgPriview.src = '';
+  fileName.innerHTML = '파일 이름';
+  cancelImg.style.display = 'none';
+}
+
+function changeImageFile(e) {
+  const imgName = e.target.files[0].name;
+  imgData.append('image', e.target.files[0]);
+  imgPriview.src = window.URL.createObjectURL(e.target.files[0]);
+  fileName.innerHTML = imgName;
+  cancelImg.style.display = 'block';
+}
+
 async function deleteReview(reviewId) {
   try {
     await Api.deleteYesToken('/api/reviews', reviewId);
@@ -54,8 +73,7 @@ async function registerModReview(e, reviewId) {
   e.preventDefault();
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
-  const image = e.target.querySelector('.file-name').value || '';
-
+  const image = await uploadImageToS3();
 
   try {
     const result = await Api.patchYesToken('/api/reviews', reviewId, {
@@ -98,11 +116,29 @@ function getReviewButton(e) {
   } else return;
 }
 
+async function uploadImageToS3() {
+  if (!imgData.has('image')) return '';
+  try {
+    const uploadResult = await fetch('/api/images/upload', {
+      method: 'POST',
+      body: imgData,
+    });
+
+    const result = await uploadResult.json();
+    return result.imagePath;
+  } catch (err) {
+    console.log(err.message);
+
+  }
+
+  return '';
+}
+
 async function registerNewReview(e) {
   e.preventDefault();
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
-  const image = e.target.querySelector('.file-name').value || '';
+  const image = await uploadImageToS3();
 
   try {
     const result = await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
@@ -149,6 +185,9 @@ function onToggleReview(e) {
   else {
     newReviewBodyWrap.style.display = 'none';
     newReview.style.display = 'block';
+    imgPriview.src = '';
+    fileName.innerHTML = '파일 이름';
+    cancelImg.style.display = 'none';
   }
 }
 
@@ -215,7 +254,7 @@ function createReviewBodyElement(review, currentUserId) {
     <span class="content-review">${comment}</span>
   </div>
   <div class="review-image">
-    <img class="img-review" src="${image}" width="80px">
+    <img class="img-review" src="${image}">
   </div>
   <div class="review-modify">
     ${modifyButton}
@@ -310,6 +349,8 @@ function addAllEvents() {
   drawStar.addEventListener('input', drawStarInput);
   newReviewForm.addEventListener('submit', registerNewReview);
   reviewBodyWrap.addEventListener('click', getReviewButton);
+  fileInput.addEventListener('change', changeImageFile);
+  cancelImg.addEventListener('click', deletePreviewImg);
 }
 
 renderNav();

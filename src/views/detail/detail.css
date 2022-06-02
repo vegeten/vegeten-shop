@@ -216,7 +216,7 @@ article .intro-item {
 }
 
 .star-input span {
-  width: 20%;
+  width: 100%;
   position: absolute;
   left: 0;
   color: #FF9600;
@@ -253,4 +253,31 @@ article .intro-item {
 
 .review-score-value {
   display: none;
+}
+
+.img-preview-wrap {
+  margin-right: 1rem;
+  position: relative;
+}
+
+.img-review {
+  border-radius: 10px;
+  width: 100px;
+  padding: 1rem;
+  height: auto;
+}
+
+.img-preview {
+  border-radius: 10px;
+  width: 100px;
+  padding: 1rem;
+  height: auto;
+}
+
+.cancel-img {
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  top: 0;
+  right: 0;
 }
