@@ -442,6 +442,7 @@ async function getModalCategory() {
     // 모달창 카테고리 렌더링
     categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
     <td><button class="button is-warning edit-category-button">수정</button></td>
+    <td><button class="button is-success useActive-button">비활성화</button></td>
     <td><button class="button is-danger del-category-button">삭제</button></td></tr>`;
   }
   // 카테고리 수정버튼 클릭스 input 태그로 변경하고 button 바꾸기 + 삭제하기
@@ -483,11 +484,16 @@ async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id'); 
   const categoryName = categoryNode.textContent;
-  // console.log()
-  await Api.deleteYesToken('/api/categories', categoryId,{categoryName})
-  const categoryModalList = document.querySelector('.category-modal-list');
-  categoryModalList.innerHTML="";
-  getModalCategory();
+  const deleteProduct = await Api.getYesToken('/api/categories/products', categoryId);
+  if(deleteProduct.data.products.length !== 0) {
+    alert(`해당 카테고리에 총 ${deleteProduct.data.products.length} 개의 상품이 존재합니다. 상품 수정후 사용해주세요!`)
+  } else {
+    await Api.deleteYesToken('/api/categories', categoryId,{categoryName})
+    const categoryModalList = document.querySelector('.category-modal-list');
+    categoryModalList.innerHTML="";
+    getModalCategory();
+    
+  }
 }
 // 카테고리 수정- Api.patch통신
 async function updateCategory(e) {
