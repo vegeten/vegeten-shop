@@ -55,11 +55,12 @@ categoryRouter.patch('/:categoryId', adminAuth, async function (req, res, next) 
     // params로부터 id를 가져옴
     const { categoryId } = req.params;
     // body data 로부터 업데이트할 카테고리 정보를 추출함.
-    const { label } = req.body;
-    console.log(label);
+    const { label, active } = req.body;
+    console.log(active);
     // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
     // 보내주었다면, 업데이트용 객체에 삽입함.
     const toUpdate = {
+      ...(active && { active }),
       ...(label && { label }),
     };
 
@@ -69,7 +70,7 @@ categoryRouter.patch('/:categoryId', adminAuth, async function (req, res, next) 
     // 업데이트 이후의 카테고리 데이터를 프론트에 보내 줌
     res.status(200).json({
       status: 200,
-      message: '카테고리 정보 수정 성공',
+      message: '카테고리 이름 수정 성공',
       data: updatedCategoryInfo,
     });
   } catch (error) {
