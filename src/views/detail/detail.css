@@ -101,6 +101,16 @@ article .intro-item {
   justify-content: left;
 }
 
+.socre-btn-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.new-review {
+  margin-right: 1rem;
+}
+
 .review-title {
   font-size: 1.2rem;
 }
@@ -165,6 +175,54 @@ article .intro-item {
   top: 1.1rem;
 }
 
+.review-none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  padding: 2rem;
+  font-weight: 300;
+}
+
+.review-text {
+  font-size: 1.2rem;
+  width: 100%;
+  height: 200px;
+  outline: none;
+  border: none;
+}
+
+.review-text:focus {
+  outline: none;
+}
+
+.new-review-body-wrap {
+  display: none;
+}
+
+.star-input {
+  position: relative;
+  font-size: 26px;
+  color: #ddd;
+}
+
+.star-input input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.star-input span {
+  width: 20%;
+  position: absolute;
+  left: 0;
+  color: #FF9600;
+  overflow: hidden;
+  pointer-events: none;
+}
 
 #cart-modal .modal-card-foot,
 #cart-modal .modal-card-body {
@@ -187,4 +245,12 @@ article .intro-item {
   margin-bottom: 4%;
   font-size: 1.2em;
   font-weight: 500;
+}
+
+.review-id {
+  display: none;
+}
+
+.review-score {
+  display: none;
 }
