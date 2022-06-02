@@ -25,6 +25,7 @@
     "nodemailer": "^6.7.5",
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.1",
+    "passport-local": "^1.0.0",
     "redis": "^4.1.0",
     "redis-server": "^1.2.2"
   },
