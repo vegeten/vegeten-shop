@@ -25,6 +25,7 @@ userRouter.get(
   }),
   // kakaoStrategy에서 성공한다면 콜백 실행
   (req, res) => {
+    console.log('성공');
     res.redirect('/');
   }
 );
