@@ -57,7 +57,7 @@ export const getCookie = (cookieName) => {
     const cookieValue = document.cookie
       .slice(idx)
       .split(';')
-      .find((row) => row.startsWith(decodedCookieName))
+      .find((row) => row.startsWith(cookieName))
       .split('=')[1];
 
     return cookieValue;
@@ -65,33 +65,39 @@ export const getCookie = (cookieName) => {
 };
 
 export const deleteCookie = (cookieName) => {
-  document.cookie = decodeURIComponent(cookieName) + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 };
 
-export async function checkToken() {
+export const checkToken = async () => {
   const exp = localStorage.getItem('accessToken_exp');
-  let expDate = new Date(0);
-  expDate.setUTCSeconds(exp);
-  let todayDate = new Date();
+  const expDate = new Date(0).setUTCSeconds(exp);
+  const todayDate = new Date();
   const time_diff = 300000;
 
+  // 만료되기 5분 이하
   if (expDate - todayDate.getTime() <= time_diff) {
-    const res = await fetch('/api/users/refresh', {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        Refresh: `Bearer ${getCookie('refreshToken')}`,
-      },
-    });
-    const result = await res.json();
-    if (!result.refresh) return false;
-    else if (result.resfresh && !result.access) {
-      console.log('액세스토큰 갱신!!');
-      localStorage.setItem('accessToken_exp', result.data.exp);
-      localStorage.setItem('accessToken', result.data.newAccessToken);
-      return true;
+    try {
+      const res = await fetch('/api/users/refresh', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Refresh: `Bearer ${getCookie('refreshToken')}`,
+        },
+      });
+      // json() 할 때는 await 필요 없을 듯
+      const result = await res.json();
+      if (!result.refresh) return false;
+      else if (!result.access) {
+        console.log('액세스토큰 갱신!!');
+        localStorage.setItem('accessToken_exp', result.data.exp);
+        localStorage.setItem('accessToken', result.data.newAccessToken);
+        return true;
+      }
+    } catch (err) {
+      console.log(err.message);
     }
   }
 
+  // 만료되기 5분 넘게 남음
   return true;
-}
+};
