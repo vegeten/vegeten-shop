@@ -52,7 +52,7 @@ async function getNoToken(endpoint, params = '') {
 // api 로 POST 요청 (/endpoint 로, JSON 데이터 형태로 요청함)
 async function postYesToken(endpoint, data) {
   const status = await checkToken();
-  if (!status()) {
+  if (!status) {
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;
@@ -115,7 +115,7 @@ async function postNoToken(endpoint, data) {
 // api 로 PATCH 요청 (/endpoint/params 로, JSON 데이터 형태로 요청함)
 async function patchYesToken(endpoint, params = '', data) {
   const status = await checkToken();
-  if (!status()) {
+  if (!status) {
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;
