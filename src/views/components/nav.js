@@ -21,7 +21,7 @@ const nav = (isLogin, isAdmin) => {
   <div class="container mt-3">
     <div cit lass="navbar-brand">
       <a class="navbar-item" href="/">
-        <img src="/vegeten-logo2.png" width="200" style="max-height:2.5em" alt="LOGO" />
+        <img src="/img/vegeten-logo2.png" width="200" style="max-height:2.5em" alt="LOGO" />
       </a>
     
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -56,13 +56,7 @@ const nav = (isLogin, isAdmin) => {
                 shopping_bag
               </span>
             </a>
-<<<<<<< HEAD
           `: `
-=======
-          `
-      }`
-      : `
->>>>>>> 5c1c9852187f5d46680a3d09736d17572903aedc
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
@@ -79,6 +73,15 @@ const nav = (isLogin, isAdmin) => {
   </div>`;
 
   $navbar.innerHTML = template;
+  const aTag = document.querySelectorAll('a.navbar-item');
+  console.log('a태그!!!', aTag)
+  for(let i=0; i<aTag.length; i++) {
+    aTag[i].addEventListener("mouseover", () => {
+      aTag[i].style.backgroundColor = 'rgba(255, 255, 255, 0)';
+    })
+
+  }
+  
 };
 
 const renderNav = () => {

@@ -6,7 +6,7 @@ import * as Api from '/api.js';
 const carouselSlide = getNode('.carousel-slide');
 const prevBtn = getNode('#prevBtn');
 const nextBtn = getNode('#nextBtn');
-const slideLength = 3;
+const slideLength = 2;
 let counter = 0;
 let size = carouselSlide.clientWidth;
 
