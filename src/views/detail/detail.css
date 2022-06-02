@@ -1,9 +1,11 @@
-*{
+* {
   font-family: 'Roboto', sans-serif;
 }
+
 article {
   text-align: center;
 }
+
 article .intro-item {
   display: flex;
   margin: 5%;
@@ -12,78 +14,270 @@ article .intro-item {
   height: 80%;
   text-align: center;
   justify-content: center;
-  
+
 }
+
 .img_box {
   margin-left: 2%;
   width: 450px;
   height: 500px;
   overflow: hidden;
 }
-.img_box img{
+
+.img_box img {
   height: 100%;
   width: auto;
   object-fit: cover;
 }
+
 .text_box {
   /* border: solid 1px black; */
   text-align: left;
   margin-left: 5%;
   width: 45%;
 }
+
 .text_box .description {
   width: 70%;
   margin-bottom: 5%;
 }
+
 .text_box .product-count {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.text_box .product-count div:first-child{
+
+.text_box .product-count div:first-child {
   font-weight: 700;
 }
+
 .total-price {
   display: flex;
   align-items: center;
   margin: 3% auto;
   justify-content: space-between;
 }
+
 .total-price div:first-child {
   font-weight: 700;
 }
+
 .button-group {
   text-align: right;
 }
-.detail-item{
+
+.detail-item {
   margin-top: 5%;
 }
+
 .img_box_detail {
   width: 60%;
   height: 100%;
   margin: auto;
 }
+
 .img_box_detail {
   height: 100%;
   width: auto;
   object-fit: cover;
 }
+
+.review-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: initial;
+}
+
+.review-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.review-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.socre-btn-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.new-review {
+  margin-right: 1rem;
+}
+
+.review-title {
+  font-size: 1.2rem;
+}
+
+.review-score-wrap {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.review-score {
+  font-size: 1.7rem;
+  font-weight: bold;
+}
+
+.review-count {
+  margin-left: 1rem;
+  font-size: 1rem;
+  color: blue;
+}
+
+.review-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 20px;
+  margin: 1rem;
+}
+
+.review-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.info-score {
+  display: flex;
+  flex-direction: row;
+}
+
+.info-username {
+  margin-left: 1rem;
+}
+
+.info-date {
+  margin-left: 1rem;
+}
+
+.star {
+  color: #FF9600;
+}
+
+.review-content {
+  padding: 1rem;
+}
+
+.review-modify {
+  position: absolute;
+  right: 1.1rem;
+  top: 1.1rem;
+}
+
+.review-none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  padding: 2rem;
+  font-weight: 300;
+}
+
+.review-text {
+  font-size: 1.2rem;
+  width: 100%;
+  height: 200px;
+  outline: none;
+  border: none;
+}
+
+.review-text:focus {
+  outline: none;
+}
+
+.new-review-body-wrap {
+  display: none;
+}
+
+.star-input {
+  position: relative;
+  font-size: 26px;
+  color: #ddd;
+}
+
+.star-input input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.star-input span {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  color: #FF9600;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 #cart-modal .modal-card-foot,
-#cart-modal .modal-card-body  {
+#cart-modal .modal-card-body {
   justify-content: center;
   align-items: center;
   text-align: center;
 }
+
 #cart-modal .modal-card-body {
   border-top-left-radius: 0.7em;
   border-top-right-radius: 0.7em;
 }
+
 #cart-modal .material-icons {
   margin: 6% auto;
   font-size: 4em;
 }
+
 .modal-card-title {
   margin-bottom: 4%;
-    font-size: 1.2em;
-    font-weight: 500;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.review-id {
+  display: none;
+}
+
+.review-score-value {
+  display: none;
+}
+
+.img-preview-wrap {
+  margin-right: 1rem;
+  position: relative;
+}
+
+.img-review {
+  border-radius: 10px;
+  width: 100px;
+  padding: 1rem;
+  height: auto;
+}
+
+.img-preview {
+  border-radius: 10px;
+  width: 100px;
+  padding: 1rem;
+  height: auto;
+}
+
+.cancel-img {
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  top: 0;
+  right: 0;
 }

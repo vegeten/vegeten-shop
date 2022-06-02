@@ -36,7 +36,69 @@ export const getNode = (selector) => {
 // JWT 토큰 여부로 로그인 상태를 판단하여 객체로 전달해줌.
 export const getAuthorizationObj = () => {
   return {
-    isLogin: localStorage.getItem('token') ? true : false,
+    isLogin: document.cookie.indexOf('refreshToken') === -1 ? false : true,
     isAdmin: false,
   };
+};
+
+export const setCookie = (key, value) => {
+  let newCookie = encodeURIComponent(key) + '=' + encodeURIComponent(value) + ';path=/';
+  document.cookie = newCookie;
+};
+
+export const getCookie = (cookieName) => {
+  // const decodedCookieName = decodeURIComponent(cookieName);
+  // const idx = document.cookie.indexOf(decodedCookieName);
+  const idx = document.cookie.indexOf(cookieName);
+
+  if (idx === -1) {
+    return null;
+  } else {
+    const cookieValue = document.cookie
+      .slice(idx)
+      .split(';')
+      .find((row) => row.startsWith(cookieName))
+      .split('=')[1];
+
+    return cookieValue;
+  }
+};
+
+export const deleteCookie = (cookieName) => {
+  document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
+};
+
+export const checkToken = async () => {
+  const exp = localStorage.getItem('accessToken_exp');
+  const expDate = new Date(0).setUTCSeconds(exp);
+  const todayDate = new Date();
+  const time_diff = 30000;
+
+  // 만료되기 30초 이하
+  if (expDate - todayDate.getTime() <= time_diff) {
+    try {
+      const res = await fetch('/api/users/refresh', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Refresh: `Bearer ${getCookie('refreshToken')}`,
+        },
+      });
+      // json() 할 때는 await 필요 없을 듯
+      const result = await res.json();
+      console.log(result);
+      if (!result.refresh) return false;
+      else if (!result.access) {
+        console.log('액세스토큰 갱신!!');
+        localStorage.setItem('accessToken_exp', result.data.exp);
+        localStorage.setItem('accessToken', result.data.newAccessToken);
+        return true;
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  // 만료되기 5분 넘게 남음
+  return true;
 };

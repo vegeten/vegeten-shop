@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,120 +16,51 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
   <!-- 폰트 어썸: 아이콘 -->
   <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-      <!-- bulma css -->
-      <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
-    />
-    <!-- 커스텀 css, js -->
-    <link rel="stylesheet" href="shop.css" />
-    <script src="shop.js" type="module" defer></script>
+  <!-- bulma css -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 커스텀 css, js -->
+  <link rel="stylesheet" href="shop.css" />
+  <script src="shop.js" type="module" defer></script>
 </head>
+
 <body>
   <!-- 헤더 -->
-  <nav class="navbar is-light" role="navigation" aria-label="main navigation"></nav>
+  <nav class="navbar" role="navigation" aria-label="main navigation"></nav>
   <main>
     <nav class="category-nav">
       <div id="category-list">
         <div class="category all active">전체보기</div>
       </div>
-      <button class="editCategory button" data-target="modal-editCategory">
-        카테고리편집
-      </button>
-      <div id="modal-editCategory" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">카테고리 편집</p>
-            <button class="delete" aria-label="close"></button>
-          </header>
-          <section class="modal-card-body">
-            <table class="table is-large">
-              <thead>
-                <tr>
-                  <th>카테고리명</th>
-                  <th>수정</th>
-                  <th>삭제</th>
-                </tr>
-              </thead>
-              <tbody class="category-modal-list">
-              </tbody>
-            </table>
-          </section>
-          <footer class="modal-card-foot">
-            <span class="material-icons add-category-trigger">
-              add_circle
-              </span>
-            <!-- <input type="text" class="input add-category"> -->
-            <!-- <button class="button is-dark">추가</button> -->
-          </footer>
-        </div>
-      </div>
     </nav>
     <!-- <h2>전체보기</h2> -->
     <article class="container">
-      <div class="title is-size-4 category-name">전체보기</div>
-      <button class="button is-black modal-button addProduct" data-target="modal-ter" aria-haspopup="true">상품추가</button>
-      <!-- 모달 -->
-      <div class="modal modal-addProduct">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">상품추가하기</p>
-            <button class="delete" aria-label="close"></button>
-          </header>
-            <section class="modal-card-body">
-              <!-- Content ... -->
-              <div class="is-size-5">대표이미지</div>
-              <input class="input" type="text" name="image" value="https://picsum.photos/200">
-              
-              <div class="is-size-5">상세이미지</div>
-              <input class="input" type="text" name="detailImage" value="https://picsum.photos/200">
-              
-              <div>카테고리</div>
-              <div class="control has-icons-left">
-                <div class="select">
-                  <select id="total-count" class="category-option">
-                   
-                  </select>
-                </div>
-              </div>
-              <div>상품이름</div>
-              <input class="input" type="text" name="productName" >
-              <div>상품설명</div>
-              <input class="input" type="textarea" name="description">
-              <div>price</div>
-              <input class="input" type="number" name="price">
-              <div>제조사</div>
-              <input class="input" type="text" name="company">
-
-            </section>
-            <footer class="modal-card-foot">
-              <input class="button is-success addProductBtn" value="상품추가하기"></input>
-            </footer>
+      <div class="title-wrap">
+        <div class="title is-size-4 category-name">전체보기</div>
+        <div class="search-wrap">
+          <form>
+            <input class="is-medium search-input " type="text" placeholder="상품명을 입력하세요.">
+            <button class="is-medium search-button" type="submit">
+              <span class="material-icons">
+                search
+              </span>
+            </button>
+          </form>
         </div>
       </div>
-      <!-- 모달끝 -->
       <div id="product-list">
-          
+
       </div>
       <!-- pagination -->
       <div class="bottom">
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
           <ul class="pagination-list">
-            <!-- <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-            <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-            <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 86">86</a></li> -->
           </ul>
         </nav>
       </div>
     </article>
-    
+
   </main>
   <footer class="footer"></footer>
 </body>
+
 </html>

@@ -1,5 +1,5 @@
 import * as Api from '/api.js';
-import { getNode, addCommas } from '../../useful-functions.js';
+import { getNode, addCommas, checkToken } from '../../useful-functions.js';
 
 // elements
 const totalCostElement = getNode('#total-cost');
@@ -12,7 +12,8 @@ const payButton = getNode('#pay-button');
 const nameValidateMsg = getNode('#name-msg');
 const addressValidateMsg = getNode('#postal-code-msg');
 const phoneValidateMsg = getNode('#phone-msg');
-const modal = getNode('.modal');
+const defaultAddressInput = getNode('#default-address');
+const newAddressInput = getNode('#new-address');
 const setDefaultAddress = getNode('#set-default-address');
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
@@ -44,19 +45,25 @@ payButton.innerText = `${addCommas(totalCost)}원 결제하기`;
 let userId;
 
 async function getUserInfo() {
-  const res = await Api.get('/api/users');
+  const res = await Api.getYesToken('/api/users');
   const userData = res.data;
   userId = userData._id;
   nameInput.value = userData.fullName;
-  console.log(userData);
 
   const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = userData.phoneNumber?.split('-') || [];
   const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
   const { postalCode = '', address1: baseAddress1 = '', address2: baseAddress2 = '' } = userData?.address || {};
 
-  postalCodeInput.value = postalCode;
-  address1.value = baseAddress1;
-  address2.value = baseAddress2;
+  if (!postalCode) {
+    defaultAddressInput.disabled = true;
+    newAddressInput.checked = true;
+    defaultAddressInput.nextSibling.nextSibling.style.color = 'gray';
+  } else {
+    defaultAddressInput.checked = true;
+    postalCodeInput.value = postalCode;
+    address1.value = baseAddress1;
+    address2.value = baseAddress2;
+  }
 
   phoneInput.forEach((phone, idx) => {
     phone.value = phoneNumbers[idx];
@@ -81,16 +88,14 @@ window.onload = function () {
 };
 
 // 기본 주소 갖고오기
-const defaultAddress = getNode('#default-address');
-defaultAddress.addEventListener('click', defaultAddressFn);
+defaultAddressInput.addEventListener('click', defaultAddressFn);
 function defaultAddressFn() {
   getUserInfo();
   setDefaultAddressWrap.style.display = 'none';
 }
 
 // 주소 폼 초기화
-const newAddressButton = getNode('#new-address');
-newAddressButton.addEventListener('click', resetForm);
+newAddressInput.addEventListener('click', resetForm);
 function resetForm() {
   postalCodeInput.value = '';
   address1.value = '';
@@ -100,7 +105,7 @@ function resetForm() {
 
 // 기본 배송지 체크되어있으면 "기본배송지 설정" 체크박스 안보임
 const setDefaultAddressWrap = getNode('#set-default-address-wrap');
-if (defaultAddress.checked) {
+if (defaultAddressInput.checked) {
   setDefaultAddressWrap.style.display = 'none';
 }
 
@@ -186,7 +191,7 @@ async function postOrder() {
     userId: userId,
   };
 
-  const res = await Api.post('/api/orders', orderInfo);
+  const res = await Api.postYesToken('/api/orders', orderInfo);
 }
 
 // 기본배송지 설정 눌렀을 때 주소정보 수정 patch 요청
@@ -196,8 +201,7 @@ async function changeAddress() {
     address1: address1.value,
     address2: address2.value,
   };
-
-  const res = await Api.patch('/api/users/address', '', { address: newAddressInfo });
+  const res = await Api.patchYesToken('/api/users/address', '', { address: newAddressInfo });
   console.log('정보수정 잘 되었어요!', res);
 }
 
@@ -210,7 +214,7 @@ function handleSubmit() {
     return;
   }
 
-  aTag.setAttribute('href');
+  aTag.setAttribute('href', '/order/complete');
   postOrder();
   if (setDefaultAddress.checked) {
     changeAddress();

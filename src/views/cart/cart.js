@@ -1,6 +1,6 @@
 import renderFooter from '../components/footer.js';
 import { renderNav } from '../components/nav.js';
-import { getNode, addCommas, convertToNumber } from '../useful-functions.js';
+import { getNode, addCommas, getCookie } from '../useful-functions.js';
 
 renderNav();
 renderFooter();
@@ -15,7 +15,7 @@ const productsContainer = getNode('#products-container');
 const cartListMarkUp = (cartList) => {
   // 장바구니에 상품이 있을 경우
   let markUp = '';
-  if (cartList !== null) {
+  if (cartList !== null && cartList.length !== 0) {
     cartList.forEach((product) => {
       markUp += `
       <div class="cart-element">
@@ -139,7 +139,7 @@ function deleteHandler() {
 // 로그인 안했으면 주문하기 버튼 클릭 시 로그인 페이지로 유도
 const payButton = getNode('#pay-button-aTag');
 function clickPayButotn() {
-  const token = localStorage.getItem('token');
+  const token = getCookie('refreshToken');
   if (!token) {
     alert('로그인이 필요합니다.');
     payButton.href = '/login';
