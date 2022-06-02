@@ -8,6 +8,11 @@ const CategorySchema = new Schema(
       type: String,
       required: true,
     },
+    active: {
+      type: String,
+      required: false,
+      default: 'active', //활성화
+    },
   },
   {
     collection: 'categories',
