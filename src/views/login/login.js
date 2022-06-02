@@ -18,13 +18,14 @@ const modalStatus = {
   loginFail: 'login fail',
   reset: 'password reset',
   resetSuccess: 'password reset success',
-  resetFail: 'password reset fail'
+  resetFail: 'password reset fail',
 };
 const emailInput = getNode('#emailInput');
 const passwordInput = getNode('#passwordInput');
 const submitButton = getNode('#submitButton');
 const modal = getNode('.modal');
 const resetPasswordButton = getNode('.reset-password-title');
+const kakaoButton = getNode('#kakaoButton');
 
 const validationInput = (e) => {
   if (e.target.value === '') {
