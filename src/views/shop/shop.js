@@ -39,7 +39,9 @@ async function getCategoriesFromApi() {
   const categoryList = document.querySelector('#category-list');
   for (let i = 0; i < data.data.length; i++) {
     // 상품목록 - 왼쪽 nav바 렌더링/모달 
-    categoryList.innerHTML += `<div class="category" id="${data.data[i].shortId}">${data.data[i].label}</div>`;
+    if(data.data[i].active === 'active') {
+      categoryList.innerHTML += `<div class="category" id="${data.data[i]._id}">${data.data[i].label}</div>`;
+    }
   }
   // 카테고리별로 상품제목 바꾸기 
   productByCategory();
@@ -65,6 +67,7 @@ async function productByCategory() {
 
       // 카테고리별 상품조회 api
       const datas = await Api.getNoToken('/api/categories/products', e.target.id);
+      console.log('확인확인',e.target, datas)
       showProducts(datas.data, e.target.id);
       searchInput.value = '';
     };
@@ -127,7 +130,8 @@ async function getProductCategory(page, categoryName) {
 async function getProductAll(page) {
   const datas = await fetch(`/api/products?page=${page}`);
   const data = await datas.json();
-  showProducts(data.data);
+  const activeData = data.data.products.filter(ele => ele.categoryId !== null);
+  showProducts(activeData);
 }
 
 function addAllEvents() {
