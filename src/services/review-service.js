@@ -48,8 +48,10 @@ class ReviewService {
       e.status = 404;
       throw e;
     }
-    const updatedReview = await this.reviewModel.update(toUpdate);
-    return updatedReview;
+    return await this.reviewModel.update({
+      reviewId,
+      update: toUpdate,
+    });
   }
 
   async deleteReview(reviewId) {
