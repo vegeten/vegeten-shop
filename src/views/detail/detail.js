@@ -39,36 +39,50 @@ async function getProductDetail() {
 }
 
 async function deleteReview(reviewId) {
-  console.log('delete: ', reviewId);
+  try {
+    await Api.deleteYesToken('/api/reviews', reviewId);
+    alert('리뷰가 삭제되었습니다.');
+  } catch (err) {
+    console.log(err.message);
+    alert(err.message);
+  } finally {
+    window.location.reload();
+  }
 }
 
 async function registerModReview(e, reviewId) {
   e.preventDefault();
-  console.log(e.target);
-  console.log(reviewId);
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
-  const imgSrc = e.target.querySelector('.file-name').value || '';
-  console.log(score);
-  console.log(comment);
-  console.log(imgSrc);
+  const image = e.target.querySelector('.file-name').value || '';
+
+
+  try {
+    const result = await Api.patchYesToken('/api/reviews', reviewId, {
+      comment,
+      image,
+      score
+    });
+    alert(result.message);
+    window.location.reload();
+  } catch (err) {
+    alert(err.message);
+  }
 }
 
 function modReviewForm(target) {
   const reviewId = target.querySelector('.review-id').innerText;
-  const score = target.querySelector('.review-score').innerText;
+  const score = target.querySelector('.review-score-value').innerText;
   const comment = target.querySelector('.content-review').innerText;
   const imgSrc = target.querySelector('.img-review').src;
-
-  target.style.display = 'none';
   const newReviewBodyWrap = getNode('.new-review-body-wrap');
   newReviewBodyWrap.style.display = 'block';
-  console.log(newReviewBodyWrap.querySelector('.draw-star').value);
   newReviewBodyWrap.querySelector('.draw-star').value = score;
   newReviewBodyWrap.querySelector('.star-input span').style.width = `${score * 20}%`;
   newReviewBodyWrap.querySelector('.review-text').innerText = comment;
   newReviewBodyWrap.querySelector('.file-name').innerText = imgSrc;
   getNode('.new-review-form').removeEventListener('submit', registerNewReview);
+
   getNode('.new-review-form').addEventListener('submit', (e) => registerModReview(e, reviewId));
 
   newReviewBodyWrap.querySelector('.review-text').focus();
@@ -84,12 +98,20 @@ function getReviewButton(e) {
   } else return;
 }
 
-function registerNewReview(e) {
+async function registerNewReview(e) {
   e.preventDefault();
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
   const image = e.target.querySelector('.file-name').value || '';
 
+  try {
+    const result = await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    alert(result.message);
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    window.location.reload();
+  }
 }
 
 function drawStarInput(e) {
@@ -97,65 +119,20 @@ function drawStarInput(e) {
   starInput.style.width = `${e.target.value * 20}%`;
 };
 
-async function getProductReview(productId) {
-  const mockAPI = {
-    totalCount: '5',
-    totalScore: '4',
-    datas: [{
-      shortId: '리뷰 id1',
-      userId: 'O692dcKq',
-      fullName: '김정현',
-      productId: 'IJS5rsAv',
-      comment: '너무 좋네요?',
-      image: 'https://picsum.photos/200/200',
-      score: '3',
-      createdAt: '2022-05-27',
-    },
-    {
-      shortId: '리뷰 id2',
-      userId: 'O692d999',
-      fullName: '정유진',
-      productId: 'IJS5rsAv',
-      comment: '더 좋네요?',
-      image: 'https://picsum.photos/200/200',
-      score: '5',
-      createdAt: '2022-05-28',
-    },
-    {
-      shortId: '리뷰 id3',
-      userId: 'O692dcKq',
-      fullName: '김정현',
-      productId: 'IJS5rsAv',
-      comment: '진짜로 좋네요?',
-      image: 'https://picsum.photos/200/200',
-      score: '5',
-      createdAt: '2022-05-29',
-    },
-    {
-      shortId: '리뷰 id4',
-      userId: 'O692239',
-      fullName: '나혜지',
-      productId: 'IJS5rsAv',
-      comment: '완전히 좋네요?',
-      image: 'https://picsum.photos/200/200',
-      score: '4',
-      createdAt: '2022-05-30',
-    },
-    {
-      shortId: '리뷰 id5',
-      userId: 'O622239',
-      fullName: '경지윤',
-      productId: 'IJS5rsAv',
-      comment: '그냥 좋네요?',
-      image: 'https://picsum.photos/200/200',
-      score: '3',
-      createdAt: '2022-06-01',
-    }
-    ]
-  };
-  renderProductReview(mockAPI);
+async function getProductReview() {
   try {
-
+    let res = null;
+    if (localStorage.getItem('accessToken')) {
+      res = await fetch(`/api/reviews/product/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+    } else {
+      res = await fetch(`/api/reviews/product/${productId}`);
+    }
+    const result = await res.json();
+    renderProductReview(result.data);
   } catch (err) {
     console.log(err.message);
   }
@@ -176,7 +153,7 @@ function onToggleReview(e) {
 }
 
 getProductDetail();
-getProductReview(productId);
+getProductReview();
 
 function createScoreElement(score) {
   const max = 5;
@@ -199,12 +176,12 @@ function createScoreElement(score) {
   return stars.join('');
 }
 
-function checkUser(userId) {
-  return userId === 'O692dcKq';
+function checkUser(userId, currentUserId) {
+  return userId === currentUserId;
 }
 
-function checkUsersReview(userId) {
-  const result = checkUser(userId);
+function checkUsersReview(userId, currentUserId) {
+  const result = checkUser(userId, currentUserId);
   const buttonWrap = `
     <button class="button is-small is-warning modify-button">수정</button>
     <button class="button is-small is-danger delete-button">삭제</button>
@@ -213,10 +190,10 @@ function checkUsersReview(userId) {
   return '';
 }
 
-function createReviewBodyElement(review) {
+function createReviewBodyElement(review, currentUserId) {
   const { userId, fullName, comment, image, score, createdAt, shortId } = review;
   const scoreElement = createScoreElement(score);
-  const modifyButton = checkUsersReview(userId);
+  const modifyButton = checkUsersReview(userId, currentUserId);
   const form = document.createElement('form');
 
   form.classList = 'review-body card';
@@ -229,9 +206,9 @@ function createReviewBodyElement(review) {
       <span>${fullName[0]} * *</span>
     </div>
     <div class="info-date">
-      <span>${createdAt}</span>
+      <span>${createdAt.substr(0, 10)}</span>
     </div>
-    <div class="review-score">${score}</div>
+    <div class="review-score-value">${score}</div>
     <div class="review-id">${shortId}</div>
   </div >
   <div class="review-content">
@@ -248,23 +225,23 @@ function createReviewBodyElement(review) {
   return form;
 }
 
-function createReviewScoreElement(count, totalScore) {
+function createReviewScoreElement(count, averageScore) {
   return `
-    <span class="review-score" > ${totalScore} / 5</span>
+    <span class="review-score" > ${Number(averageScore).toFixed(1)} / 5</span>
     <span class="review-count">(${count}개의 후기)</span>
     `;
 }
 
 function renderProductReview(items) {
-  if (!items.datas.length) return;
+  if (!items.reviews.length) return;
   const reviewBodyWrap = getNode('.review-body-wrap');
   const reviewScoreWrap = getNode('.review-score-wrap');
   reviewBodyWrap.innerHTML = '';
   reviewScoreWrap.innerHTML = '';
-  const reviewScore = createReviewScoreElement(items.totalCount, items.totalScore);
+  const reviewScore = createReviewScoreElement(items.reviews.length, items.averageScore);
   reviewScoreWrap.innerHTML = reviewScore;
-  items.datas.forEach(item => {
-    const reviewBody = createReviewBodyElement(item);
+  items.reviews.forEach(item => {
+    const reviewBody = createReviewBodyElement(item, items.currentUserId);
     reviewBodyWrap.appendChild(reviewBody);
   });
 }
