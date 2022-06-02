@@ -73,7 +73,7 @@ async function registerModReview(e, reviewId) {
   e.preventDefault();
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
-  const image = e.target.querySelector('.file-name').value || '';
+  const image = await uploadImageToS3();
 
   try {
     const result = await Api.patchYesToken('/api/reviews', reviewId, {
@@ -116,32 +116,38 @@ function getReviewButton(e) {
   } else return;
 }
 
+async function uploadImageToS3() {
+  if (!imgData.has('image')) return '';
+  try {
+    const uploadResult = await fetch('/api/images/upload', {
+      method: 'POST',
+      body: imgData,
+    });
+
+    const result = await uploadResult.json();
+    return result.imagePath;
+  } catch (err) {
+    console.log(err.message);
+
+  }
+
+  return '';
+}
+
 async function registerNewReview(e) {
   e.preventDefault();
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
-  const image = e.target.querySelector('.file-name').value || '';
-  if (imgData.has('image')) {
-    try {
-      const uploadResult = await fetch('/api/images/upload', {
-        method: 'POST',
-        body: imgData,
-      });
+  const image = await uploadImageToS3();
 
-      console.log(uploadResult);
-      console.log(uploadResult.imagePath);
-    } catch (err) {
-      console.log(err.message);
-    }
+  try {
+    const result = await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    alert(result.message);
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    window.location.reload();
   }
-  // try {
-  //   const result = await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
-  //   alert(result.message);
-  // } catch (err) {
-  //   alert(err.message);
-  // } finally {
-  //   window.location.reload();
-  // }
 }
 
 function drawStarInput(e) {
@@ -248,7 +254,7 @@ function createReviewBodyElement(review, currentUserId) {
     <span class="content-review">${comment}</span>
   </div>
   <div class="review-image">
-    <img class="img-review" src="${image}" width="80px">
+    <img class="img-review" src="${image}">
   </div>
   <div class="review-modify">
     ${modifyButton}

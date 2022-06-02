@@ -260,6 +260,13 @@ article .intro-item {
   position: relative;
 }
 
+.img-review {
+  border-radius: 10px;
+  width: 100px;
+  padding: 1rem;
+  height: auto;
+}
+
 .img-preview {
   border-radius: 10px;
   width: 100px;
