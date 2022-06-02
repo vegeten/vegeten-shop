@@ -11,11 +11,10 @@ export default () => {
         callbackURL: '/api/users/kakao/callback', // 카카오 로그인 Redirect URI 경로
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
         try {
           const exUser = await User.findOne();
           if (exUser || exUser !== undefined) {
-            done(null, exUser);
+            done(null, profile);
           } else {
             const newUser = await User.create({
               email: profile._json && profile._json.kakao_account_email,

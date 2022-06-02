@@ -21,7 +21,7 @@ const nav = (isLogin, isAdmin) => {
   <div class="container mt-3">
     <div cit lass="navbar-brand">
       <a class="navbar-item" href="/">
-        <img src="/elice-rabbit.png" width="30" height="30" alt="LOGO" />
+        <img src="/vegeten-logo2.png" width="200" style="max-height:2.5em" alt="LOGO" />
       </a>
     
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">

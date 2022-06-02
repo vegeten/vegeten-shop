@@ -21,10 +21,34 @@ userRouter.get(
   passport.authenticate('kakao', {
     failureRedirect: '/',
   }),
-  (req, res) => {
-    res.json({
-      message: '카카오 로그인 성공',
+  async (req, res) => {
+    const { username, _json, id, provider } = req.user;
+    const email = _json.kakao_account.email;
+    const fullName = username;
+    const password = String(id);
+
+    const user = await userService.getUserByEmail(email);
+    if (!user || user === undefined || user === null) {
+      const userInfo = {
+        email: email,
+        password: String(password),
+        fullName: fullName,
+        provider: provider,
+      };
+      const newUser = await userService.addUser(userInfo);
+    }
+
+    // // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
+    const userToken = await userService.getUserToken({ email, password });
+    const { token, refreshToken, exp } = userToken;
+    const accessToken = token;
+    console.log(token, refreshToken, exp);
+    // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
+
+    res.cookie('refreshToken', refreshToken, {
+      expires: new Date(Date.now() + 1209600000),
     });
+    res.json({ message: 'login success', data: { accessToken, refreshToken, exp, provider } });
   }
 );
 

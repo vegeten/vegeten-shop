@@ -220,15 +220,15 @@ async function getOptionCategory(renderNode , category ="") {
   categoryOptions.innerHTML="";
   for (let i = 0; i < data.data.length; i++) {
     if(category !== "") {
-      if(category === data.data[i].shortId) {
-        categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
+      if(category === data.data[i]._id) {
+        categoryOptions.innerHTML += `<option selected id="${data.data[i]._id}">${data.data[i].label}</option>`;
       } else {
-        categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
+        categoryOptions.innerHTML += `<option id="${data.data[i]._id}">${data.data[i].label}</option>`;
       }
     } else {
       // 모달창 카테고리 렌더링
-      if(i===0)categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`; 
-      else categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i].shortId}">${data.data[i].label}</option>`;
+      if(i===0)categoryOptions.innerHTML += `<option selected id="${data.data[i]._id}">${data.data[i].label}</option>`; 
+      else categoryOptions.innerHTML += `<option id="${data.data[i]._id}">${data.data[i].label}</option>`;
     }
   }
 }
@@ -274,6 +274,7 @@ closeProductEdit.addEventListener("click", () => {
   productEditModal.classList.remove('is-active');
   goBackEditModal();
   getProductAll(1);
+  getModalCategory();
 })
 // 상품 편집 모달 - 상품목록 api 통신
 const productList = getNode('.productList');
@@ -352,6 +353,7 @@ async function delProduct(e) {
 async function updateProduct(e) {
   const datas = await getYesToken('/api/products',e.target.classList[0]);
   const product = datas.data;
+  console.log('편집전편집전',product);
   const productEditModal = getNode('.productEditModal .modal-card-body');
   const productEditFoot = getNode('.productEditModal .modal-card-foot');
   productEditModal.innerHTML = "";
@@ -362,8 +364,7 @@ async function updateProduct(e) {
   <div>카테고리</div>
   <div class="control has-icons-left">
     <div class="select">
-      <select id="total-count" class="category-option">${product.categoryId}
-      </select>
+      <select id="total-count" class="category-option">${product.categoryId}</select>
     </div>
   </div>
   <div>상품이름</div>
@@ -378,7 +379,7 @@ async function updateProduct(e) {
 productEditFoot.innerHTML = '<div><button class="button is-medium goBackList">뒤로가기</button><button class="button is-success is-medium saveUpdateList">변경사항 저장</button></div>';
 //카테고리 렌더링
 const originCategory = getNode('.productEditModal .category-option').textContent;
-getOptionCategory('.productEditModal .category-option' , originCategory.substr(0,8));
+getOptionCategory('.productEditModal .category-option' , originCategory);
 // 뒤로가기 버튼
 const goBackBtn = getNode('.goBackList');
 goBackBtn.addEventListener("click", goBackEditModal);
@@ -438,26 +439,56 @@ searchButton.addEventListener('click', searchProducts);
 async function getModalCategory() {
   const data = await Api.getYesToken('/api/categories');
   const categoryModalList = document.querySelector('.category-modal-list'); // 모달 카테고리 표
+  categoryModalList.innerHTML = "";
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
-    categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
-    <td><button class="button is-warning edit-category-button">수정</button></td>
-    <td><button class="button is-success useActive-button">비활성화</button></td>
-    <td><button class="button is-danger del-category-button">삭제</button></td></tr>`;
+    if(data.data[i].active === "active") {
+      categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
+      <td><button class="button is-warning edit-category-button">수정</button></td>
+      <td><button class="button is-info useActive-button">비활성화</button></td>
+      <td><button class="button is-danger del-category-button">삭제</button></td></tr>`;
+    } else {
+      categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
+      <td><button class="button is-warning edit-category-button">수정</button></td>
+      <td><button class="button useActive-button">활성화</button></td>
+      <td><button class="button is-danger del-category-button">삭제</button></td></tr>`;
+    }
   }
   // 카테고리 수정버튼 클릭스 input 태그로 변경하고 button 바꾸기 + 삭제하기
   const editCategoryBtn = document.querySelectorAll('.edit-category-button'); //수정하기 버튼
   const delCategoryBtn = document.querySelectorAll('.del-category-button'); // 삭제하기 버튼
+  const useActiveBtn = document.querySelectorAll('.useActive-button'); // 활성화 여부 버튼
+
   for (let i = 0; i < editCategoryBtn.length; i++) {
     editCategoryBtn[i].addEventListener("click",updateCategory);
     delCategoryBtn[i].addEventListener("click",delCategory);
+    useActiveBtn[i].addEventListener("click", useActiveCategory);
   };
+
 
   // 카테고리 추가하기
 const addCategoryTrigger = getNode('.add-category-trigger');
   addCategoryTrigger.addEventListener("click", showAddCategoryForm);
 };
 getModalCategory();
+
+// 카테고리 활성화 비활성화 이벤트
+async function useActiveCategory(e) {
+  const categoryNode = e.target.parentNode.parentNode.firstChild;
+  console.log(categoryNode, '활성화 이벤트확인')
+  const categoryId = categoryNode.getAttribute('id');
+  if(e.target.classList.contains('is-info')) {
+    e.target.classList.remove('is-info');
+    e.target.innerHTML = "활성화";
+    await Api.patchYesToken('/api/categories',categoryId, { active: "disabled"})
+  } else {
+    e.target.classList.add('is-info');
+    e.target.innerHTML = "비활성화";
+    await Api.patchYesToken('/api/categories',categoryId, { active: "active"})
+  }
+  getModalCategory();
+}
+
 
 // 카테고리 추가하기 Form
 function showAddCategoryForm() {
