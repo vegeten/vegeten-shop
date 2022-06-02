@@ -81,7 +81,7 @@ export const checkToken = async () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          Refresh: `Bearer ${getCookie('refreshToken')}`,
+          credentials: 'include',
         },
       });
       // json() 할 때는 await 필요 없을 듯
