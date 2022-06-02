@@ -27,7 +27,6 @@ reviewRouter.post('/:productId', loginRequired, async (req, res, next) => {
       image: image,
       score: score,
     };
-    console.log(reviewInfo);
     const addedReview = await reviewService.addReview(reviewInfo);
     res.status(201).json({
       status: 201,
@@ -74,7 +73,6 @@ reviewRouter.get('/product/:productId', async (req, res, next) => {
       const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
       const jwtDecoded = jwt.verify(userToken, secretKey);
       currentUserId = jwtDecoded.userId;
-      console.log(currentUserId);
     }
     const { productId } = req.params;
     const reviews = await reviewService.getReviewsByProduct(productId);
@@ -113,7 +111,7 @@ reviewRouter.patch('/:reviewId', loginRequired, async (req, res, next) => {
     const { reviewId } = req.params;
     const { comment, image, score } = req.body;
     const review = await reviewService.getReview(reviewId);
-    if (review.shortId !== userId) {
+    if (review.userId !== userId) {
       const e = new Error('자신의 리뷰만 수정할 수 있습니다.');
       e.status = 500;
       throw e;
@@ -142,9 +140,10 @@ reviewRouter.patch('/:reviewId', loginRequired, async (req, res, next) => {
 reviewRouter.delete('/:reviewId', loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
+
     const { reviewId } = req.params;
     const review = await reviewService.getReview(reviewId);
-    if (review.shortId !== userId) {
+    if (review.userId !== userId) {
       const e = new Error('자신의 리뷰만 삭제할 수 있습니다.');
       e.status = 500;
       throw e;
