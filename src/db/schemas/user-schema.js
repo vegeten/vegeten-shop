@@ -62,6 +62,11 @@ const UserSchema = new Schema(
       required: false,
       default: false,
     },
+    provider: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   {
     collection: 'users',
