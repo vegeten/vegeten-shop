@@ -33,6 +33,14 @@ header a {
   justify-content: center;
 }
 
+#select-address-wrap {
+  margin-bottom: 25px;
+}
+
+#default-address-wrap {
+  margin-right: 25px;
+}
+
 .section {
   padding: 24px 16px;
   border-bottom: 16px solid #f2f2f2;

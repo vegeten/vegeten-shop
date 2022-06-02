@@ -72,9 +72,9 @@ export const checkToken = async () => {
   const exp = localStorage.getItem('accessToken_exp');
   const expDate = new Date(0).setUTCSeconds(exp);
   const todayDate = new Date();
-  const time_diff = 300000;
+  const time_diff = 30000;
 
-  // 만료되기 5분 이하
+  // 만료되기 30초 이하
   if (expDate - todayDate.getTime() <= time_diff) {
     try {
       const res = await fetch('/api/users/refresh', {
@@ -86,6 +86,7 @@ export const checkToken = async () => {
       });
       // json() 할 때는 await 필요 없을 듯
       const result = await res.json();
+      console.log(result);
       if (!result.refresh) return false;
       else if (!result.access) {
         console.log('액세스토큰 갱신!!');

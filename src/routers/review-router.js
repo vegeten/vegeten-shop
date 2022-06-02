@@ -74,6 +74,7 @@ reviewRouter.get('/product/:productId', async (req, res, next) => {
       const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
       const jwtDecoded = jwt.verify(userToken, secretKey);
       currentUserId = jwtDecoded.userId;
+      console.log(currentUserId);
     }
     const { productId } = req.params;
     const reviews = await reviewService.getReviewsByProduct(productId);
@@ -111,6 +112,12 @@ reviewRouter.patch('/:reviewId', loginRequired, async (req, res, next) => {
     const userId = req.currentUserId;
     const { reviewId } = req.params;
     const { comment, image, score } = req.body;
+    const review = await reviewService.getReview(reviewId);
+    if (review.shortId !== userId) {
+      const e = new Error('자신의 리뷰만 수정할 수 있습니다.');
+      e.status = 500;
+      throw e;
+    }
 
     if (is.emptyObject(req.body)) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
@@ -136,11 +143,16 @@ reviewRouter.delete('/:reviewId', loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { reviewId } = req.params;
+    const review = await reviewService.getReview(reviewId);
+    if (review.shortId !== userId) {
+      const e = new Error('자신의 리뷰만 삭제할 수 있습니다.');
+      e.status = 500;
+      throw e;
+    }
     const deletedReview = await reviewService.deleteReview(reviewId);
     res.status(201).json({
       status: 200,
       message: '리뷰 삭제 완료',
-      data: deletedReview,
     });
   } catch (error) {
     next(error);

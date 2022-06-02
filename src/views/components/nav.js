@@ -1,8 +1,10 @@
 import { getAuthorizationObj, getNode, deleteCookie } from '../useful-functions.js';
 
 const logOut = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('accessToken_exp');
   deleteCookie('refreshToken');
-  window.location.href = '/';
+  window.location.href = '/login';
 };
 
 const addLogOutEvent = (isLogin) => {
@@ -54,7 +56,13 @@ const nav = (isLogin, isAdmin) => {
                 shopping_bag
               </span>
             </a>
+<<<<<<< HEAD
           `: `
+=======
+          `
+      }`
+      : `
+>>>>>>> 5c1c9852187f5d46680a3d09736d17572903aedc
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
@@ -66,7 +74,7 @@ const nav = (isLogin, isAdmin) => {
         </span>
       </a>
       `
-      } 
+    } 
     </div>
   </div>`;
 
