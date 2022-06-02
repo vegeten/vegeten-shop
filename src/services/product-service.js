@@ -8,8 +8,8 @@ class ProductService {
   }
 
   // 상품 목록을 받음.
-  async getProducts(page, perPage) {
-    return await this.productModel.findAll(page, perPage);
+  async getProducts() {
+    return await this.productModel.findAll();
   }
 
   // 카테고리별 상품 목록을 받음

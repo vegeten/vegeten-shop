@@ -16,7 +16,19 @@ productRouter.get('/', async function (req, res, next) {
     const perPage = Number(req.query.perPage || 9);
 
     // 전체 상품 목록을 얻음
-    const { products, total, totalPage } = await productService.getProducts(page, perPage);
+    let { products } = await productService.getProducts();
+
+    // 페이지네이션
+    let arr = [];
+    for (let i = 0; i < products.length; i++) {
+      if (products[i].categoryId.active === 'active') {
+        arr.push(products[i]);
+      }
+    }
+    const productsPerPage = arr.slice(perPage * (page - 1), perPage * (page - 1) + perPage);
+    const total = arr.length;
+    const totalPage = Math.ceil(total / perPage);
+    products = productsPerPage;
 
     // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json({
