@@ -254,3 +254,23 @@ article .intro-item {
 .review-score-value {
   display: none;
 }
+
+.img-preview-wrap {
+  margin-right: 1rem;
+  position: relative;
+}
+
+.img-preview {
+  border-radius: 10px;
+  width: 100px;
+  padding: 1rem;
+  height: auto;
+}
+
+.cancel-img {
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+}
