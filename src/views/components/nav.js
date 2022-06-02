@@ -38,18 +38,7 @@ const nav = (isLogin, isAdmin) => {
       </a>
       ${
         isLogin
-          ? `${
-              isAdmin
-                ? `<div class="navbar-item has-dropdown is-hoverable">
-          <span class="material-icons navbar-link">
-            account_circle
-          </span>
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="/admin">Admin</a>
-            <a class="navbar-item logout">Log out</a>
-          </div>
-        </div>`
-                : `
+          ? `
             <div class="navbar-item has-dropdown is-hoverable">
               <span class="material-icons navbar-link">
                 account_circle
@@ -65,9 +54,7 @@ const nav = (isLogin, isAdmin) => {
                 shopping_bag
               </span>
             </a>
-          `
-            }`
-          : `
+          `: `
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
