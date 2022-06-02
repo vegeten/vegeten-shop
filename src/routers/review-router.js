@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired } from '../middlewares';
+import { loginRequired, adminAuth } from '../middlewares';
 import { reviewService, userService } from '../services';
 import jwt from 'jsonwebtoken';
 import { json } from 'express/lib/response';
@@ -39,7 +39,7 @@ reviewRouter.post('/:productId', loginRequired, async (req, res, next) => {
   }
 });
 
-reviewRouter.get('/', async (req, res, next) => {
+reviewRouter.get('/', adminAuth, async (req, res, next) => {
   try {
     const reviews = await reviewService.getReviewlist();
     res.status(200).json({
