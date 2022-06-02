@@ -5,28 +5,50 @@ import { loginRequired, adminAuth, refresh_ } from '../middlewares';
 import { userService } from '../services';
 import { sendMail } from '../utils/send-mail';
 import bcrypt from 'bcrypt';
+import { User } from '../db';
 import passport from 'passport';
-import { redirect } from 'express/lib/response';
 
 const userRouter = Router();
-const passportConfig = require('../passport');
 
-passportConfig(userRouter);
-//* 카카오로 로그인하기 라우터 ***********************
-//? /kakao로 요청오면, 카카오 로그인 페이지로 가게 되고, 카카오 서버를 통해 카카오 로그인을 하게 되면, 다음 라우터로 요청한다.
+//kakao
+const passportConfig = require('../passport');
+passportConfig();
+
 userRouter.get('/kakao', passport.authenticate('kakao'));
 
-//? 위에서 카카오 서버 로그인이 되면, 카카오 redirect url 설정에 따라 이쪽 라우터로 오게 된다.
 userRouter.get(
   '/kakao/callback',
-  //? 그리고 passport 로그인 전략에 의해 kakaoStrategy로 가서 카카오계정 정보와 DB를 비교해서 회원가입시키거나 로그인 처리하게 한다.
   passport.authenticate('kakao', {
-    failureRedirect: '/', // kakaoStrategy에서 실패한다면 실행
+    failureRedirect: '/',
   }),
-  // kakaoStrategy에서 성공한다면 콜백 실행
-  (req, res) => {
-    console.log('성공');
-    res.redirect('/');
+  async (req, res) => {
+    const { username, _json, id, provider } = req.user;
+    const email = _json.kakao_account.email;
+    const fullName = username;
+    const password = String(id);
+
+    const user = await userService.getUserByEmail(email);
+    if (!user || user === undefined || user === null) {
+      const userInfo = {
+        email: email,
+        password: String(password),
+        fullName: fullName,
+        provider: provider,
+      };
+      const newUser = await userService.addUser(userInfo);
+    }
+
+    // // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
+    const userToken = await userService.getUserToken({ email, password });
+    const { token, refreshToken, exp } = userToken;
+    const accessToken = token;
+    console.log(token, refreshToken, exp);
+    // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
+
+    res.cookie('refreshToken', refreshToken, {
+      expires: new Date(Date.now() + 1209600000),
+    });
+    res.json({ message: 'login success', data: { accessToken, refreshToken, exp, provider } });
   }
 );
 
