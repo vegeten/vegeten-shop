@@ -16,7 +16,7 @@ productRouter.get('/', async function (req, res, next) {
     const perPage = Number(req.query.perPage || 9);
 
     // 전체 상품 목록을 얻음
-    let { products } = await productService.getProducts();
+    let products = await productService.getProducts();
 
     // 페이지네이션
     let arr = [];
@@ -27,6 +27,38 @@ productRouter.get('/', async function (req, res, next) {
     }
     const productsPerPage = arr.slice(perPage * (page - 1), perPage * (page - 1) + perPage);
     const total = arr.length;
+    const totalPage = Math.ceil(total / perPage);
+    products = productsPerPage;
+
+    // 상품 목록(배열)을 JSON 형태로 프론트에 보냄
+    res.status(200).json({
+      status: 200,
+      message: '전체 상품 목록 조회 성공',
+      data: {
+        totalPage: totalPage,
+        productCount: total,
+        products,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+productRouter.get('/admin', async function (req, res, next) {
+  try {
+    // 페이지네이션
+    // url 쿼리에서 page 받기, 기본값 1
+    const page = Number(req.query.page || 1);
+    // url 쿼리에서 peRage 받기, 기본값 10
+    const perPage = Number(req.query.perPage || 9);
+
+    // 전체 상품 목록을 얻음
+    let products = await productService.getProducts();
+
+    // 페이지네이션
+    const productsPerPage = products.slice(perPage * (page - 1), perPage * (page - 1) + perPage);
+    const total = products.length;
     const totalPage = Math.ceil(total / perPage);
     products = productsPerPage;
 
