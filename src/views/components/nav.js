@@ -41,7 +41,7 @@ const nav = (isLogin, isAdmin) => {
       ${
         isLogin
           ? `
-            <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-item has-dropdown is-hoverable" id="dropdown">
               <span class="material-icons navbar-link">
                 account_circle
               </span>
@@ -56,7 +56,8 @@ const nav = (isLogin, isAdmin) => {
                 shopping_bag
               </span>
             </a>
-          `: `
+          `
+          : `
       <a class="navbar-item" href="/login">
         <span class="material-icons">
           account_circle
@@ -68,19 +69,17 @@ const nav = (isLogin, isAdmin) => {
         </span>
       </a>
       `
-    } 
+      } 
     </div>
   </div>`;
 
   $navbar.innerHTML = template;
   const aTag = document.querySelectorAll('a.navbar-item');
-  for(let i=0; i<aTag.length; i++) {
-    aTag[i].addEventListener("mouseover", () => {
+  for (let i = 0; i < aTag.length; i++) {
+    aTag[i].addEventListener('mouseover', () => {
       aTag[i].style.backgroundColor = 'rgba(255, 255, 255, 0)';
-    })
-
+    });
   }
-  
 };
 
 const renderNav = () => {

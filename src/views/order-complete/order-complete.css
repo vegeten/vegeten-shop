@@ -29,6 +29,13 @@
 
 #move-shop-button {
   margin-bottom: 20px;
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+}
+
+#move-mypage-button {
+  background-color: #fff;
 }
 
 footer {
