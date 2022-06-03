@@ -339,8 +339,7 @@ async function getProductCategory(page, categoryName) {
 }
 // 전체보기 상품목록 + 페이지네이션 - Api.get 통신
 async function getProductAll(page) {
-  // const datas = await fetch(`/api/products/admin?page=${page}`);
-  const datas = await fetch(`/api/products/?page=${page}`);
+  const datas = await fetch(`/api/products/admin?page=${page}`);
   const data = await datas.json();
   showProducts(data.data);
 }
