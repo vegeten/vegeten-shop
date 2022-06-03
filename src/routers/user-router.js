@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired, adminAuth, refresh_ } from '../middlewares';
+import { loginRequired, adminAuth, refresh_, customError } from '../middlewares';
 import { userService } from '../services';
 import { sendMail } from '../utils/send-mail';
 import bcrypt from 'bcrypt';
@@ -75,14 +75,10 @@ userRouter.post('/register/send-mail', async (req, res, next) => {
         status: 200,
         message: '이메일 인증번호가 이메일로 전송되었습니다.',
         data: randomNumber,
-        isPresent: false,
       });
       return;
     }
-    res.status(200).json({
-      message: '이미 가입된 이메일입니다.',
-      isPresent: true,
-    });
+    throw new customError(409, '이미 가입된 이메일입니다.');
   } catch (error) {
     next(error);
   }
