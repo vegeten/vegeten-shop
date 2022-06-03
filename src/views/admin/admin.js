@@ -211,6 +211,7 @@ function addPostModal() {
   const addProductBtn = getNode('.addProductBtn');
   addProductBtn.addEventListener('click', () => {
     postProductToApi('.modal-addProduct');
+    alert('상품추가가 완료되었습니다!')
   });
 }
 
@@ -359,6 +360,7 @@ async function showProducts(data, categoryId = '', keyword = '') {
     open_in_full</span></td><td>${product.productName}</td>
   <td>${product.company}</td>
   <td>${addDate}</td>
+  <td>${product.categoryId.label}</td>
   <td><div class="delProductBtn button is-danger is-small" id="${product.shortId}">삭제</td>`;
   });
   // 페이지네이션
@@ -541,12 +543,12 @@ async function getModalCategory() {
   for (let i = 0; i < data.data.length; i++) {
     // 모달창 카테고리 렌더링
     if (data.data[i].active === 'active') {
-      categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
+      categoryModalList.innerHTML += `<tr><td class="categoryName ${data.data[i].shortId}" id="${data.data[i]._id}" name="categoryName">${data.data[i].label}</td>
       <td><button class="button is-warning edit-category-button">수정</button></td>
       <td><button class="button is-info useActive-button">비활성화</button></td>
       <td><button class="button is-danger del-category-button">삭제</button></td></tr>`;
     } else {
-      categoryModalList.innerHTML += `<tr><td class="categoryName" id="${data.data[i].shortId}" name="categoryName">${data.data[i].label}</td>
+      categoryModalList.innerHTML += `<tr><td class="categoryName ${data.data[i].shortId}" id="${data.data[i]._id}" name="categoryName">${data.data[i].label}</td>
       <td><button class="button is-warning edit-category-button">수정</button></td>
       <td><button class="button useActive-button">활성화</button></td>
       <td><button class="button is-danger del-category-button">삭제</button></td></tr>`;
@@ -610,12 +612,13 @@ async function addCatgoryToApi() {
 async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id');
+  const categoryShortId = getNode('.categoryName').classList[1];
   const categoryName = categoryNode.textContent;
   const deleteProduct = await Api.getYesToken('/api/categories/products', categoryId);
   if (deleteProduct.data.products.length !== 0) {
-    alert(`해당 카테고리에 총 ${deleteProduct.data.products.length} 개의 상품이 존재합니다. 상품 수정후 사용해주세요!`);
+    alert(`해당 카테고리에 총 ${deleteProduct.data.products.length} 개의 상품이 존재합니다. 카테고리를 삭제하시려면 해당 상품을 모두 수정 후 사용해주세요!`);
   } else {
-    await Api.deleteYesToken('/api/categories', categoryId, { categoryName });
+    await Api.deleteYesToken('/api/categories', categoryShortId, { categoryName });
     const categoryModalList = document.querySelector('.category-modal-list');
     categoryModalList.innerHTML = '';
     getModalCategory();
