@@ -183,6 +183,11 @@ async function handleSubmit(e) {
     validateFlag = false;
   }
 
+  if (!emailAuth) {
+    alert('이메일 인증을 해주세요.');
+    validateFlag = false;
+  }
+
   if (!isEmailAuthValid) {
     addErrorHTML(emailAuthNumberInput);
     validateFlag = false;

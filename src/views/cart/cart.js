@@ -7,7 +7,6 @@ renderFooter();
 
 // 로컬스토리지에 있는 장바구니 가져오기
 let cartList = JSON.parse(localStorage.getItem('cart'));
-console.log('흐앙', cartList);
 
 // 로컬스토리지의 장바구니 값들 화면에 뿌려주기
 const productsContainer = getNode('#products-container');
@@ -113,8 +112,12 @@ increaseButton.forEach((button, idx) => {
 
 // 합계 계산
 const getTotalPrice = (cartList) => {
-  const price = cartList.reduce((acc, cur) => acc + cur.price * cur.count, 0);
-  return price;
+  if (cartList.length) {
+    const price = cartList.reduce((acc, cur) => acc + cur.price * cur.count, 0);
+    return price;
+  } else {
+    return 0;
+  }
 };
 cartTotalPrice.innerText = `${addCommas(getTotalPrice(cartList))}원`;
 
