@@ -574,16 +574,18 @@ getModalCategory();
 // 카테고리 활성화 비활성화 이벤트
 async function useActiveCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
-
-  const categoryId = categoryNode.getAttribute('id');
+  const categoryShortId = categoryNode.classList[1]
+  console.log(categoryShortId, '제발제발');
+  // const categoryShortId = getNode('.categoryName').classList[1];
+  // const categoryId = categoryNode.getAttribute('id');
   if (e.target.classList.contains('is-info')) {
     e.target.classList.remove('is-info');
     e.target.innerHTML = '활성화';
-    await Api.patchYesToken('/api/categories', categoryId, { active: 'disabled' });
+    await Api.patchYesToken('/api/categories', categoryShortId, { active: 'disabled' });
   } else {
     e.target.classList.add('is-info');
     e.target.innerHTML = '비활성화';
-    await Api.patchYesToken('/api/categories', categoryId, { active: 'active' });
+    await Api.patchYesToken('/api/categories', categoryShortId, { active: 'active' });
   }
   getModalCategory();
 }
@@ -628,7 +630,7 @@ async function delCategory(e) {
 async function updateCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id');
-
+  const categoryShortId = getNode('.categoryName').classList[1];
   const btnClass = e.target.classList;
   if (btnClass.contains('is-warning')) {
     //수정버튼일때
@@ -644,7 +646,7 @@ async function updateCategory(e) {
     categoryNode.innerHTML = updatedName;
     e.target.innerHTML = '수정';
     try {
-      await Api.patchYesToken('/api/categories', categoryId, { label: updatedName });
+      await Api.patchYesToken('/api/categories', categoryShortId, { label: updatedName });
     } catch (error) {
       console.log(error.message);
     }
