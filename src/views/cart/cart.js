@@ -137,6 +137,7 @@ function deleteHandler() {
       localStorage.setItem('cart', JSON.stringify(newCartList));
       cartListMarkUp(newCartList);
       cartTotalPrice.innerText = `${addCommas(getTotalPrice(cartList))}원`;
+      window.location.reload();
     }
   } else {
     alert('선택된 상품이 없습니다');
