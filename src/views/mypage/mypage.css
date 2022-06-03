@@ -171,3 +171,25 @@ input[type='number'] {
   background-color: #00ca71;
   color: #fff;
 }
+
+.check-password-confirm-button {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+  width: 100px;
+  margin-top: 20px;
+}
+
+.check-password-confirm-button:hover {
+  color: #fff;
+}
+
+.modal-card {
+  border-radius: 5px;
+  width: 500px;
+}
+
+#password-footer {
+  display: flex;
+  justify-content: right;
+}

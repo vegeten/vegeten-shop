@@ -39,7 +39,7 @@ const cartListMarkUp = (cartList) => {
           <span class="subTitle">수량</span>
           <div class="counter-wrap">
             <button class="decrease-button count counter-button">-</button>
-            <input class="quantity count quantity-count" type="number" value="${product.count}" />
+            <input class="quantity count quantity-count" type="number" value="${product.count}" disabled/>
             <button class="increase-button count counter-button">+</button>
           </div>
         </div>
@@ -86,7 +86,7 @@ const productTotalPrice = document.querySelectorAll('.product-total-price');
 decreaseButton.forEach((button, idx) => {
   button.addEventListener('click', () => {
     if (cartList[idx].count === 1) {
-      alert('최소 한 개는 있어야지요.');
+      alert('최소 한 개는 있어야합니다!');
     } else {
       cartList[idx].count -= 1;
       quantity[idx].value = cartList[idx].count;
@@ -99,11 +99,15 @@ decreaseButton.forEach((button, idx) => {
 
 increaseButton.forEach((button, idx) => {
   button.addEventListener('click', () => {
-    cartList[idx].count += 1;
-    quantity[idx].value = cartList[idx].count;
-    localStorage.setItem('cart', JSON.stringify(cartList));
-    productTotalPrice[idx].innerText = `${addCommas(cartList[idx].price * cartList[idx].count)}원`;
-    cartTotalPrice.innerText = `${addCommas(getTotalPrice(cartList))}원`;
+    if (cartList[idx].count === 10) {
+      alert('최대 10개까지 주문할 수 있습니다.');
+    } else {
+      cartList[idx].count += 1;
+      quantity[idx].value = cartList[idx].count;
+      localStorage.setItem('cart', JSON.stringify(cartList));
+      productTotalPrice[idx].innerText = `${addCommas(cartList[idx].price * cartList[idx].count)}원`;
+      cartTotalPrice.innerText = `${addCommas(getTotalPrice(cartList))}원`;
+    }
   });
 });
 

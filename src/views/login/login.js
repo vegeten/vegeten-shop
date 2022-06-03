@@ -52,8 +52,8 @@ const createModalElement = (status, title) => {
         </div>
       `;
       modalCardFooter.innerHTML = `
-        <a class="button is-black" href="/shop">쇼핑 하러가기</a>
-        <a class="button is-white" href="/">홈 화면으로가기</a>
+        <a class="button loginSuccessedButton" id="goShopping" href="/shop">쇼핑 하러가기</a>
+        <a class="button loginSuccessedButton id="goHome" is-white" href="/">홈 화면으로가기</a>
       `;
       break;
     case modalStatus.loginFail:
@@ -67,7 +67,7 @@ const createModalElement = (status, title) => {
       break;
     case modalStatus.reset:
       const button = document.createElement('button');
-      button.classList = 'button is-black';
+      button.classList = 'button resetPwdButton';
       button.innerHTML = '비밀번호 초기화';
       button.addEventListener('click', resetPassword);
 
@@ -126,7 +126,7 @@ const closeModal = () => {
 };
 
 const resetPasswordModal = () => {
-  viewDetailModal(modalStatus.reset, '비밀번호 초기화.');
+  viewDetailModal(modalStatus.reset, '비밀번호 초기화');
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
