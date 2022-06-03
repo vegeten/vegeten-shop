@@ -44,16 +44,36 @@
 
         <div class="field">
           <label for="emailInput">이메일</label>
+          <div class="control emailWrap">
+            <div class="emailInputWrap">
+              <input
+                class="input is-medium"
+                id="emailInput"
+                type="email"
+                placeholder="이메일을 입력해주세요."
+                autocomplete="off"
+              />
+              <div id="email-msg" class="help is-danger">
+                <span>이메일을 입력해주세요.</span>
+              </div>
+            </div>
+            <button class="button is-middle sendMail">인증하기</button>
+          </div>
+        </div>
+
+        <div class="field emailAuthNumberWrap hide">
+          <label for="emailAuthNumber">이메일 인증번호</label>
           <div class="control">
             <input
               class="input is-medium"
-              id="emailInput"
-              type="email"
-              placeholder="이메일을 입력해주세요."
+              id="emailAuthNumber"
+              type="text"
+              placeholder="인증번호를 입력해주세요."
               autocomplete="off"
             />
-            <div id="email-msg" class="help is-danger">
-              <span>이메일을 입력해주세요.</span>
+
+            <div id="emailAuth-msg" class="help is-danger">
+              <span>이메일 인증번호를 입력해주세요.</span>
             </div>
           </div>
         </div>
@@ -108,8 +128,8 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <a class="button is-black" href="/login">로그인 하러가기</a>
-          <a class="button is-white" href="/">홈 화면으로가기</a>
+          <a class="button is-white" id="goHome" href="/">홈 화면으로가기</a>
+          <a class="button" id="goLogin" href="/login">로그인 하러가기</a>
         </footer>
       </div>
     </div>

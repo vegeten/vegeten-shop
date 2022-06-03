@@ -29,6 +29,9 @@ const nameInput = getNode('#fullNameInput');
 const modal = getNode('.modal');
 const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
+const sendMailButton = getNode('.sendMail');
+const emailAuthNumberWrap = getNode('.emailAuthNumberWrap');
+const emailAuthNumberInput = getNode('#emailAuthNumber');
 
 const viewDetailModal = (success, message = '회원가입 성공') => {
   const modalTitle = getNode('.modal-card-title');
@@ -76,6 +79,9 @@ const addErrorHTML = (target) => {
     case emailInput:
       target.nextElementSibling.innerHTML = '이메일 형식이 맞지 않습니다.';
       break;
+    case emailAuthNumberInput:
+      target.nextElementSibling.innerHTML = '인증번호가 일치하지 않습니다.';
+      break;
     case passwordConfirmInput:
       target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
       break;
@@ -93,6 +99,36 @@ function addAllEvents() {
   passwordConfirmInput.addEventListener('input', validationInput);
   modalButton.addEventListener('click', closeModal);
   modalBackground.addEventListener('click', closeModal);
+  sendMailButton.addEventListener('click', sendMail);
+}
+
+let authNumber;
+
+async function sendMail(e) {
+  e.preventDefault();
+  if (!emailInput.value) {
+    emailInput.classList.add('is-danger');
+    emailInput.nextElementSibling.style.display = 'block';
+    emailInput.nextElementSibling.innerHTML = '이메일을 입력해주세요.';
+  } else if (!validateEmail(emailInput.value)) {
+    emailInput.classList.add('is-danger');
+    emailInput.nextElementSibling.style.display = 'block';
+    emailInput.nextElementSibling.innerHTML = '올바른 이메일 형식을 입력해주세요.';
+  } else {
+    try {
+      const emailData = { email: emailInput.value };
+
+      const res = await Api.postNoToken('/api/users/register/send-mail', emailData);
+
+      emailAuthNumberWrap.classList.remove('hide');
+      alert('이메일 인증번호가 이메일로 전송되었습니다.');
+
+      console.log(res);
+      authNumber = res.data;
+    } catch (err) {
+      alert(err.message);
+    }
+  }
 }
 
 // 공백없어야함, 숫자&문자&특수문자 (8자 이상 15자 이하)
@@ -123,12 +159,14 @@ async function handleSubmit(e) {
   const email = emailInput.value;
   const password = passwordInput.value;
   const passwordConfirm = passwordConfirmInput.value;
+  const emailAuth = emailAuthNumberInput.value;
 
   // 잘 입력했는지 확인
   const isFullNameValid = fullName.length >= 2;
   const isEmailValid = validateEmail(email);
   const isPasswordValid = checkPassword(password);
   const isPasswordSame = password === passwordConfirm;
+  const isEmailAuthValid = emailAuth === authNumber;
 
   if (!isFullNameValid) {
     addErrorHTML(fullNameInput);
@@ -142,6 +180,11 @@ async function handleSubmit(e) {
 
   if (!isEmailValid) {
     addErrorHTML(emailInput);
+    validateFlag = false;
+  }
+
+  if (!isEmailAuthValid) {
+    addErrorHTML(emailAuthNumberInput);
     validateFlag = false;
   }
 
