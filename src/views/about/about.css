@@ -8,9 +8,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: 150vh;
+  /* height: 2; */
 }
-
+.aboutVegan {
+  height: 621px;
+  overflow: hidden;
+  width: 1200px;
+  border-radius: 40px;
+  margin: 10% 0;
+}
+.aboutVegan {
+  object-fit: fill;
+}
 .main-introduction {
   display: flex;
   align-items: center;
@@ -25,7 +34,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 30%;
 }
 
 .introduction-wrapper .title {
@@ -35,14 +43,17 @@
 .introduction-contents {
   font-size: 1.5rem;
 }
-
+.vegetenCrew {
+  margin-top: 40%;
+  margin-bottom: 25%;
+  width: 270px;
+}
 .main-grid-contents {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 80%;
   height: 70%;
-  border: 1px dashed plum;
 }
 
 .grid-contents-wrapper {
@@ -50,16 +61,16 @@
   flex-flow: row wrap;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
+  width: 80%;
   height: 100%;
+  margin-bottom: 10%;
 }
 
 .contents {
-  width: 30%;
+  width: 90%;
   height: 40%;
   height: auto;
   overflow: hidden;
-  box-shadow: 5px 5px 10px grey;
 }
 
 .contents img {

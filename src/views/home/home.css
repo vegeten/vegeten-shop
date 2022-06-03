@@ -88,6 +88,11 @@ a {
   margin: 80px;
 }
 
+.newBadge {
+  position: relative;
+  top: 50px;
+  left: -110px;
+}
 .introduction-wrapper .title {
   font-size: 2rem;
 }
@@ -102,6 +107,7 @@ a {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  margin-bottom: 150px;
 }
 
 .new-title {

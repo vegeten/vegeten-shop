@@ -221,14 +221,14 @@ async function getOptionCategory(renderNode , category ="") {
   for (let i = 0; i < data.data.length; i++) {
     if(category !== "") {
       if(category === data.data[i]._id) {
-        categoryOptions.innerHTML += `<option selected id="${data.data[i]._id}">${data.data[i].label}</option>`;
+        categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
       } else {
-        categoryOptions.innerHTML += `<option id="${data.data[i]._id}">${data.data[i].label}</option>`;
+        categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
       }
     } else {
       // 모달창 카테고리 렌더링
-      if(i===0)categoryOptions.innerHTML += `<option selected id="${data.data[i]._id}">${data.data[i].label}</option>`; 
-      else categoryOptions.innerHTML += `<option id="${data.data[i]._id}">${data.data[i].label}</option>`;
+      if(i===0)categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`; 
+      else categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
     }
   }
 }
@@ -252,7 +252,6 @@ async function postProductToApi (node, productId="") {
     price: price,
     company: company,
   }
-  console.log(typeof node, node)
   if(node===".modal-addProduct") {
     await Api.postYesToken('/api/products',data);
     location.reload();
