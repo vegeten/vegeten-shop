@@ -62,6 +62,28 @@ userRouter.get(
 userRouter.get('/refresh', refresh_);
 
 // 회원가입 (/api/users/register)
+userRouter.post('/register/send-mail', async (req, res, next) => {
+  const { email } = req.body;
+  const savedEmail = await userService.getUserByEmail(email);
+  if (!savedEmail || savedEmail === null || savedEmail === undefined) {
+    const randomNumber = Math.floor(Math.random() * 10 ** 6)
+      .toString()
+      .padStart(6, '0');
+    await sendMail(email, `인증번호는 ${randomNumber} 입니다.`);
+    res.status(200).json({
+      status: 200,
+      message: '이메일 인증번호가 이메일로 전송되었습니다.',
+      data: randomNumber,
+      isPresent: false,
+    });
+    return;
+  }
+  res.status(200).json({
+    message: '이미 가입된 이메일입니다.',
+    isPresent: true,
+  });
+});
+
 userRouter.post('/register', async (req, res, next) => {
   try {
     if (is.emptyObject(req.body)) {
@@ -119,7 +141,7 @@ userRouter.post('/reset-password', async (req, res, next) => {
     await userService.setUserPartially({ userId: user.shortId }, { password: hashedPassword });
 
     // 패스워드 발송하기
-    await sendMail(email, '비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
+    await sendMail(email, '[vegeten] 비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
     res.status(200).json({ status: 200, message: '임시 비밀번호가 이메일로 전송되었습니다.' });
   } catch (error) {
     next(error);
@@ -134,7 +156,6 @@ userRouter.post('/password', loginRequired, async function (req, res, next) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
 
-    // params로부터 id를 가져옴
     const userId = req.currentUserId;
     // body data 로부터 업데이트할 사용자 정보를 추출함.
     const { currentPassword } = req.body;

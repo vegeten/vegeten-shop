@@ -5,16 +5,13 @@ const Product = model('products', ProductSchema);
 export class ProductModel {
   async findAll() {
     // total, posts 를 Promise.all 을 사용해 동시에 호출하기
-    const [total, products] = await Promise.all([
-      Product.countDocuments({}),
-      Product.find()
-        .populate({
-          path: 'categoryId',
-        })
-        .sort({ createdAt: -1 }), //최신순
-    ]);
+    const products = await Product.find()
+      .populate({
+        path: 'categoryId',
+      })
+      .sort({ createdAt: -1 });
 
-    return { products };
+    return products;
   }
   async findByCategory(categoryId, page, perPage) {
     // total, posts 를 Promise.all 을 사용해 동시에 호출하기
