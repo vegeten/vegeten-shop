@@ -1,5 +1,5 @@
 * {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .login-form-container {
@@ -22,7 +22,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin: 20px 0;
 }
 
 .reset-password {
@@ -67,17 +67,57 @@
 }
 
 .scale-in-center {
-  animation: scale-in-center .5s cubic-bezier(.25, .46, .45, .94) both
+  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 @keyframes scale-in-center {
   0% {
     transform: scale(0);
-    opacity: 1
+    opacity: 1;
   }
 
   100% {
     transform: scale(1);
-    opacity: 1
+    opacity: 1;
   }
+}
+
+#submitButton {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+  width: 120px;
+}
+
+#registerButton {
+  width: 120px;
+}
+
+#registerButton:hover {
+  background-color: #fff;
+}
+
+#goShopping {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+  margin-right: 30px;
+}
+
+.loginSuccessedButton {
+  width: 140px;
+}
+
+#goHome:hover {
+  background-color: #fff;
+}
+
+.resetPwdButton {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+}
+
+.resetPwdButton:hover {
+  color: #fff;
 }

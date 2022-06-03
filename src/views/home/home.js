@@ -40,6 +40,7 @@ const createItemListElement = (item) => {
   li.classList.add('item-card');
   li.innerHTML = `
     <a href="/shop/${shortId}">
+      <img class="newBadge" src="/img/newBadge.png" alt="badge" />
       <div class="img-box"><img src=${image} alt=${productName} 이미지></div>
       <div class="productName">${productName}</div>
     </a>

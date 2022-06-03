@@ -8,7 +8,15 @@ const modalButton = getNode('.orderModal .close-button');
 const orderlistWrap = getNode('.orderlist-wrap');
 const modalBody = getNode('.orderModal .modal-card-body');
 const searchButton = getNode('.search-button');
-const searchInput = getNode('.search-input');
+const mainImg = getNode('.main-image');
+const detailImg = getNode('.detail-image');
+const mainFileName = getNode('.main-file-name');
+const detailFileName = getNode('.detail-file-name');
+const imgPreviewMain = getNode('.img-preview-main');
+const imgPreviewDetail = getNode('.img-preview-detail');
+const mainImgData = new FormData();
+const detailImgData = new FormData();
+
 const createOrderDetail = (products) => {
   return products
     .map((product) => {
@@ -80,7 +88,7 @@ const onDeleteOrder = async (e) => {
 
   try {
     const orderId = e.target.parentNode.parentNode.querySelector('.info-order-number strong').innerText;
-    console.log(orderId);
+
     await Api.deleteYesToken('/api/orders', orderId);
     alert('주문 내역이 삭제되었습니다.');
     window.location.reload();
@@ -111,12 +119,6 @@ const viewDetailModal = (e) => {
 const closeModal = () => {
   modal.classList.remove('is-active');
 };
-
-function addAllEvents() {
-  modalButton.addEventListener('click', closeModal);
-  orderList.addEventListener('click', viewDetailModal);
-  searchButton.addEventListener('click', searchProducts);
-}
 
 const createOrderListElement = (item) => {
   const { shortId, products, createdAt } = item;
@@ -211,7 +213,7 @@ function addPostModal() {
     postProductToApi('.modal-addProduct');
   });
 }
-addPostModal();
+
 // 상품추가 - 카테고리 옵션 렌더링
 async function getOptionCategory(renderNode, category = '') {
   const data = await Api.getYesToken('/api/categories');
@@ -220,47 +222,100 @@ async function getOptionCategory(renderNode, category = '') {
   for (let i = 0; i < data.data.length; i++) {
     if (category !== '') {
       if (category === data.data[i]._id) {
-        categoryOptions.innerHTML += `<option selected id="${data.data[i]._id}">${data.data[i].label}</option>`;
+        categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
       } else {
-        categoryOptions.innerHTML += `<option id="${data.data[i]._id}">${data.data[i].label}</option>`;
+        categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
       }
     } else {
       // 모달창 카테고리 렌더링
       if (i === 0)
-        categoryOptions.innerHTML += `<option selected id="${data.data[i]._id}">${data.data[i].label}</option>`;
-      else categoryOptions.innerHTML += `<option id="${data.data[i]._id}">${data.data[i].label}</option>`;
+        categoryOptions.innerHTML += `<option selected class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
+      else
+        categoryOptions.innerHTML += `<option class="${data.data[i].label}" id="${data.data[i]._id}">${data.data[i].label}</option>`;
     }
   }
 }
 
 // 상품 추가하기 - Api.post 통신
 async function postProductToApi(node, productId = '') {
-  const image = getNode(`${node} .image`).value;
-  const detailImage = getNode(`${node} .detailImage`).value;
+  const imageUpload = uploadImageToS3('main');
+  const detailImageUpload = uploadImageToS3('detail');
   const category = getNode(`${node} .category-option`).value;
   const categoryId = getNode(`.${category}`).id;
   const productName = getNode(`${node} .productName`).value;
   const description = getNode(`${node} .description`).value;
   const price = getNode(`${node} .price`).value;
   const company = getNode(`${node} .company`).value;
-  const data = {
-    image: image,
-    detailImage: detailImage,
-    categoryId: categoryId,
-    productName: productName,
-    description: description,
-    price: price,
-    company: company,
-  };
-  console.log(typeof node, node);
-  if (node === '.modal-addProduct') {
-    await Api.postYesToken('/api/products', data);
-    location.reload();
-  } else if (node === '.productEditModal') {
-    await Api.patchYesToken('/api/products', productId, data);
-    getProductAll(1);
+
+  try {
+    imageUpload
+      .then((mainImgURL) => {
+        return mainImgURL || '';
+      })
+      .then((res) => {
+        detailImageUpload
+          .then((detailImg) => {
+            return { image: res, detailImg: detailImg || '' };
+          })
+          .then((res) => {
+            const data = {
+              image: res.image,
+              detailImage: res.detailImg,
+              categoryId: categoryId,
+              productName: productName,
+              description: description,
+              price: price,
+              company: company,
+            };
+            return data;
+          })
+          .then((data) => {
+            if (node === '.modal-addProduct') {
+              Api.postYesToken('/api/products', data);
+              location.reload();
+            } else if (node === '.productEditModal') {
+              Api.patchYesToken('/api/products', productId, data);
+              getProductAll(1);
+            }
+          });
+      });
+  } catch (err) {
+    console.log(err.message);
+  } finally {
+    if (mainImgData.has('image')) mainImgData.delete('image');
+    if (detailImgData.has('image')) detailImgData.delete('image');
   }
 }
+
+async function uploadImageToS3(division) {
+  if (division === 'main') {
+    if (!mainImgData.has('image')) return '';
+    try {
+      const uploadResult = await fetch('/api/images/upload', {
+        method: 'POST',
+        body: mainImgData,
+      });
+      const result = await uploadResult.json();
+      return result.imagePath;
+    } catch (err) {
+      console.log(err.message);
+    }
+  } else if (division === 'detail') {
+    if (!detailImgData.has('image')) return '';
+    try {
+      const uploadResult = await fetch('/api/images/upload', {
+        method: 'POST',
+        body: detailImgData,
+      });
+
+      const result = await uploadResult.json();
+      return result.imagePath;
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+}
+
 // 상품 편집하기 모달 페이지네이션
 
 // 상품 편집하기 모달
@@ -351,14 +406,60 @@ async function delProduct(e) {
 async function updateProduct(e) {
   const datas = await getYesToken('/api/products', e.target.classList[0]);
   const product = datas.data;
-  console.log('편집전편집전', product);
   const productEditModal = getNode('.productEditModal .modal-card-body');
   const productEditFoot = getNode('.productEditModal .modal-card-foot');
   productEditModal.innerHTML = '';
-  productEditModal.innerHTML = `<div class="is-size-5">대표이미지</div>
-  <input class="input image" type="text" name="image" value="${product.image}">
+  productEditModal.innerHTML = `
+  <div class="is-size-5">대표이미지</div>
+  <div class="main-img-wrap">
+    <div class="file has-name is-right is-fullwidth">
+      <label class="file-label">
+        <input class="file-input main-image-mod" type="file" accept="image/*" name="resume">
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label">
+            이미지 업로드
+          </span>
+        </span>
+        <span class="file-name main-file-name-mod">
+          ${product.image}
+        </span>
+      </label>
+    </div>
+    <div class="img-preview-wrap">
+      <img class="img-preview-main-mode" src=${product.image} />
+      <span class="material-icons cancel-img-main">
+        cancel
+      </span>
+    </div>
+  </div>
   <div class="is-size-5">상세이미지</div>
-  <input class="input detailImage" type="text" name="detailImage" value="${product.detailImage}">
+    <div class="detail-img-wrap">
+      <div class="file has-name is-right is-fullwidth">
+        <label class="file-label">
+          <input class="file-input detail-image-mod" type="file" accept="image/*" name="resume">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              이미지 업로드
+            </span>
+          </span>
+          <span class="file-name detail-file-name-mod">
+            ${product.detailImage}
+          </span>
+        </label>
+      </div>
+      <div class="img-preview-wrap">
+        <img class="img-preview-detail-mod" src=${product.detailImage} />
+        <span class="material-icons cancel-img-detail">
+          cancel
+        </span>
+      </div>
+    </div>
   <div>카테고리</div>
   <div class="control has-icons-left">
     <div class="select">
@@ -388,6 +489,9 @@ async function updateProduct(e) {
     postProductToApi('.productEditModal', product.shortId);
     goBackEditModal();
   });
+
+  getNode('.main-image-mod').addEventListener('change', changeImageFile);
+  getNode('.detail-image-mod').addEventListener('change', changeImageFile);
 }
 
 // 뒤로가기 버튼 클릭시 이벤트
@@ -426,7 +530,6 @@ function goBackEditModal() {
 </table>`;
   getProductAll(1);
   const searchButton = getNode('.search-button');
-  const searchInput = getNode('.search-input');
   searchButton.addEventListener('click', searchProducts);
 }
 
@@ -469,7 +572,7 @@ getModalCategory();
 // 카테고리 활성화 비활성화 이벤트
 async function useActiveCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
-  console.log(categoryNode, '활성화 이벤트확인');
+
   const categoryId = categoryNode.getAttribute('id');
   if (e.target.classList.contains('is-info')) {
     e.target.classList.remove('is-info');
@@ -496,7 +599,7 @@ function showAddCategoryForm() {
 // 카테고리 추가 - Api.post통신
 async function addCatgoryToApi() {
   const addCategoryName = getNode('.addCategoryName').value;
-  console.log('추가하려는 카테고리', addCategoryName);
+
   await Api.postYesToken('/api/categories', { label: addCategoryName });
   const categoryModalList = document.querySelector('.category-modal-list');
   categoryModalList.innerHTML = '';
@@ -522,7 +625,7 @@ async function delCategory(e) {
 async function updateCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id');
-  // console.log('제목부분 찾아라~',categoryNode,categoryId)
+
   const btnClass = e.target.classList;
   if (btnClass.contains('is-warning')) {
     //수정버튼일때
@@ -558,5 +661,35 @@ editClose.onclick = () => {
   location.reload();
 };
 
+function changeImageFile(e) {
+  const imgName = e.target.files[0].name;
+  if (e.target.classList.contains('main-image')) {
+    mainFileName.innerHTML = imgName;
+    imgPreviewMain.src = window.URL.createObjectURL(e.target.files[0]);
+    mainImgData.append('image', e.target.files[0]);
+  } else if (e.target.classList.contains('detail-image')) {
+    detailFileName.innerHTML = imgName;
+    imgPreviewDetail.src = window.URL.createObjectURL(e.target.files[0]);
+    detailImgData.append('image', e.target.files[0]);
+  } else if (e.target.classList.contains('main-image-mod')) {
+    getNode('.main-file-name-mod').innerHTML = imgName;
+    getNode('.img-preview-main-mode').src = window.URL.createObjectURL(e.target.files[0]);
+    mainImgData.append('image', e.target.files[0]);
+  } else if (e.target.classList.contains('detail-image-mod')) {
+    getNode('.detail-file-name-mod').innerHTML = imgName;
+    getNode('.img-preview-detail-mod').src = window.URL.createObjectURL(e.target.files[0]);
+    detailImgData.append('image', e.target.files[0]);
+  }
+}
+
+function addAllEvents() {
+  modalButton.addEventListener('click', closeModal);
+  orderList.addEventListener('click', viewDetailModal);
+  searchButton.addEventListener('click', searchProducts);
+  mainImg.addEventListener('change', changeImageFile);
+  detailImg.addEventListener('change', changeImageFile);
+}
+
+addPostModal();
 getProductAll(1);
 addAllEvents();
