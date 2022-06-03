@@ -253,7 +253,7 @@ const addOrderDeleteEvent = () => {
 };
 
 const renderAllOrderList = (orderList) => {
-  if (orderList.products.length <= 0) return;
+  if (!orderList.data.length) return;
   orderWrapper.innerHTML = '';
   orderList.data.forEach(({ products, totalPrice, shortId, createdAt }) => {
     const orders = createOrderListElement({ totalPrice, shortId, createdAt, products });
