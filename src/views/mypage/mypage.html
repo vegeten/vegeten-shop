@@ -1,182 +1,207 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Page</title>
+    <!-- 폰트 -->
+    <link rel=“preconnect” href=“https://fonts.googleapis.com”> <link rel=“preconnect” href=“https://fonts.gstatic.com”
+    crossorigin> <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="mypage.css" />
+    <script src="mypage.js" type="module" defer></script>
+    <!-- 다음 API js -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>My Page</title>
-  <!-- 폰트 -->
-  <link rel=“preconnect” href=“https://fonts.googleapis.com”>
-  <link rel=“preconnect” href=“https://fonts.gstatic.com” crossorigin>
-  <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
-  <!-- 아이콘 -->
-  <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- bulma css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-  <!-- 폰트 어썸: 아이콘 -->
-  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-  <!-- 커스텀 css, js -->
-  <link rel="stylesheet" href="mypage.css" />
-  <script src="mypage.js" type="module" defer></script>
-  <!-- 다음 API js -->
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-</head>
+  <body>
+    <!-- 헤더 -->
+    <nav class="navbar" role="navigation" aria-label="main navigation"></nav>
 
-<body>
-  <!-- 헤더 -->
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-  </nav>
-
-  <main class="main-wrapper" aria-label="main contents">
-    <div class="order-list-form-container ">
-      <div class="title-wrapper">
-        <span class="container-title">주문 내역</span>
+    <main class="main-wrapper" aria-label="main contents">
+      <div class="order-list-form-container">
+        <div class="title-wrapper">
+          <span class="container-title">주문 내역</span>
+        </div>
+        <ul class="order-list"></ul>
       </div>
-      <ul class="order-list">
-      </ul>
-    </div>
-    <div class="register-user-form-container">
-      <span span class="container-title">회원 정보</span>
-      <form class="box register-user-form-box has-background-light" id="modifyUserForm">
-        <label for="fullNameInput">이름</label>
-        <div class="control">
-          <input class="input is-medium name-input" id="fullNameInput" type="text" placeholder="이름을 입력해주세요."
-            autocomplete="off" disabled />
-          <div id="name-msg" class="help is-danger">
-            <span>이름을 입력해주세요.</span>
-          </div>
-        </div>
-
-        <div class="field mt-3">
-          <label for="emailInput">이메일</label>
+      <div class="register-user-form-container">
+        <span span class="container-title">회원 정보</span>
+        <form class="box register-user-form-box has-background-light" id="modifyUserForm">
+          <label for="fullNameInput">이름</label>
           <div class="control">
-            <input class="input is-medium email-input" id="emailInput" type="email" autocomplete="off" disabled />
-          </div>
-        </div>
-
-        <div class="field change-form">
-          <label class="passwordInput" for="passwordInput">비밀번호</label>
-          <div class="control">
-            <input class="input is-medium passwd mb-3" id="passwordInput" type="password"
-              placeholder="현재 비밀번호를 입력해주세요." />
-            <div id="password-msg" class="help is-danger">
-              <span>비밀번호를 입력해주세요.</span>
+            <input
+              class="input is-medium name-input"
+              id="fullNameInput"
+              type="text"
+              placeholder="이름을 입력해주세요."
+              autocomplete="off"
+              disabled
+            />
+            <div id="name-msg" class="help is-danger">
+              <span>이름을 입력해주세요.</span>
             </div>
           </div>
-        </div>
 
-        <div class="field change-form">
-          <label class="passwordInput" for="passwordInput">새 비밀번호</label>
-          <div class="password-wrap control">
-            <input class="input is-medium new-passwd" id="passwordModify" type="password"
-              placeholder="비밀번호 변경 버튼을 누르세요." readonly />
-            <div id="new-password-msg" class="help is-danger">
-              <span>비밀번호를 입력해주세요.</span>
-            </div>
-            <button class="button is-medium is-warning passwd-modify">비밀번호 변경</button>
-          </div>
-        </div>
-
-        <div class="field change-form">
-          <label class="passwordInput" for="passwordInput">비밀번호 확인</label>
-          <div class="control">
-            <input class="input is-medium passwd-check" id="passwordInputCheck" type="password"
-              placeholder="비밀번호 변경 버튼을 누르세요." readonly />
-            <div id="password-check-msg" class="help is-danger">
-              <span>비밀번호 확인을 입력해주세요.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="field change-form-hidden">
-          <label for="phoneInput">휴대폰 번호</label>
-          <div class="phone-wrap control">
-            <input id="fullPhoneInput" class="input is-medium phone fullPhoneNumber" disabled />
-          </div>
-        </div>
-
-        <div class="field change-form">
-          <label for="phoneInput">휴대폰 번호</label>
-          <div class="phone-wrap control">
-            <input id="phoneInput" class="input is-medium phone number-1" type="number" maxlength="3" />
-            <span>-</span>
-            <input class="input is-medium phone number-2" type="number" maxlength="4" />
-            <span>-</span>
-            <input class="input is-medium phone number-3" type="number" maxlength="4" />
-          </div>
-          <div id="phone-msg" class="help is-danger">
-            <span>휴대폰 번호를 입력해주세요.</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label-input" for="address-search">우편번호</label>
-          <div class="addr-wrap control">
-            <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" disabled />
-            <button id="kakao_address" class="button is-medium is-responsive change-form">주소찾기</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label-input" for="address">주소</label>
-          <div class="control">
-            <input class="input is-medium address" type="text" autocomplete="off" disabled />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label-input" for="addressDetail">상세 주소</label>
-          <div class="control">
-            <input class="input is-medium address-detail" id="addressDetail" type="text" autocomplete="off" disabled />
-          </div>
-        </div>
-
-        <div class="btn-wrapper">
-          <button class="button is-danger is-medium mt-3 mb-3 btn-withdraw">
-            탈퇴하기
-          </button>
-          <div class="btn-mod-wrapper mt-3 mb-3">
-            <button class="button is-danger is-medium btn-mod-cancel change-form">
-              취소
-            </button>
-            <button class="button is-warning is-medium ml-3 btn-password-confirm" type="submit" id="submitButton">
-              회원 정보 수정
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </main>
-
-  <div class="modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">비밀번호 확인</p>
-        <button class="delete close-button" aria-label="close"></button>
-      </header>
-      <form>
-        <section class="modal-card-body">
-          <div class="field">
-            <label class="checkPassword" for="checkPassword">비밀번호</label>
+          <div class="field mt-3">
+            <label for="emailInput">이메일</label>
             <div class="control">
-              <input class="input is-medium passwd checkPasswordInput" id="checkPassword" type="password"
-                placeholder="현재 비밀번호를 입력해주세요." />
+              <input class="input is-medium email-input" id="emailInput" type="email" autocomplete="off" disabled />
+            </div>
+          </div>
+          <div class="field change-form">
+            <label class="passwordInput" for="passwordInput">비밀번호</label>
+            <div class="control">
+              <input
+                class="input is-medium passwd mb-3"
+                id="passwordInput"
+                type="password"
+                placeholder="현재 비밀번호를 입력해주세요."
+              />
+              <div id="password-msg" class="help is-danger">
+                <span>비밀번호를 입력해주세요.</span>
+              </div>
             </div>
           </div>
 
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-fullwidth is-black check-password-confirm-button">확인</button>
-        </footer>
-      </form>
+          <div class="field change-form-hidden">
+            <label for="phoneInput">휴대폰 번호</label>
+            <div class="phone-wrap control">
+              <input id="fullPhoneInput" class="input is-medium phone fullPhoneNumber" disabled />
+            </div>
+          </div>
+
+          <div class="field change-form">
+            <label for="phoneInput">휴대폰 번호</label>
+            <div class="phone-wrap control">
+              <input id="phoneInput" class="input is-medium phone number-1" type="number" maxlength="3" />
+              <span>-</span>
+              <input class="input is-medium phone number-2" type="number" maxlength="4" />
+              <span>-</span>
+              <input class="input is-medium phone number-3" type="number" maxlength="4" />
+            </div>
+            <div id="phone-msg" class="help is-danger">
+              <span>휴대폰 번호를 입력해주세요.</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label-input" for="address-search">우편번호</label>
+            <div class="addr-wrap control">
+              <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" disabled />
+              <button id="kakao_address" class="button is-medium is-responsive change-form">주소찾기</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label-input" for="address">주소</label>
+            <div class="control">
+              <input class="input is-medium address" type="text" autocomplete="off" disabled />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label-input" for="addressDetail">상세 주소</label>
+            <div class="control">
+              <input
+                class="input is-medium address-detail"
+                id="addressDetail"
+                type="text"
+                autocomplete="off"
+                disabled
+              />
+            </div>
+          </div>
+
+          <!-- 비밀번호 변경 -->
+          <div id="passwd-modify-button-wrap">
+            <button class="button is-medium is-warning passwd-modify hide">비밀번호 변경</button>
+          </div>
+
+          <div id="password-modify-msg" class="is-danger help">
+            <span>새로운 비밀번호를 입력해주세요. </span>
+          </div>
+          <div class="field new-password hide">
+            <label class="passwordInput" for="passwordInput">새 비밀번호</label>
+            <div class="password-wrap control">
+              <div class="new-password-input-wrap">
+                <input
+                  class="input is-medium new-passwd"
+                  id="passwordModify"
+                  type="password"
+                  placeholder="비밀번호 변경 버튼을 누르세요."
+                />
+                <div id="new-password-msg" class="help is-danger">
+                  <span>비밀번호를 입력해주세요.</span>
+                </div>
+              </div>
+
+              <!-- <button class="button is-medium is-warning passwd-modify">비밀번호 변경</button> -->
+            </div>
+          </div>
+          <div class="field new-password-check hide">
+            <label class="passwordInput" for="passwordInput">비밀번호 확인</label>
+            <div class="control">
+              <input
+                class="input is-medium passwd-check"
+                id="passwordInputCheck"
+                type="password"
+                placeholder="비밀번호 변경 버튼을 누르세요."
+              />
+              <div id="password-check-msg" class="help is-danger">
+                <span>비밀번호 확인을 입력해주세요.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <button class="button is-danger is-medium mt-3 mb-3 btn-withdraw">탈퇴하기</button>
+            <div class="btn-mod-wrapper mt-3 mb-3">
+              <button class="button is-danger is-medium btn-mod-cancel change-form">취소</button>
+              <button class="button is-warning is-medium ml-3 btn-password-confirm" type="submit" id="submitButton">
+                회원 정보 수정
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <div class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">비밀번호 확인</p>
+          <button class="delete close-button" aria-label="close"></button>
+        </header>
+        <form>
+          <section class="modal-card-body">
+            <div class="field">
+              <label class="checkPassword" for="checkPassword">비밀번호</label>
+              <div class="control">
+                <input
+                  class="input is-medium passwd checkPasswordInput"
+                  id="checkPassword"
+                  type="password"
+                  placeholder="현재 비밀번호를 입력해주세요."
+                />
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-fullwidth is-black check-password-confirm-button">확인</button>
+          </footer>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <footer class="footer">
-  </footer>
-
-</body>
-
+    <footer class="footer"></footer>
+  </body>
 </html>

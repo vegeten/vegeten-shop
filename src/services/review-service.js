@@ -1,4 +1,6 @@
 import { reviewModel } from '../db';
+import { customError } from '../middlewares/error/customError';
+
 class ReviewService {
   constructor(reviewModel) {
     this.reviewModel = reviewModel;
@@ -16,9 +18,7 @@ class ReviewService {
   async getReviewsByUser(userId) {
     const reviews = await this.reviewModel.findByUser(userId);
     if (!userId || userId === null) {
-      const e = new Error('user not found');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 id의 유저가 없습니다. 다시 한 번 확인해주세요.');
     }
     return reviews;
   }
@@ -26,9 +26,7 @@ class ReviewService {
   async getReviewsByProduct(productId) {
     const reviews = await this.reviewModel.findByProduct(productId);
     if (!productId || productId === null) {
-      const e = new Error('product not found');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 id의 상품이 없습니다. 다시 한 번 확인해주세요.');
     }
     return reviews;
   }
@@ -44,9 +42,7 @@ class ReviewService {
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!review || review == null) {
-      const e = new Error('해당 리뷰의 id가 없습니다. 다시 한 번 확인해 주세요.');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 id의 리뷰가 없습니다. 다시 한 번 확인해주세요.');
     }
     return await this.reviewModel.update({
       reviewId,
@@ -57,9 +53,7 @@ class ReviewService {
   async deleteReview(reviewId) {
     let review = await this.reviewModel.delete(reviewId);
     if (!review || review === null) {
-      const e = new Error('해당 리뷰의 id가 없습니다. 다시 한 번 확인해 주세요.');
-      e.status = 404;
-      throw e;
+      throw new customError(404, '해당 id의 리뷰가 없습니다. 다시 한 번 확인해주세요.');
     }
     return review;
   }
