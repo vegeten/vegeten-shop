@@ -62,7 +62,7 @@ userRouter.get(
 userRouter.get('/refresh', refresh_);
 
 // 회원가입 (/api/users/register)
-userRouter.post('/register/send-mail', async (req, res, next) => {
+userRouter.get('/register/send-mail', async (req, res, next) => {
   const email = req.body.email;
   const randomNumber = Math.floor(Math.random() * 10 ** 8)
     .toString()
