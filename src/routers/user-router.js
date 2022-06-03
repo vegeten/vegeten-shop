@@ -70,7 +70,7 @@ userRouter.post('/register/send-mail', async (req, res, next) => {
       const randomNumber = Math.floor(Math.random() * 10 ** 6)
         .toString()
         .padStart(6, '0');
-      await sendMail(email, `인증번호는 ${randomNumber} 입니다.`);
+      sendMail(email, `인증번호는 ${randomNumber} 입니다.`);
       res.status(200).json({
         status: 200,
         message: '이메일 인증번호가 이메일로 전송되었습니다.',
@@ -141,7 +141,7 @@ userRouter.post('/reset-password', async (req, res, next) => {
     await userService.setUserPartially({ userId: user.shortId }, { password: hashedPassword });
 
     // 패스워드 발송하기
-    await sendMail(email, '[vegeten] 비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
+    sendMail(email, '[vegeten] 비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
     res.status(200).json({ status: 200, message: '임시 비밀번호가 이메일로 전송되었습니다.' });
   } catch (error) {
     next(error);
