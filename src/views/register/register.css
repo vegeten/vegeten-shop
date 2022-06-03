@@ -82,3 +82,44 @@
   background-color: #00ca71;
   font-weight: 400;
 }
+
+.emailWrap {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.emailWrap > div {
+  width: 70%;
+}
+
+.hide {
+  display: none;
+}
+
+#goLogin {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+}
+
+#goHome {
+  margin-right: 30px;
+}
+
+#goHome:hover {
+  background-color: #fff;
+}
+
+.sendMail {
+  height: 40px;
+  font-weight: 400;
+  border: none;
+  background-color: #ffe08a;
+  /* color: #fff !important; */
+}
+
+/* .sendMail:hover {
+  background-color: #ffe08a;
+} */
