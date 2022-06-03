@@ -62,6 +62,15 @@ userRouter.get(
 userRouter.get('/refresh', refresh_);
 
 // 회원가입 (/api/users/register)
+userRouter.post('/register/send-mail', async (req, res, next) => {
+  const email = req.body.email;
+  const randomNumber = Math.floor(Math.random() * 10 ** 8)
+    .toString()
+    .padStart(6, '0');
+  await sendMail(email, `인증번호는 ${randomNumber} 입니다.`);
+  res.status(200).json({ status: 200, message: '이메일 인증번호가 이메일로 전송되었습니다.', data: randomNumber });
+});
+
 userRouter.post('/register', async (req, res, next) => {
   try {
     if (is.emptyObject(req.body)) {
@@ -134,7 +143,6 @@ userRouter.post('/password', loginRequired, async function (req, res, next) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
 
-    // params로부터 id를 가져옴
     const userId = req.currentUserId;
     // body data 로부터 업데이트할 사용자 정보를 추출함.
     const { currentPassword } = req.body;
