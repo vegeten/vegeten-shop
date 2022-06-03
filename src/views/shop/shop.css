@@ -24,14 +24,16 @@ main {
   cursor: pointer;
   color: black;
   margin-left: 20%;
+  margin-bottom: 2%;
 }
 
-.category-nav .all {
-  margin-bottom: 10%;
+.category-nav #category-list .all {
+  margin-bottom: 30%;
 }
 
 .category-nav #category-list div.active {
   font-weight: 700;
+  font-size: 1.1em;
   color: #00C571;
 }
 
@@ -162,7 +164,7 @@ article #product-list {
 
 .item-card .img-box img {
   height: 100%;
-  width: auto;
+  width: 100%;
   object-fit: cover;
 }
 
