@@ -629,8 +629,7 @@ async function delCategory(e) {
 // 카테고리 수정- Api.patch통신
 async function updateCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
-  const categoryId = categoryNode.getAttribute('id');
-  const categoryShortId = getNode('.categoryName').classList[1];
+  const categoryShortId = categoryNode.classList[1]
   const btnClass = e.target.classList;
   if (btnClass.contains('is-warning')) {
     //수정버튼일때
