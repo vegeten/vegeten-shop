@@ -67,8 +67,11 @@ article .intro-item {
   text-align: right;
 }
 
-.detail-item {
-  margin-top: 5%;
+.detail-item,
+.detail-review {
+  width: 70%;
+  text-align: center;
+  margin: 5% auto;
 }
 
 .img_box_detail {
@@ -86,8 +89,9 @@ article .intro-item {
 .review-item {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 70%;
   text-align: initial;
+  margin: auto;
 }
 
 .review-wrap {
