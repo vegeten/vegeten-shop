@@ -614,7 +614,7 @@ async function addCatgoryToApi() {
 async function delCategory(e) {
   const categoryNode = e.target.parentNode.parentNode.firstChild;
   const categoryId = categoryNode.getAttribute('id');
-  const categoryShortId = getNode('.categoryName').classList[1];
+  const categoryShortId = categoryNode.classList[1]
   const categoryName = categoryNode.textContent;
   const deleteProduct = await Api.getYesToken('/api/categories/products', categoryId);
   if (deleteProduct.data.products.length !== 0) {
