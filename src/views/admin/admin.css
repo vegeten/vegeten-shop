@@ -22,7 +22,9 @@
   width: 100%;
   justify-content: space-around;
 }
-
+.modal-card-foot .add-category-trigger {
+  cursor: pointer;
+}
 .main-order-list {
   display: flex;
   flex-direction: row;
