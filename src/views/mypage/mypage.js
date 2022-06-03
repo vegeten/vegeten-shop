@@ -41,8 +41,6 @@ const changeUserForm = (flag) => {
     fullPhoneNumberInput.parentNode.parentNode.style.display = 'none';
     changeFormArray.forEach((item) => (item.style.display = 'block'));
     fullNameInput.disabled = false;
-    // addressCodeInput.disabled = false;
-    // addressTitleInput.disabled = false;
     addressDetailInput.disabled = false;
     passwordToggle.classList.remove('hide');
     btnPasswordConfirm.removeEventListener('click', changeSubmitButton);
@@ -97,28 +95,11 @@ const addErrorHTML = (target) => {
 const onPasswordToggle = (e) => {
   e.preventDefault();
   newPasswordToggle = !newPasswordToggle;
-  // if (newPasswordToggle) {
-  //   e.target.classList.remove('is-warning');
-  //   e.target.classList.add('is-danger');
-  //   newPasswordInput.readOnly = false;
-  //   newPasswordInput.placeholder = '새 비밀번호를 입력해주세요.';
-  //   newPasswordCheck.readOnly = false;
-  //   newPasswordCheck.placeholder = '새 비밀번호 확인을 입력해주세요.';
-  //   newPasswordInput.focus();
-  // } else {
-  //   e.target.classList.remove('is-danger');
-  //   e.target.classList.add('is-warning');
-  //   newPasswordInput.placeholder = '비밀번호 변경 버튼을 누르세요.';
-  //   newPasswordInput.readOnly = true;
-  //   newPasswordCheck.readOnly = true;
-  //   newPasswordCheck.placeholder = '비밀번호 변경 버튼을 누르세요.';
-  // }
   if (newPasswordToggle) {
     passwordToggle.innerText = '비밀번호 변경 취소';
   } else {
     passwordToggle.innerText = '비밀번호 변경';
   }
-  // newPasswordMsg.classList.add('hide');
 
   newPasswordMsg.style.display = 'none';
   newPasswordWrap.classList.toggle('hide');
@@ -272,6 +253,7 @@ const addOrderDeleteEvent = () => {
 };
 
 const renderAllOrderList = (orderList) => {
+  if (orderList.products.length <= 0) return;
   orderWrapper.innerHTML = '';
   orderList.data.forEach(({ products, totalPrice, shortId, createdAt }) => {
     const orders = createOrderListElement({ totalPrice, shortId, createdAt, products });
