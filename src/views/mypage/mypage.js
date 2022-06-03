@@ -25,6 +25,10 @@ const modalBackground = getNode('.modal-background');
 let newPasswordToggle = false;
 let changeUserFormFlag = false;
 
+const newPasswordWrap = getNode('.new-password');
+const newPasswordCheckWrap = getNode('.new-password-check');
+const newPasswordMsg = getNode('#password-modify-msg');
+
 const onModCancel = (e) => {
   e.preventDefault();
   changeUserFormFlag = false;
@@ -37,9 +41,10 @@ const changeUserForm = (flag) => {
     fullPhoneNumberInput.parentNode.parentNode.style.display = 'none';
     changeFormArray.forEach((item) => (item.style.display = 'block'));
     fullNameInput.disabled = false;
-    addressCodeInput.disabled = false;
-    addressTitleInput.disabled = false;
+    // addressCodeInput.disabled = false;
+    // addressTitleInput.disabled = false;
     addressDetailInput.disabled = false;
+    passwordToggle.classList.remove('hide');
     btnPasswordConfirm.removeEventListener('click', changeSubmitButton);
     btnPasswordConfirm.addEventListener('click', submitModifyUserInfo);
   } else {
@@ -79,6 +84,10 @@ const addErrorHTML = (target) => {
     case currentPasswordInput:
       target.nextElementSibling.innerHTML = '비밀번호는 필수 입력사항입니다.';
       break;
+    case newPasswordInput:
+      target.nextElementSibling.innerHTML =
+        '영문,숫자,특수문자 포함 8자리이상 15자리이하  (가능한 특수문자: ~!@#$%^&*)';
+      break;
     case newPasswordCheck:
       target.nextElementSibling.innerHTML = '비밀번호가 일치하지 않습니다.';
       break;
@@ -88,22 +97,34 @@ const addErrorHTML = (target) => {
 const onPasswordToggle = (e) => {
   e.preventDefault();
   newPasswordToggle = !newPasswordToggle;
+  // if (newPasswordToggle) {
+  //   e.target.classList.remove('is-warning');
+  //   e.target.classList.add('is-danger');
+  //   newPasswordInput.readOnly = false;
+  //   newPasswordInput.placeholder = '새 비밀번호를 입력해주세요.';
+  //   newPasswordCheck.readOnly = false;
+  //   newPasswordCheck.placeholder = '새 비밀번호 확인을 입력해주세요.';
+  //   newPasswordInput.focus();
+  // } else {
+  //   e.target.classList.remove('is-danger');
+  //   e.target.classList.add('is-warning');
+  //   newPasswordInput.placeholder = '비밀번호 변경 버튼을 누르세요.';
+  //   newPasswordInput.readOnly = true;
+  //   newPasswordCheck.readOnly = true;
+  //   newPasswordCheck.placeholder = '비밀번호 변경 버튼을 누르세요.';
+  // }
   if (newPasswordToggle) {
-    e.target.classList.remove('is-warning');
-    e.target.classList.add('is-danger');
-    newPasswordInput.readOnly = false;
-    newPasswordInput.placeholder = '새 비밀번호를 입력해주세요.';
-    newPasswordCheck.readOnly = false;
-    newPasswordCheck.placeholder = '새 비밀번호 확인을 입력해주세요.';
-    newPasswordInput.focus();
+    passwordToggle.innerText = '비밀번호 변경 취소';
   } else {
-    e.target.classList.remove('is-danger');
-    e.target.classList.add('is-warning');
-    newPasswordInput.placeholder = '비밀번호 변경 버튼을 누르세요.';
-    newPasswordInput.readOnly = true;
-    newPasswordCheck.readOnly = true;
-    newPasswordCheck.placeholder = '비밀번호 변경 버튼을 누르세요.';
+    passwordToggle.innerText = '비밀번호 변경';
   }
+  // newPasswordMsg.classList.add('hide');
+
+  newPasswordMsg.style.display = 'none';
+  newPasswordWrap.classList.toggle('hide');
+  newPasswordInput.classList.remove('is-danger');
+  newPasswordInput.nextElementSibling.style.display = 'none';
+  newPasswordCheckWrap.classList.toggle('hide');
 };
 
 const renderUserInfo = (data) => {
@@ -302,6 +323,27 @@ const submitWithdrawUser = async (e) => {
   }
 };
 
+// 공백없어야함, 숫자&문자&특수문자 (8자 이상 15자 이하)
+function checkPassword(pwd) {
+  if (pwd) {
+    let pattern1 = /[0-9]/;
+    let pattern2 = /[a-zA-z]/;
+    let pattern3 = /[~!@#$%^&*]/;
+
+    if (
+      pwd.search(/\s/) !== -1 ||
+      !pattern1.test(pwd) ||
+      !pattern2.test(pwd) ||
+      !pattern3.test(pwd) ||
+      pwd.length < 8 ||
+      pwd.length > 15
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 const submitModifyUserInfo = async (e) => {
   e.preventDefault();
 
@@ -314,6 +356,7 @@ const submitModifyUserInfo = async (e) => {
 
   const isFullNameValid = fullName.length >= 2;
   const isPasswordValid = password.length >= 4;
+  const isNewPasswordValid = checkPassword(newPassword);
   const isPasswordSame = newPassword === newPasswordConfirm;
 
   if (!isFullNameValid) {
@@ -322,10 +365,18 @@ const submitModifyUserInfo = async (e) => {
   }
 
   if (!isPasswordValid) {
-    addErrorHTML(passwordInput);
+    addErrorHTML(currentPasswordInput);
     validateFlag = false;
   }
 
+  if (newPasswordToggle) {
+    newPasswordMsg.style.display = 'block';
+
+    if (!isNewPasswordValid || newPassword === '') {
+      addErrorHTML(newPasswordInput);
+      validateFlag = false;
+    }
+  }
   if (!isPasswordSame) {
     addErrorHTML(newPasswordCheck);
     validateFlag = false;

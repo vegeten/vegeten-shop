@@ -1,5 +1,9 @@
 * {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+.hide {
+  display: none;
 }
 
 .main-wrapper {
@@ -72,7 +76,6 @@
   font-size: 0.9rem;
 }
 
-
 .order-list-image img {
   border-radius: 20px;
 }
@@ -99,6 +102,10 @@
 
 .password-wrap button {
   margin-left: 1rem;
+}
+
+.new-password-input-wrap {
+  width: 100%;
 }
 
 .phone-wrap {
@@ -128,10 +135,9 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
-
 
 .order-img {
   border-radius: 20px;
@@ -159,4 +165,9 @@ input[type=number] {
 
 .change-form {
   display: none;
+}
+
+#submitButton {
+  background-color: #00ca71;
+  color: #fff;
 }
