@@ -25,12 +25,17 @@ body {
 }
 
 header {
-  padding: 24px 16px;
+  padding: 24px 16px 10px 16px;
   border-bottom: 16px solid #f2f2f2;
+  text-align: center;
 }
 
 header a {
   justify-content: center;
+}
+
+header a img {
+  vertical-align: top;
 }
 
 #select-address-wrap {
@@ -155,7 +160,7 @@ header a {
 #bottom button {
   margin-bottom: 16px;
   width: 100%;
-  background-color: #000;
+  background-color: #00ca71;
   color: #fff;
   border: none;
 }
