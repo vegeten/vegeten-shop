@@ -5,58 +5,58 @@ import { loginRequired, adminAuth, refresh_, customError } from '../middlewares'
 import { userService } from '../services';
 import { sendMail } from '../utils/send-mail';
 import bcrypt from 'bcrypt';
-import { User } from '../db';
-import passport from 'passport';
+// import { User } from '../db';
+// import passport from 'passport';
 
 const userRouter = Router();
 
 //kakao
-const passportConfig = require('../passport');
-passportConfig();
+// const passportConfig = require('../passport');
+// passportConfig();
 
-userRouter.get('/kakao', passport.authenticate('kakao'));
+// // userRouter.get('/kakao', passport.authenticate('kakao'));
 
-userRouter.get(
-  '/kakao/callback',
-  passport.authenticate('kakao', {
-    failureRedirect: '/',
-  }),
-  async (req, res) => {
-    try {
-      const { username, _json, id, provider } = req.user;
-      const email = _json.kakao_account.email;
-      const fullName = username;
-      const password = String(id);
+// userRouter.get(
+//   '/kakao/callback',
+//   passport.authenticate('kakao', {
+//     failureRedirect: '/',
+//   }),
+//   async (req, res) => {
+//     try {
+//       const { username, _json, id, provider } = req.user;
+//       const email = _json.kakao_account.email;
+//       const fullName = username;
+//       const password = String(id);
 
-      const user = await userService.getUserByEmail(email);
-      if (!user || user === undefined || user === null) {
-        const userInfo = {
-          email: email,
-          password: String(password),
-          fullName: fullName,
-          provider: provider,
-        };
-        const newUser = await userService.addUser(userInfo);
-      }
+//       const user = await userService.getUserByEmail(email);
+//       if (!user || user === undefined || user === null) {
+//         const userInfo = {
+//           email: email,
+//           password: String(password),
+//           fullName: fullName,
+//           provider: provider,
+//         };
+//         const newUser = await userService.addUser(userInfo);
+//       }
 
-      // // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-      const userToken = await userService.getUserToken({ email, password });
-      const { token, refreshToken } = userToken;
-      const accessToken = token;
-      // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
+//       // // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
+//       const userToken = await userService.getUserToken({ email, password });
+//       const { token, refreshToken } = userToken;
+//       const accessToken = token;
+//       // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
 
-      res.cookie('refreshToken', refreshToken, {
-        expires: new Date(Date.now() + 1209600000),
-      });
-      res.cookie('accessToken', accessToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
-      });
-      res.redirect('/');
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+//       res.cookie('refreshToken', refreshToken, {
+//         expires: new Date(Date.now() + 1209600000),
+//       });
+//       res.cookie('accessToken', accessToken, {
+//         expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
+//       });
+//       res.redirect('/');
+//     } catch (error) {
+//       next(error);
+//     }
+//   }
+// );
 
 //refresh
 userRouter.get('/refresh', refresh_);
@@ -133,9 +133,7 @@ userRouter.post('/reset-password', async (req, res, next) => {
     }
 
     // 랜덤 패스워드 생성하기
-    const randomPassword = Math.floor(Math.random() * 10 ** 8)
-      .toString()
-      .padStart(8, '0');
+    const randomPassword = Math.random().toString(36).substring(2, 11) + '!';
 
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     await userService.setUserPartially({ userId: user.shortId }, { password: hashedPassword });

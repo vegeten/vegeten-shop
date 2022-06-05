@@ -12,19 +12,9 @@ import {
   imageRouter,
 } from './routers';
 import { errorHandler } from './middlewares';
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 
 const app = express();
-app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
-);
-
 // CORS 에러 방지
 app.use(cors());
 
