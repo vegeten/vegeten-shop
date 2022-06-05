@@ -47,6 +47,7 @@ function deletePreviewImg() {
   imgPriview.src = '';
   fileName.innerHTML = '파일 이름';
   cancelImg.style.display = 'none';
+  if (imgData.has('image')) imgData.delete('image');
 }
 
 function changeImageFile(e) {
@@ -55,6 +56,7 @@ function changeImageFile(e) {
   imgPriview.src = window.URL.createObjectURL(e.target.files[0]);
   fileName.innerHTML = imgName;
   cancelImg.style.display = 'block';
+
 }
 
 async function deleteReview(reviewId) {
@@ -128,7 +130,8 @@ async function uploadImageToS3() {
     return result.imagePath;
   } catch (err) {
     console.log(err.message);
-
+  } finally {
+    if (imgData.has('image')) imgData.delete('image');
   }
 
   return '';
@@ -141,8 +144,8 @@ async function registerNewReview(e) {
   const image = await uploadImageToS3();
 
   try {
-    const result = await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
-    alert(result.message);
+    await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    alert('리뷰가 등록되었습니다.');
   } catch (err) {
     alert(err.message);
   } finally {
@@ -188,6 +191,7 @@ function onToggleReview(e) {
     imgPriview.src = '';
     fileName.innerHTML = '파일 이름';
     cancelImg.style.display = 'none';
+    if (imgData.has('image')) imgData.delete('image');
   }
 }
 
@@ -222,8 +226,8 @@ function checkUser(userId, currentUserId) {
 function checkUsersReview(userId, currentUserId) {
   const result = checkUser(userId, currentUserId);
   const buttonWrap = `
-    <button class="button is-small is-warning modify-button">수정</button>
-    <button class="button is-small is-danger delete-button">삭제</button>
+    <button class="button is-medium is-warning modify-button">수정</button>
+    <button class="button is-medium is-danger delete-button">삭제</button>
   `;
   if (result) return buttonWrap;
   return '';
@@ -266,7 +270,7 @@ function createReviewBodyElement(review, currentUserId) {
 
 function createReviewScoreElement(count, averageScore) {
   return `
-    <span class="review-score" > ${Number(averageScore).toFixed(1)} / 5</span>
+    <span class="review-score" > ${Number(averageScore).toFixed(1)} / 5.0</span>
     <span class="review-count">(${count}개의 후기)</span>
     `;
 }

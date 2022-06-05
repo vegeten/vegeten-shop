@@ -13,10 +13,16 @@ a {
   color: #000;
 }
 
+.navbar {
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+}
+
 #container {
   padding-top: 60px;
   width: 74vw;
   margin: 0 auto;
+  margin-bottom: 50px;
 }
 
 h2 {
@@ -119,6 +125,7 @@ h2 {
   outline: none;
   border: 1px solid #f2f2f2;
   outline: none;
+  background-color: #fff;
 }
 
 .quantity-count:focus {
@@ -184,9 +191,10 @@ input[type='number']::-webkit-inner-spin-button {
 }
 
 #pay-button {
-  background-color: #000;
+  background-color: #00ca71;
   color: #fff;
   padding: 9px 30px;
   font-size: 16px;
   height: 50px;
+  border: none;
 }

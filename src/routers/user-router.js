@@ -1,67 +1,89 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired, adminAuth, refresh_ } from '../middlewares';
+import { loginRequired, adminAuth, refresh_, customError } from '../middlewares';
 import { userService } from '../services';
 import { sendMail } from '../utils/send-mail';
 import bcrypt from 'bcrypt';
-import { User } from '../db';
-import passport from 'passport';
+// import { User } from '../db';
+// import passport from 'passport';
 
 const userRouter = Router();
 
 //kakao
-const passportConfig = require('../passport');
-passportConfig();
+// const passportConfig = require('../passport');
+// passportConfig();
 
-userRouter.get('/kakao', passport.authenticate('kakao'));
+// // userRouter.get('/kakao', passport.authenticate('kakao'));
 
-userRouter.get(
-  '/kakao/callback',
-  passport.authenticate('kakao', {
-    failureRedirect: '/',
-  }),
-  async (req, res) => {
-    try {
-      const { username, _json, id, provider } = req.user;
-      const email = _json.kakao_account.email;
-      const fullName = username;
-      const password = String(id);
+// userRouter.get(
+//   '/kakao/callback',
+//   passport.authenticate('kakao', {
+//     failureRedirect: '/',
+//   }),
+//   async (req, res) => {
+//     try {
+//       const { username, _json, id, provider } = req.user;
+//       const email = _json.kakao_account.email;
+//       const fullName = username;
+//       const password = String(id);
 
-      const user = await userService.getUserByEmail(email);
-      if (!user || user === undefined || user === null) {
-        const userInfo = {
-          email: email,
-          password: String(password),
-          fullName: fullName,
-          provider: provider,
-        };
-        const newUser = await userService.addUser(userInfo);
-      }
+//       const user = await userService.getUserByEmail(email);
+//       if (!user || user === undefined || user === null) {
+//         const userInfo = {
+//           email: email,
+//           password: String(password),
+//           fullName: fullName,
+//           provider: provider,
+//         };
+//         const newUser = await userService.addUser(userInfo);
+//       }
 
-      // // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-      const userToken = await userService.getUserToken({ email, password });
-      const { token, refreshToken } = userToken;
-      const accessToken = token;
-      // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
+//       // // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
+//       const userToken = await userService.getUserToken({ email, password });
+//       const { token, refreshToken } = userToken;
+//       const accessToken = token;
+//       // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
 
-      res.cookie('refreshToken', refreshToken, {
-        expires: new Date(Date.now() + 1209600000),
-      });
-      res.cookie('accessToken', accessToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
-      });
-      res.redirect('/');
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+//       res.cookie('refreshToken', refreshToken, {
+//         expires: new Date(Date.now() + 1209600000),
+//       });
+//       res.cookie('accessToken', accessToken, {
+//         expires: new Date(Date.now() + 1000 * 60 * 60 * 2),
+//       });
+//       res.redirect('/');
+//     } catch (error) {
+//       next(error);
+//     }
+//   }
+// );
 
 //refresh
 userRouter.get('/refresh', refresh_);
 
 // 회원가입 (/api/users/register)
+userRouter.post('/register/send-mail', async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const savedEmail = await userService.getUserByEmail(email);
+    if (!savedEmail || savedEmail === null || savedEmail === undefined) {
+      const randomNumber = Math.floor(Math.random() * 10 ** 6)
+        .toString()
+        .padStart(6, '0');
+      sendMail(email, `인증번호는 ${randomNumber} 입니다.`);
+      res.status(200).json({
+        status: 200,
+        message: '이메일 인증번호가 이메일로 전송되었습니다.',
+        data: randomNumber,
+      });
+      return;
+    }
+    throw new customError(409, '이미 가입된 이메일입니다.');
+  } catch (error) {
+    next(error);
+  }
+});
+
 userRouter.post('/register', async (req, res, next) => {
   try {
     if (is.emptyObject(req.body)) {
@@ -111,15 +133,13 @@ userRouter.post('/reset-password', async (req, res, next) => {
     }
 
     // 랜덤 패스워드 생성하기
-    const randomPassword = Math.floor(Math.random() * 10 ** 8)
-      .toString()
-      .padStart(8, '0');
+    const randomPassword = Math.random().toString(36).substring(2, 11) + '!';
 
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
     await userService.setUserPartially({ userId: user.shortId }, { password: hashedPassword });
 
     // 패스워드 발송하기
-    await sendMail(email, '비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
+    sendMail(email, '[vegeten] 비밀번호가 변경되었습니다.', `변경된 비밀번호는 ${randomPassword} 입니다.`);
     res.status(200).json({ status: 200, message: '임시 비밀번호가 이메일로 전송되었습니다.' });
   } catch (error) {
     next(error);
@@ -134,7 +154,6 @@ userRouter.post('/password', loginRequired, async function (req, res, next) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
 
-    // params로부터 id를 가져옴
     const userId = req.currentUserId;
     // body data 로부터 업데이트할 사용자 정보를 추출함.
     const { currentPassword } = req.body;

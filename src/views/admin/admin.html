@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <!-- 아이콘 -->
-  <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!-- bulma css -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
@@ -28,7 +28,8 @@
         <div class="mod-wrap">
           <div class="main-category-mod-wrap">
             <span class="wrap-title">카테고리 관리</span>
-            <button class="button is-medium is-warning editCategory" data-target="modal-editCategory">카테고리 수정/추가/삭제</button>
+            <button class="button is-medium is-warning editCategory" data-target="modal-editCategory">카테고리
+              수정/추가/삭제</button>
             <div id="modal-editCategory" class="modal">
               <div class="modal-background"></div>
               <div class="modal-card">
@@ -60,47 +61,92 @@
           </div>
           <div class="main-product-mod-wrap">
             <span class="wrap-title">상품내역 관리</span>
-            <button class="button is-medium is-info addProduct" data-target="modal-ter" aria-haspopup="true">상품 추가</button>
+            <button class="button is-medium is-info addProduct" data-target="modal-ter" aria-haspopup="true">상품
+              추가</button>
             <!-- 모달 -->
-      <div class="modal modal-addProduct">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">상품추가하기</p>
-            <button class="delete" aria-label="close"></button>
-          </header>
-            <section class="modal-card-body">
-              <!-- Content ... -->
-              <div class="is-size-5">대표이미지</div>
-              <input class="input image" type="text" name="image" value="https://picsum.photos/200">
-              
-              <div class="is-size-5">상세이미지</div>
-              <input class="input detailImage" type="text" name="detailImage" value="https://picsum.photos/200">
-              
-              <div>카테고리</div>
-              <div class="control has-icons-left">
-                <div class="select">
-                  <select id="total-count" class="category-option">
-                   
-                  </select>
-                </div>
-              </div>
-              <div>상품이름</div>
-              <input class="input productName" type="text" name="productName" >
-              <div>상품설명</div>
-              <input class="input description" type="textarea" name="description">
-              <div>price</div>
-              <input class="input price" type="number" name="price">
-              <div>제조사</div>
-              <input class="input company" name="company">
+            <div class="modal modal-addProduct">
+              <div class="modal-background"></div>
+              <div class="modal-card">
+                <header class="modal-card-head">
+                  <p class="modal-card-title">상품추가하기</p>
+                  <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                  <!-- Content ... -->
+                  <div class="is-size-5">대표이미지</div>
+                  <div class="main-img-wrap">
+                    <div class="file has-name is-right is-fullwidth">
+                      <label class="file-label">
+                        <input class="file-input main-image" type="file" accept="image/*" name="resume">
+                        <span class="file-cta">
+                          <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                          </span>
+                          <span class="file-label">
+                            이미지 업로드
+                          </span>
+                        </span>
+                        <span class="file-name main-file-name">
+                          파일 이름
+                        </span>
+                      </label>
+                    </div>
+                    <div class="img-preview-wrap">
+                      <img class="img-preview-main" src="" />
+                      <span class="material-icons cancel-img-main">
+                        cancel
+                      </span>
+                    </div>
+                  </div>
+                  <div class="is-size-5">상세이미지</div>
+                  <div class="detail-img-wrap">
+                    <div class="file has-name is-right is-fullwidth">
+                      <label class="file-label">
+                        <input class="file-input detail-image" type="file" accept="image/*" name="resume">
+                        <span class="file-cta">
+                          <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                          </span>
+                          <span class="file-label">
+                            이미지 업로드
+                          </span>
+                        </span>
+                        <span class="file-name detail-file-name">
+                          파일 이름
+                        </span>
+                      </label>
+                    </div>
+                    <div class="img-preview-wrap">
+                      <img class="img-preview-detail" src="" />
+                      <span class="material-icons cancel-img-detail">
+                        cancel
+                      </span>
+                    </div>
+                  </div>
+                  <div>카테고리</div>
+                  <div class="control has-icons-left">
+                    <div class="select">
+                      <select id="total-count" class="category-option">
 
-            </section>
-            <footer class="modal-card-foot">
-              <button class="button is-success addProductBtn">상품추가하기</button>
-            </footer>
-        </div>
-      </div>
-      <!-- 모달끝 -->
+                      </select>
+                    </div>
+                  </div>
+                  <div>상품이름</div>
+                  <input class="input productName" type="text" name="productName">
+                  <div>상품설명</div>
+                  <input class="input description" type="textarea" name="description">
+                  <div>price</div>
+                  <input class="input price" type="number" name="price">
+                  <div>제조사</div>
+                  <input class="input company" name="company">
+
+                </section>
+                <footer class="modal-card-foot">
+                  <button class="button is-success addProductBtn">상품추가하기</button>
+                </footer>
+              </div>
+            </div>
+            <!-- 모달끝 -->
             <button class="button is-medium is-info editProductBtn">상품 편집</button>
             <div class="modal productEditModal">
               <div class="modal-background"></div>
@@ -137,12 +183,12 @@
                   </table>
                 </section>
                 <footer class="modal-card-foot">
-                   <!-- pagination -->
+                  <!-- pagination -->
                   <div class="bottom">
                     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
                       <ul class="pagination-list">
                       </ul>
-                    </nav> 
+                    </nav>
                   </div>
                 </footer>
               </div>

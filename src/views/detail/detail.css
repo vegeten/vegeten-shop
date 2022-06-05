@@ -67,8 +67,11 @@ article .intro-item {
   text-align: right;
 }
 
-.detail-item {
-  margin-top: 5%;
+.detail-item,
+.detail-review {
+  width: 70%;
+  text-align: center;
+  margin: 5% auto;
 }
 
 .img_box_detail {
@@ -86,8 +89,9 @@ article .intro-item {
 .review-item {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 70%;
   text-align: initial;
+  margin: auto;
 }
 
 .review-wrap {
@@ -280,4 +284,20 @@ article .intro-item {
   cursor: pointer;
   top: 0;
   right: 0;
+}
+
+.review-submit-button,
+.buyProduct,
+.review-submit-button,
+.modify-button {
+  background-color: #00CA71;
+  border: none;
+  color: white;
+}
+
+.review-submit-button:hover,
+.buyProduct:hover,
+.review-submit-button:hover,
+.modify-button:hover {
+  color: white
 }

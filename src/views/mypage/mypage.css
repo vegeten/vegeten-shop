@@ -1,5 +1,9 @@
 * {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+.hide {
+  display: none;
 }
 
 .main-wrapper {
@@ -9,7 +13,7 @@
   height: 100%;
   width: 1400px;
   margin: 0 auto;
-  margin-top: 5rem;
+  margin-top: 8rem;
   margin-bottom: 3rem;
 }
 
@@ -72,7 +76,6 @@
   font-size: 0.9rem;
 }
 
-
 .order-list-image img {
   border-radius: 20px;
 }
@@ -99,6 +102,10 @@
 
 .password-wrap button {
   margin-left: 1rem;
+}
+
+.new-password-input-wrap {
+  width: 100%;
 }
 
 .phone-wrap {
@@ -128,10 +135,9 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
-
 
 .order-img {
   border-radius: 20px;
@@ -159,4 +165,41 @@ input[type=number] {
 
 .change-form {
   display: none;
+}
+
+#submitButton {
+  background-color: #00ca71;
+  color: #fff;
+}
+
+.check-password-confirm-button {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
+  width: 100px;
+  margin-top: 20px;
+}
+
+.check-password-confirm-button:hover {
+  color: #fff;
+}
+
+.modal-card {
+  border-radius: 5px;
+  width: 500px;
+}
+
+#password-footer {
+  display: flex;
+  justify-content: right;
+}
+
+.no-order-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 600px;
+  font-size: 2.5rem;
+  padding: 2rem;
+  font-weight: 300;
 }
