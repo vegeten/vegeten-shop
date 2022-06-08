@@ -59,11 +59,11 @@ async function getUserInfo() {
   const [phoneNumberFirst = '', phoneNumberSecond = '', phoneNumberThird = ''] = userData.phoneNumber?.split('-') || [];
   const phoneNumbers = [phoneNumberFirst, phoneNumberSecond, phoneNumberThird];
   const { postalCode = '', address1: baseAddress1 = '', address2: baseAddress2 = '' } = userData?.address || {};
-
   if (!postalCode) {
     defaultAddressInput.disabled = true;
     newAddressInput.checked = true;
     defaultAddressInput.nextSibling.nextSibling.style.color = 'gray';
+    setDefaultAddressWrap.classList.remove('hide');
   } else {
     defaultAddressInput.checked = true;
     postalCodeInput.value = postalCode;
