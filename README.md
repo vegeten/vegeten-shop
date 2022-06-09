@@ -1,4 +1,4 @@
-# VEGETEN Shop (10조)
+# VEGETEN Shop
 
 ## [VEGETEN](http://www.elice@kdt-sw2-seoul-team10.elicecoding.com)
 
@@ -7,9 +7,7 @@
 
 <br>
 
-## 구현한 기능
-
-- 노션에 따로 [평가기준표](https://www.notion.so/eadcd36027464a40bea5e38c691bdfb9?v=901f3ad324d34a4a925aa99301bf9f5b)를 만들어서 기존의 평가기준표에 있는 내용과 추가로 구현한 기능들을 기록했습니다.
+## [구현한 기능](https://www.notion.so/eadcd36027464a40bea5e38c691bdfb9?v=901f3ad324d34a4a925aa99301bf9f5b)
 
 <br>
 
@@ -39,24 +37,10 @@
 | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | [notion](https://www.notion.so/10-eb71263eb4494e91ad0eac8b587b8f10)                             | 프로젝트 전체적인 관리와 기록                                                                    |
 | [gather town](https://app.gather.town/invite?token=oOfrxfGrWIDwt4OAuGjUFavZNi_3fwnv)            | 오프라인 만남을 대체하고 실시간으로 소통                                                         |
-| [git lab](https://kdt-gitlab.elice.io/sw_track/class_02_seoul/web_project/team10/shopping-mall) | 코드 공유                                                                                        |
+| [github](https://github.com/vegeten/vegeten-shop) | 코드 공유                                                                                        |
 | [figma](https://www.figma.com/file/O4Zgf6H4iNtGNLQ4ZlOxg9/10%EC%A1%B0?node-id=0%3A1)            | 와이어프레임 제작                                                                                |
-| slack                                                                                           | git lab과 연동하여 merge request, issue 작성 시에 바로 알림을 받아서 빠르게 피드백하기 위한 용도 |
+| slack                                                                                           | github와 연동하여 merge request, issue 작성 시에 바로 알림을 받아서 빠르게 피드백하기 위한 용도 |
 
-<br>
-
-## 팀원 gitlab 주소
-
-- 평가기준표 **태도평가** 중 **git 기여** 평가를 위한 팀원들의 gitlab 주소입니다.
-- 저희 팀은 오리지널 레포를 포크하여 각자의 레포에 브랜치를 생성하고, 이 브랜치를 오리지널 레포의 dev브랜치로 merge하는 방식으로 진행했습니다.
-
-| 이름   | git lab 주소                                       |
-| ------ | -------------------------------------------------- |
-| 경지윤 | https://kdt-gitlab.elice.io/Zeeyooni/shopping-mall |
-| 김정현 | https://kdt-gitlab.elice.io/jaykim/shopping-mall   |
-| 김태훈 | https://kdt-gitlab.elice.io/kth5954/shopping-mall  |
-| 나혜지 | https://kdt-gitlab.elice.io/nahyeji/shopping-mall  |
-| 정유진 | https://kdt-gitlab.elice.io/uuuuujin/shopping-mall |
 
 <br>
 
