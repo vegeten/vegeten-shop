@@ -58,7 +58,6 @@ async function getUserInfo() {
     defaultAddressInput.disabled = true;
     newAddressInput.checked = true;
     defaultAddressInput.nextSibling.nextSibling.style.color = 'gray';
-    setDefaultAddressWrap.classList.remove('hide');
   } else {
     defaultAddressInput.checked = true;
     postalCodeInput.value = postalCode;
@@ -107,11 +106,8 @@ function resetForm() {
 // 기본 배송지 체크되어있으면 "기본배송지 설정" 체크박스 안보임
 const setDefaultAddressWrap = getNode('#set-default-address-wrap');
 if (defaultAddressInput.checked) {
-  setDefaultAddressWrap.classList.add('hide');
+  setDefaultAddressWrap.style.display = 'none';
 }
-// else if (newAddressInput.checked) {
-//   setDefaultAddressWrap.classList.remove('hide');
-// }
 
 // 폼 비어있는지 체크 (실시간 입력에 따른 체크)
 // 이름
