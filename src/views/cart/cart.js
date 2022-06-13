@@ -35,7 +35,7 @@ const cartListMarkUp = (cartList) => {
           <span class="subTitle">수량</span>
           <div class="counter-wrap">
             <button class="decrease-button count counter-button">-</button>
-            <input class="quantity count quantity-count" type="number" value="${product.count}" disabled/>
+            <input class="quantity count quantity-count" type="number" value="${product.count}" />
             <button class="increase-button count counter-button">+</button>
           </div>
         </div>
@@ -99,34 +99,57 @@ function deleteHandler() {
   }
 }
 
-// 수량 증감 & 각 상품 총가격 계산 (상품 가격 * 수량)
-const handleProductQuantity = (e) => {
+// 수량 증감 버튼 클릭 & 각 상품 총가격 계산 (상품 가격 * 수량)
+const handleProductQuantityClick = (e) => {
   const clickedProduct = e.target.parentNode.parentNode.parentNode;
-  const quantity = e.target.parentNode.childNodes[3];
+  const quantity = e.target.parentNode.querySelector('.quantity');
   const products = e.target.parentNode.parentNode.parentNode.parentNode.childNodes;
-  const productTotalCost = e.target.parentNode.parentNode.parentNode.childNodes[5].childNodes[3];
-  const productCost =
-    e.target.parentNode.parentNode.parentNode.childNodes[1].childNodes[3].childNodes[1].childNodes[3].childNodes[3];
+  const productTotalCost = e.target.parentNode.parentNode.parentNode.querySelector('.product-total-price');
+  const productCost = e.target.parentNode.parentNode.parentNode.querySelector('.product-cost');
   let clickedProductIndex;
   products.forEach((item, index) => {
     if (item === clickedProduct) clickedProductIndex = Math.floor(index / 2);
   });
 
-  if (e.target.classList.contains('increase-button') || e.target.classList.contains('decrease-button')) {
-    if (e.target.classList.contains('increase-button')) {
-      if (Number(quantity.value) === 10) alert('최대 10개까지 주문할 수 있습니다.');
-      else quantity.value = Number(quantity.value) + 1;
-    } else if (e.target.classList.contains('decrease-button')) {
-      if (Number(quantity.value) === 1) alert('최소 한 개는 주문해야 합니다');
-      else quantity.value = Number(quantity.value) - 1;
-    }
-    cartList[clickedProductIndex].count = quantity.value;
-    localStorage.setItem('cart', JSON.stringify(cartList));
-    productTotalCost.innerText = `${addCommas(convertToNumber(productCost.textContent) * quantity.value)}원`;
-    getTotalPrice(cartList);
+  if (!e.target.classList.contains('increase-button') && !e.target.classList.contains('decrease-button')) return;
+
+  if (e.target.classList.contains('increase-button')) {
+    if (Number(quantity.value) === 99) alert('최대 99개까지 주문할 수 있습니다.');
+    else quantity.value = Number(quantity.value) + 1;
+  } else if (e.target.classList.contains('decrease-button')) {
+    if (Number(quantity.value) === 1) alert('최소 한 개는 주문해야 합니다.');
+    else quantity.value = Number(quantity.value) - 1;
   }
+  cartList = JSON.parse(localStorage.getItem('cart'));
+  cartList[clickedProductIndex].count = quantity.value;
+  localStorage.setItem('cart', JSON.stringify(cartList));
+  productTotalCost.innerText = `${addCommas(convertToNumber(productCost.textContent) * quantity.value)}원`;
+  getTotalPrice(cartList);
 };
-productsContainer.addEventListener('click', handleProductQuantity);
+productsContainer.addEventListener('click', handleProductQuantityClick);
+
+// 수량 직접 입력 & 각 상품 총가격 계산 (상품 가격 * 수량)
+const handleProductQuantityInput = (e) => {
+  const clickedProduct = e.target.parentNode.parentNode.parentNode;
+  const quantity = e.target.parentNode.querySelector('.quantity');
+  const products = e.target.parentNode.parentNode.parentNode.parentNode.childNodes;
+  const productTotalCost = e.target.parentNode.parentNode.parentNode.querySelector('.product-total-price');
+  const productCost = e.target.parentNode.parentNode.parentNode.querySelector('.product-cost');
+  let clickedProductIndex;
+  products.forEach((item, index) => {
+    if (item === clickedProduct) clickedProductIndex = Math.floor(index / 2);
+  });
+
+  if (Number(quantity.value) > 99) quantity.value = 99;
+  else if (!quantity.value) quantity.value = 1;
+
+  cartList = JSON.parse(localStorage.getItem('cart'));
+  cartList[clickedProductIndex].count = quantity.value;
+  localStorage.setItem('cart', JSON.stringify(cartList));
+  productTotalCost.innerText = `${addCommas(convertToNumber(productCost.textContent) * quantity.value)}원`;
+  getTotalPrice(cartList);
+};
+productsContainer.addEventListener('input', handleProductQuantityInput);
 
 // 로그인 안했으면 주문하기 버튼 클릭 시 로그인 페이지로 유도
 const payButton = getNode('#pay-button-aTag');
