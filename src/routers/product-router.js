@@ -128,7 +128,7 @@ productRouter.patch('/:productId', adminAuth, async function (req, res, next) {
     // params로부터 id를 가져옴
     const { productId } = req.params;
     // body data 로부터 업데이트할 사용자 정보를 추출함.
-    const { productName, price, description, company, categoryId, image, detailImage } = req.body;
+    const { productName, price, description, company, categoryId, image, detailImage, quantity } = req.body;
 
     // 위 데이터가 undefined가 아니라면, 즉, 프론트에서 업데이트를 위해
     // 보내주었다면, 업데이트용 객체에 삽입함.
@@ -140,6 +140,7 @@ productRouter.patch('/:productId', adminAuth, async function (req, res, next) {
       ...(categoryId && { categoryId }),
       ...(image && { image }),
       ...(detailImage && { detailImage }),
+      ...(quantity && { quantity }),
     };
 
     // 상품 정보를 업데이트함.
