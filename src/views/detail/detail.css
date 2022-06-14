@@ -52,6 +52,54 @@ article .intro-item {
   font-weight: 700;
 }
 
+.product-quantity {
+  width: 30%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 50px;
+}
+
+.counter-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.counter-button {
+  width: 37px;
+  height: 37px;
+  background-color: #fff;
+  border: 1px solid #f2f2f2;
+  cursor: pointer;
+}
+
+.quantity-count {
+  width: 37px;
+  height: 37px;
+  padding: 5px;
+  text-align: center;
+  outline: none;
+  border: 1px solid #f2f2f2;
+  outline: none;
+  background-color: #fff;
+}
+
+.quantity-count:focus {
+  outline: none;
+}
+
+.count + .count {
+  margin-left: -1px;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
 .total-price {
   display: flex;
   align-items: center;

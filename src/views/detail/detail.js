@@ -14,10 +14,13 @@ const imgPriview = getNode('.img-preview');
 const fileName = getNode('.file-name');
 const cancelImg = getNode('.cancel-img');
 const imgData = new FormData();
+
+const productsContainer = getNode('#products-container');
+
 // url 주소로 현재 상품 id 알아내기
 const productUrl = window.location.href.split('/');
 const productId = productUrl[productUrl.length - 2];
-console.log(productId);
+let buyUrlId;
 // 상품상세 렌더링
 async function getProductDetail() {
   const datas = await Api.getNoToken('/api/products', productId);
@@ -29,22 +32,49 @@ async function getProductDetail() {
   getNode('#price').innerHTML = addCommas(datas.data.price) + ' 원';
   getNode('#totalPrice').innerHTML = addCommas(datas.data.price) + ' 원';
   getNode('#description').innerHTML = datas.data.description;
-
-  // 선택한 수량에 따른 총액 계산하기
-  const selections = getNode('#total-count'); // select 드롭박스
-  const selected = selections.value.replace('개', '');
-  const totalPrice = getNode('#totalPrice'); // 총가격
-  getNode('.buyProduct').href = `/order?product=${datas.data.shortId}&amount=${selected}`;
-  selections.addEventListener('change', () => {
-    // 선택이 바뀔때마다 총액 계산하기
-    const selected = selections.value.replace('개', '');
-    const price = convertToNumber(getNode('#price').textContent);
-    totalPrice.innerHTML = (selected * price).toLocaleString() + ' 원';
-    //구매하기 버튼에 링크
-    getNode('.buyProduct').href = `/order?product=${datas.data.shortId}&amount=${selected}`;
-  });
+  buyUrlId = datas.data.shortId;
 }
+//구매하기 버튼으로 결제창 이동
+const directBuyProduct = (buyUrlId) => {
+  const buyQuantity = getNode('.quantity-count').value;
+  getNode('.buyProduct').href = `/order?product=${buyUrlId}&amount=${buyQuantity}`;
+}
+// 수량 증감 버튼 클릭 & 각 상품 총가격 계산 (상품 가격 * 수량)
+const handleProductQuantityClick = (e) => {
+  const quantity = getNode('.quantity');
+  const productTotalCost = getNode('#totalPrice');
+  if (e.target.classList.contains('increase-button')) {
+    if (Number(quantity.value) === 99) alert('최대 99개까지 주문할 수 있습니다.');
+    else quantity.value = Number(quantity.value) + 1;
+  } else if (e.target.classList.contains('decrease-button')) {
+    if (Number(quantity.value) === 1) alert('최소 한 개는 주문해야 합니다.');
+    else quantity.value = Number(quantity.value) - 1;
+  }
+  const productCost = getNode('#price').textContent;
+  const buyQuantity = getNode('.quantity-count').value;
+  console.log('가격!!', productCost, buyQuantity)
+  productTotalCost.innerText = `${addCommas(convertToNumber(productCost) * buyQuantity)}원`;
+  directBuyProduct(buyUrlId);
+};
+productsContainer.addEventListener('click', handleProductQuantityClick);
 
+// 수량 직접 입력 & 각 상품 총가격 계산 (상품 가격 * 수량)
+const handleProductQuantityInput = (e) => {
+  const quantity = getNode('.quantity');
+  const productTotalCost = getNode('#totalPrice');
+
+  if (Number(quantity.value) > 99) quantity.value = 99;
+  else if (!quantity.value) quantity.value = 1;
+
+  const productCost = getNode('#price').textContent;
+  const buyQuantity = getNode('.quantity-count').value;
+  console.log('가격!!', productCost, buyQuantity)
+  productTotalCost.innerText = `${addCommas(convertToNumber(productCost) * buyQuantity)}원`;
+  directBuyProduct(buyUrlId);
+};
+productsContainer.addEventListener('input', handleProductQuantityInput);
+
+//리뷰
 function deletePreviewImg() {
   imgPriview.src = '';
   fileName.innerHTML = '파일 이름';
@@ -300,8 +330,8 @@ function addToCart() {
   if (existCartEntry === null) {
     existCartEntry = [];
   }
-  const selections = getNode('#total-count'); // select 드롭박스
-  const selected = Number(selections.value.replace('개', ''));
+  const selections = getNode('.quantity-count'); // 수량
+  const selected = Number(selections.value);
   const cartEntry = {
     check: false,
     count: selected,
