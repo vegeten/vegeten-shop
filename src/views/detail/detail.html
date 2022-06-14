@@ -42,28 +42,24 @@
         </div>
         <hr />
         <!-- 수량선택 -->
-        <div class="product-count">
-          <div>수량선택</div>
-          <div class="select">
-            <select id="total-count">
-              <option selected>1개</option>
-              <option>2개</option>
-              <option>3개</option>
-              <option>4개</option>
-              <option>5개</option>
-              <option>6개</option>
-              <option>7개</option>
-              <option>8개</option>
-              <option>9개</option>
-              <option>10개</option>
-            </select>
+
+        <div id="products-container">
+          <div class="product-count">
+            <div>수량선택</div>
+            <div class="product-quantity">
+              <div class="counter-wrap">
+                <button class="decrease-button count counter-button">-</button>
+                <input class="quantity count quantity-count" type="number" value="1" />
+                <button class="increase-button count counter-button">+</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <!-- 수량선택 끝 -->
-        <!-- 총액 -->
-        <div class="total-price">
-          <div>총 금액</div>
-          <div id="totalPrice"></div>
+          <!-- 수량선택 끝 -->
+          <!-- 총액 -->
+          <div class="total-price">
+            <div>총 금액</div>
+            <div id="totalPrice"></div>
+          </div>
         </div>
         <!-- 버튼 -->
         <div class="button-group">
