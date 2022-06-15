@@ -22,6 +22,8 @@ const btnPasswordConfirm = getNode('.btn-password-confirm');
 const modal = getNode('.modal');
 const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
+const modalTitle = getNode('.modal-card-title');
+const modalBody = getNode('.modal-card-body');
 const orderList = getNode('.order-list');
 let newPasswordToggle = false;
 let changeUserFormFlag = false;
@@ -133,8 +135,30 @@ const renderUserInfo = (data) => {
   addressDetailInput.value = address2;
 };
 
+const registerNewReview = (productId) => {
+  modalTitle.innerHTML = '리뷰 등록';
+  modalBody.innerHTML = `
+    <div>${productId}</div>
+  `;
+  modal.classList.add('is-active');
+};
+
 const changeSubmitButton = (e) => {
   e.preventDefault();
+  modalTitle.innerHTML = '비밀번호 변경';
+  modalBody.innerHTML = `
+    <div class="field">
+      <label class="checkPassword" for="checkPassword">비밀번호</label>
+      <div class="control">
+        <input class="input is-medium passwd checkPasswordInput" id="checkPassword" type="password"
+          placeholder="현재 비밀번호를 입력해주세요." />
+      </div>
+    </div>
+    <div id="password-footer">
+      <button class="button check-password-confirm-button">확인</button>
+    </div>
+  `;
+
   modal.classList.add('is-active');
   const checkPasswordConfirmButton = getNode('.check-password-confirm-button');
   checkPasswordConfirmButton.addEventListener('click', checkUserPassword);
@@ -187,12 +211,15 @@ const onClickOrderList = (e) => {
   if (e.target.classList.contains('order-delete-button')) {
     const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     onDeleteOrder(orderId);
+  } else {
+    const productId = e.target.parentNode.parentNode.querySelector('.product-id').innerText;
+    registerNewReview(productId);
   }
 };
 
 const createOrderDetailListElement = (array) => {
   return array
-    .map(({ productImg, productName, count }) => {
+    .map(({ productId, productImg, productName, count }) => {
       return `
     <tr>
       <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
@@ -201,6 +228,7 @@ const createOrderDetailListElement = (array) => {
       <td>
         <button class="button is-small is-black create-product-review">리뷰 작성</button>
       </td>
+      <td class="product-id" style="display:none;">${productId}</td>
     </tr>
       `;
     })
