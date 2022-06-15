@@ -25,12 +25,14 @@ const modalBackground = getNode('.modal-background');
 const modalTitle = getNode('.modal-card-title');
 const modalBody = getNode('.modal-card-body');
 const orderList = getNode('.order-list');
-let newPasswordToggle = false;
-let changeUserFormFlag = false;
-
 const newPasswordWrap = getNode('.new-password');
 const newPasswordCheckWrap = getNode('.new-password-check');
 const newPasswordMsg = getNode('#password-modify-msg');
+
+const imgData = new FormData();
+let newPasswordToggle = false;
+let changeUserFormFlag = false;
+
 
 const onModCancel = (e) => {
   e.preventDefault();
@@ -135,12 +137,117 @@ const renderUserInfo = (data) => {
   addressDetailInput.value = address2;
 };
 
-const registerNewReview = (productId) => {
+const createNewReviewModal = (productId) => {
+  modalTitle.innerHTML = '';
+  modalBody.innerHTML = '';
   modalTitle.innerHTML = '리뷰 등록';
   modalBody.innerHTML = `
-    <div>${productId}</div>
+    <form class="new-review-form" encType="multipart/form-data">
+      <div class="review-body">
+        <div class="review-info">
+          <div class="info-score">
+            <span class="star-input">
+              ★★★★★
+              <span>★★★★★</span>
+              <input class="draw-star" type="range" value="5" step="1" min="0" max="5">
+            </span>
+          </div>
+        </div>
+        <div class="review-content card">
+          <textarea class="review-text" placeholder="리뷰를 입력하세요."></textarea>
+        </div>
+        <div class="file is-boxed image-uploader">
+          <div class="img-preview-wrap">
+            <img class="img-preview" src="" />
+            <span class="material-icons cancel-img">
+              cancel
+            </span>
+          </div>
+          <label class="file-label">
+            <input class="file-input" type="file" accept="image/*" name="resume">
+            <span class="file-cta image-upload-button">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                사진 업로드
+              </span>
+            </span>
+          </label>
+        </div>
+        <div class="review-modify">
+          <button class="button is-medium review-submit-button" type="submit">작성 완료</button>
+        </div>
+      </div>
+    </form>
   `;
   modal.classList.add('is-active');
+  const drawStar = getNode('.draw-star');
+  const newReviewForm = getNode('.new-review-form');
+  const fileInput = getNode('.file-input');
+  const imgCancel = getNode('.cancel-img');
+  drawStar.addEventListener('input', drawStarInput);
+  newReviewForm.addEventListener('submit', (e) => registerNewReview(e, productId));
+  fileInput.addEventListener('change', changeImageFile);
+  imgCancel.addEventListener('click', deletePreviewImg);
+};
+
+const registerNewReview = async (e, productId) => {
+  e.preventDefault();
+  console.log(e.target);
+  console.log(productId);
+
+  const score = e.target.querySelector('.draw-star').value;
+  const comment = e.target.querySelector('.review-text').value;
+  const image = await uploadImageToS3();
+
+  try {
+    await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    alert('리뷰가 등록되었습니다.');
+    closeModal();
+  } catch (err) {
+    alert(err.message);
+  }
+
+
+};
+
+const uploadImageToS3 = async () => {
+  if (!imgData.has('image')) return '';
+  let imgPath = '';
+  try {
+    const uploadResult = await fetch('/api/images/upload', {
+      method: 'POST',
+      body: imgData,
+    });
+    const result = await uploadResult.json();
+    imgPath = result.imagePath;
+  } catch (err) {
+    console.log(err.message);
+    imgPath = '';
+  } finally {
+    if (imgData.has('image')) imgData.delete('image');
+    return imgPath;
+  }
+};
+
+const changeImageFile = (e) => {
+  imgData.append('image', e.target.files[0]);
+  getNode('.img-preview').src = window.URL.createObjectURL(e.target.files[0]);
+  getNode('.cancel-img').style.display = 'block';
+  getNode('.image-upload-button').style.display = 'none';
+};
+
+const deletePreviewImg = () => {
+  getNode('.img-preview').src = '';
+  getNode('.cancel-img').style.display = 'none';
+  if (imgData.has('image')) imgData.delete('image');
+  getNode('.image-upload-button').style.display = 'flex';
+};
+
+const drawStarInput = (e) => {
+  const starInput = getNode('.star-input span');
+  starInput.style.width = `${e.target.value * 20}%`;
 };
 
 const changeSubmitButton = (e) => {
@@ -180,7 +287,6 @@ const addAllEvents = () => {
 
   btnWithdraw.addEventListener('click', submitWithdrawUser);
   btnPasswordConfirm.addEventListener('click', changeSubmitButton);
-
   passwordToggle.addEventListener('click', onPasswordToggle);
   fullNameInput.addEventListener('input', validationInput);
   currentPasswordInput.addEventListener('input', validationInput);
@@ -213,7 +319,7 @@ const onClickOrderList = (e) => {
     onDeleteOrder(orderId);
   } else {
     const productId = e.target.parentNode.parentNode.querySelector('.product-id').innerText;
-    registerNewReview(productId);
+    createNewReviewModal(productId);
   }
 };
 
