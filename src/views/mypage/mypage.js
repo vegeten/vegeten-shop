@@ -22,6 +22,7 @@ const btnPasswordConfirm = getNode('.btn-password-confirm');
 const modal = getNode('.modal');
 const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
+const orderList = getNode('.order-list');
 let newPasswordToggle = false;
 let changeUserFormFlag = false;
 
@@ -140,7 +141,7 @@ const changeSubmitButton = (e) => {
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {
+const addAllEvents = () => {
   getNode('#kakao_address').addEventListener('click', (e) => {
     e.preventDefault();
     new daum.Postcode({
@@ -164,21 +165,28 @@ function addAllEvents() {
   modalButton.addEventListener('click', closeModal);
   modalBackground.addEventListener('click', closeModal);
   btnModCancel.addEventListener('click', () => onModCancel);
-}
+  orderList.addEventListener('click', onClickOrderList);
+};
 
-const onDeleteOrder = async (e) => {
-  e.preventDefault();
-
+const onDeleteOrder = async (orderId) => {
   const ok = window.confirm('주문 내역을 정말 삭제하시겠습니까?');
   if (!ok) return;
 
   try {
-    const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     await Api.deleteYesToken('/api/orders', orderId);
-    alert('주문 내역이 삭제되었습니다.');
+    alert(`주문번호: ${orderId} 주문이 취소되었습니다.`);
     window.location.reload();
   } catch (err) {
     console.log(err.message);
+  }
+};
+
+const onClickOrderList = (e) => {
+  if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review'))) return;
+
+  if (e.target.classList.contains('order-delete-button')) {
+    const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
+    onDeleteOrder(orderId);
   }
 };
 
@@ -190,6 +198,9 @@ const createOrderDetailListElement = (array) => {
       <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
       <td>${productName}</td>
       <td>${count}개</td>
+      <td>
+        <button class="button is-small is-black create-product-review">리뷰 작성</button>
+      </td>
     </tr>
       `;
     })
@@ -219,12 +230,13 @@ const createOrderListElement = (item) => {
         <div class="content">${createdAt.substr(0, 10)}</div>
       </div>
     </div>
-      <table class="table is-fullwidth">
+      <table class="table is-fullwidth table-head">
       <thead>
         <tr>
           <th>제품</th>
           <th>제품 명</th>
           <th>제품 수량</th>
+          <th>리뷰</th>
         </tr>
       </thead>
       <tbody>
@@ -246,12 +258,6 @@ const createOrderListElement = (item) => {
   return li;
 };
 
-const addOrderDeleteEvent = () => {
-  document.querySelectorAll('.order-delete-button').forEach((item) => {
-    item.addEventListener('click', onDeleteOrder);
-  });
-};
-
 const renderAllOrderList = (orderList) => {
   if (!orderList.data.length) return;
   orderWrapper.innerHTML = '';
@@ -259,7 +265,6 @@ const renderAllOrderList = (orderList) => {
     const orders = createOrderListElement({ totalPrice, shortId, createdAt, products });
     orderWrapper.appendChild(orders);
   });
-  addOrderDeleteEvent();
 };
 
 const getUserInfo = async () => {

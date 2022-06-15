@@ -203,3 +203,7 @@ input[type='number'] {
   padding: 2rem;
   font-weight: 300;
 }
+
+.table-head {
+  text-align: center;
+}
