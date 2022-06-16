@@ -180,6 +180,7 @@ input[type='number'] {
   margin-top: 20px;
 }
 
+.review-submit-button:hover,
 .check-password-confirm-button:hover {
   color: #fff;
 }
@@ -202,4 +203,95 @@ input[type='number'] {
   font-size: 2.5rem;
   padding: 2rem;
   font-weight: 300;
+}
+
+.table-head {
+  text-align: center;
+}
+
+.review-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-info {
+  margin-bottom: 1rem;
+}
+
+.review-content {
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.review-text {
+  font-size: 1.2rem;
+  width: 400px;
+  height: 300px;
+  outline: none;
+  border: none;
+  resize: none;
+}
+
+.review-text:focus {
+  outline: none;
+}
+
+.star-input {
+  position: relative;
+  font-size: 50px;
+  color: #ddd;
+}
+
+.star-input input {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.star-input span {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  color: #FF9600;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.img-preview {
+  border-radius: 10px;
+  width: 130px;
+  height: auto;
+}
+
+.cancel-img {
+  position: absolute;
+  display: none;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+}
+
+.image-uploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.review-modify {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
+
+.review-submit-button {
+  background-color: #00ca71;
+  border: none;
+  color: #fff;
 }

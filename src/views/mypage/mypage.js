@@ -22,12 +22,17 @@ const btnPasswordConfirm = getNode('.btn-password-confirm');
 const modal = getNode('.modal');
 const modalButton = getNode('.close-button');
 const modalBackground = getNode('.modal-background');
-let newPasswordToggle = false;
-let changeUserFormFlag = false;
-
+const modalTitle = getNode('.modal-card-title');
+const modalBody = getNode('.modal-card-body');
+const orderList = getNode('.order-list');
 const newPasswordWrap = getNode('.new-password');
 const newPasswordCheckWrap = getNode('.new-password-check');
 const newPasswordMsg = getNode('#password-modify-msg');
+
+const imgData = new FormData();
+let newPasswordToggle = false;
+let changeUserFormFlag = false;
+
 
 const onModCancel = (e) => {
   e.preventDefault();
@@ -132,15 +137,142 @@ const renderUserInfo = (data) => {
   addressDetailInput.value = address2;
 };
 
+const createNewReviewModal = (productId) => {
+  modalTitle.innerHTML = '';
+  modalBody.innerHTML = '';
+  modalTitle.innerHTML = '리뷰 등록';
+  modalBody.innerHTML = `
+    <form class="new-review-form" encType="multipart/form-data">
+      <div class="review-body">
+        <div class="review-info">
+          <div class="info-score">
+            <span class="star-input">
+              ★★★★★
+              <span>★★★★★</span>
+              <input class="draw-star" type="range" value="5" step="1" min="0" max="5">
+            </span>
+          </div>
+        </div>
+        <div class="review-content card">
+          <textarea class="review-text" placeholder="리뷰를 입력하세요."></textarea>
+        </div>
+        <div class="file is-boxed image-uploader">
+          <div class="img-preview-wrap">
+            <img class="img-preview" src="" />
+            <span class="material-icons cancel-img">
+              cancel
+            </span>
+          </div>
+          <label class="file-label">
+            <input class="file-input" type="file" accept="image/*" name="resume">
+            <span class="file-cta image-upload-button">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                사진 업로드
+              </span>
+            </span>
+          </label>
+        </div>
+        <div class="review-modify">
+          <button class="button is-medium review-submit-button" type="submit">작성 완료</button>
+        </div>
+      </div>
+    </form>
+  `;
+  modal.classList.add('is-active');
+  const drawStar = getNode('.draw-star');
+  const newReviewForm = getNode('.new-review-form');
+  const fileInput = getNode('.file-input');
+  const imgCancel = getNode('.cancel-img');
+  drawStar.addEventListener('input', drawStarInput);
+  newReviewForm.addEventListener('submit', (e) => registerNewReview(e, productId));
+  fileInput.addEventListener('change', changeImageFile);
+  imgCancel.addEventListener('click', deletePreviewImg);
+};
+
+const registerNewReview = async (e, productId) => {
+  e.preventDefault();
+  console.log(e.target);
+  console.log(productId);
+
+  const score = e.target.querySelector('.draw-star').value;
+  const comment = e.target.querySelector('.review-text').value;
+  const image = await uploadImageToS3();
+
+  try {
+    await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    alert('리뷰가 등록되었습니다.');
+    closeModal();
+  } catch (err) {
+    alert(err.message);
+  }
+
+
+};
+
+const uploadImageToS3 = async () => {
+  if (!imgData.has('image')) return '';
+  let imgPath = '';
+  try {
+    const uploadResult = await fetch('/api/images/upload', {
+      method: 'POST',
+      body: imgData,
+    });
+    const result = await uploadResult.json();
+    imgPath = result.imagePath;
+  } catch (err) {
+    console.log(err.message);
+    imgPath = '';
+  } finally {
+    if (imgData.has('image')) imgData.delete('image');
+    return imgPath;
+  }
+};
+
+const changeImageFile = (e) => {
+  imgData.append('image', e.target.files[0]);
+  getNode('.img-preview').src = window.URL.createObjectURL(e.target.files[0]);
+  getNode('.cancel-img').style.display = 'block';
+  getNode('.image-upload-button').style.display = 'none';
+};
+
+const deletePreviewImg = () => {
+  getNode('.img-preview').src = '';
+  getNode('.cancel-img').style.display = 'none';
+  if (imgData.has('image')) imgData.delete('image');
+  getNode('.image-upload-button').style.display = 'flex';
+};
+
+const drawStarInput = (e) => {
+  const starInput = getNode('.star-input span');
+  starInput.style.width = `${e.target.value * 20}%`;
+};
+
 const changeSubmitButton = (e) => {
   e.preventDefault();
+  modalTitle.innerHTML = '비밀번호 변경';
+  modalBody.innerHTML = `
+    <div class="field">
+      <label class="checkPassword" for="checkPassword">비밀번호</label>
+      <div class="control">
+        <input class="input is-medium passwd checkPasswordInput" id="checkPassword" type="password"
+          placeholder="현재 비밀번호를 입력해주세요." />
+      </div>
+    </div>
+    <div id="password-footer">
+      <button class="button check-password-confirm-button">확인</button>
+    </div>
+  `;
+
   modal.classList.add('is-active');
   const checkPasswordConfirmButton = getNode('.check-password-confirm-button');
   checkPasswordConfirmButton.addEventListener('click', checkUserPassword);
 };
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {
+const addAllEvents = () => {
   getNode('#kakao_address').addEventListener('click', (e) => {
     e.preventDefault();
     new daum.Postcode({
@@ -155,7 +287,6 @@ function addAllEvents() {
 
   btnWithdraw.addEventListener('click', submitWithdrawUser);
   btnPasswordConfirm.addEventListener('click', changeSubmitButton);
-
   passwordToggle.addEventListener('click', onPasswordToggle);
   fullNameInput.addEventListener('input', validationInput);
   currentPasswordInput.addEventListener('input', validationInput);
@@ -164,32 +295,46 @@ function addAllEvents() {
   modalButton.addEventListener('click', closeModal);
   modalBackground.addEventListener('click', closeModal);
   btnModCancel.addEventListener('click', () => onModCancel);
-}
+  orderList.addEventListener('click', onClickOrderList);
+};
 
-const onDeleteOrder = async (e) => {
-  e.preventDefault();
-
+const onDeleteOrder = async (orderId) => {
   const ok = window.confirm('주문 내역을 정말 삭제하시겠습니까?');
   if (!ok) return;
 
   try {
-    const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     await Api.deleteYesToken('/api/orders', orderId);
-    alert('주문 내역이 삭제되었습니다.');
+    alert(`주문번호: ${orderId} 주문이 취소되었습니다.`);
     window.location.reload();
   } catch (err) {
     console.log(err.message);
   }
 };
 
+const onClickOrderList = (e) => {
+  if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review'))) return;
+
+  if (e.target.classList.contains('order-delete-button')) {
+    const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
+    onDeleteOrder(orderId);
+  } else {
+    const productId = e.target.parentNode.parentNode.querySelector('.product-id').innerText;
+    createNewReviewModal(productId);
+  }
+};
+
 const createOrderDetailListElement = (array) => {
   return array
-    .map(({ productImg, productName, count }) => {
+    .map(({ productId, productImg, productName, count }) => {
       return `
     <tr>
       <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
       <td>${productName}</td>
       <td>${count}개</td>
+      <td>
+        <button class="button is-small is-black create-product-review">리뷰 작성</button>
+      </td>
+      <td class="product-id" style="display:none;">${productId}</td>
     </tr>
       `;
     })
@@ -219,12 +364,13 @@ const createOrderListElement = (item) => {
         <div class="content">${createdAt.substr(0, 10)}</div>
       </div>
     </div>
-      <table class="table is-fullwidth">
+      <table class="table is-fullwidth table-head">
       <thead>
         <tr>
           <th>제품</th>
           <th>제품 명</th>
           <th>제품 수량</th>
+          <th>리뷰</th>
         </tr>
       </thead>
       <tbody>
@@ -246,12 +392,6 @@ const createOrderListElement = (item) => {
   return li;
 };
 
-const addOrderDeleteEvent = () => {
-  document.querySelectorAll('.order-delete-button').forEach((item) => {
-    item.addEventListener('click', onDeleteOrder);
-  });
-};
-
 const renderAllOrderList = (orderList) => {
   if (!orderList.data.length) return;
   orderWrapper.innerHTML = '';
@@ -259,7 +399,6 @@ const renderAllOrderList = (orderList) => {
     const orders = createOrderListElement({ totalPrice, shortId, createdAt, products });
     orderWrapper.appendChild(orders);
   });
-  addOrderDeleteEvent();
 };
 
 const getUserInfo = async () => {

@@ -89,7 +89,7 @@ article .intro-item {
   outline: none;
 }
 
-.count + .count {
+.count+.count {
   margin-left: -1px;
 }
 
@@ -157,10 +157,6 @@ input[type='number']::-webkit-inner-spin-button {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.new-review {
-  margin-right: 1rem;
 }
 
 .review-title {
