@@ -1,27 +1,25 @@
 import { Router } from 'express';
-import is from '@sindresorhus/is';
 import { adminAuth } from '../middlewares';
-import { productService } from '../services';
-import * as product from '../controllers/product-controller';
+import * as productController from '../controllers/product-controller';
 
 const productRouter = Router();
 
 // 상품 목록 조회 (/api/products)
-productRouter.get('/', product.getAll);
+productRouter.get('/', productController.getProducts);
 
 // admin 상품 목록 조회 => admin 한정 (/api/products/admin)
-productRouter.get('/admin', adminAuth, product.getAllAdmin);
+productRouter.get('/admin', adminAuth, productController.getProductsAdmin);
 
 // 상품 조회
-productRouter.get('/:productId', product.getProduct);
+productRouter.get('/:productId', productController.getProduct);
 
 // 상품 등록 ⇒ admin 한정
-productRouter.post('/', adminAuth, product.create);
+productRouter.post('/', adminAuth, productController.createProduct);
 
 // 상품 수정 ⇒ admin 한정
-productRouter.patch('/:productId', adminAuth, product.update);
+productRouter.patch('/:productId', adminAuth, productController.updateProduct);
 
 // 상품 정보 삭제 ⇒ admin 한정
-productRouter.delete('/:productId', adminAuth, product.deleteProduct);
+productRouter.delete('/:productId', adminAuth, productController.deleteProduct);
 
 export { productRouter };

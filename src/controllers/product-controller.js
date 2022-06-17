@@ -1,7 +1,7 @@
 import { productService } from '../services';
 
 // 상품 전체 조회
-export async function getAll(req, res, next) {
+export async function getProducts(req, res, next) {
   try {
     const page = Number(req.query.page || 1);
     const perPage = Number(req.query.perPage || 9);
@@ -34,7 +34,7 @@ export async function getAll(req, res, next) {
 }
 
 // 어드민 상품 전체 조회
-export async function getAllAdmin(req, res, next) {
+export async function getProductsAdmin(req, res, next) {
   try {
     const page = Number(req.query.page || 1);
     const perPage = Number(req.query.perPage || 9);
@@ -75,7 +75,7 @@ export async function getProduct(req, res, next) {
 }
 
 // 상품 등록
-export async function create(req, res, next) {
+export async function createProduct(req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
@@ -94,7 +94,7 @@ export async function create(req, res, next) {
 }
 
 // 상품 수정
-export async function update(req, res, next) {
+export async function updateProduct(req, res, next) {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
