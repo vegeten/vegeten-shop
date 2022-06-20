@@ -71,6 +71,9 @@
   align-items: center;
   justify-content: center;
 }
+.modal-card {
+  width: 40%;
+}
 
 .modal-card-body .table {
   text-align: center;
