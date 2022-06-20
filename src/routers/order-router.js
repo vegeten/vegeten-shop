@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { orderService } from '../services';
+import { orderService, productService } from '../services';
 import { loginRequired, adminAuth } from '../middlewares';
+import { customError } from '../middlewares/error/customError';
 const orderRouter = Router();
 
 // 주문 목록 조회 (/api/orders/list) ⇒ admin 한정
@@ -36,6 +37,17 @@ orderRouter.post('/', loginRequired, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const { phoneNumber, address, totalPrice, products } = req.body;
+    products.forEach(async (element) => {
+      const { productId, count } = element;
+      const product = await productService.getProduct(productId);
+      const { quantity } = product;
+      if (quantity < Number(count)) {
+        throw new Error('재고 부족');
+      }
+      await productService.setProduct(productId, { quantity: quantity - Number(count) });
+      console.log(product);
+    });
+
     const newOrder = await orderService.addOrder({
       address,
       phoneNumber,
