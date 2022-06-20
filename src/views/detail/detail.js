@@ -341,6 +341,10 @@ function addToCart() {
   for (let i = 0; i < existCartEntry.length; i++) {
     if (existCartEntry[i].productId === cartEntry.productId) {
       existCartEntry[i].count = Number(existCartEntry[i].count) + selected;
+      if(existCartEntry[i].count > 99) {
+        existCartEntry[i].count = 99;
+        alert("이미 99개의 상품이 장바구니에 담겨있습니다.")
+      }
       localStorage.setItem('cart', JSON.stringify(existCartEntry));
       check = false;
     }
