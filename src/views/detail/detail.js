@@ -363,12 +363,13 @@ const buyProductBtn = getNode('.buyProduct');
 buyProductBtn.addEventListener('click', buyProduct);
 
 function buyProduct() {
-  const selections = getNode('#total-count'); // select 드롭박스
-  const selected = Number(selections.value.replace('개', ''));
+  const selections = getNode('.quantity-count'); // 수량
+  const selected = Number(selections.value);
   const cartEntry = {
     count: selected,
     productId: getNode('#productId').name,
   };
+  directBuyProduct(buyUrlId);
   // 'cart' 라는 key값에 넣어주기
   localStorage.setItem('buy', JSON.stringify(cartEntry));
 }
