@@ -332,14 +332,18 @@ const createOrderDetailListElement = (array) => {
       <td><a class="link-product" href="/shop/${productId}">${productName}</a></td>
       <td>${count}개</td>
       ${reviewed ?
-          `<td>
-        <button class="button is-small is-black modify-product-review">리뷰 수정</button>
-        <button class="button is-small is-black delete-product-review">리뷰 삭제</button>
-      </td>`
+          `
+          <td class="review-button-wrap">
+            <button class="button is-small  modify-product-review">리뷰 수정</button>
+            <button class="button is-small  delete-product-review">리뷰 삭제</button>
+          </td>
+          `
           :
-          `<td>
-        <button class="button is-small is-black create-product-review">리뷰 작성</button>
-      </td>`
+          `
+          <td>
+            <button class="button is-small create-product-review">리뷰 작성</button>
+          </td>
+          `
         }
       
       <td class="product-id" style="display:none;"></td>
@@ -364,21 +368,20 @@ const createOrderListElement = (item) => {
   <li class="order box">
     <div class="order-info">
       <div class="order-id-wrap">
-        <div><strong>주문 번호</strong></div>
+        <div>No.&nbsp;</div>
         <div class="order-id content">${shortId}</div>
       </div>
       <div class="order-date">
-        <div><strong>주문 날짜</strong></div>
         <div class="content">${createdAt.substr(0, 10)}</div>
       </div>
     </div>
       <table class="table is-fullwidth table-head">
       <thead>
         <tr>
-          <th>제품</th>
-          <th>제품 명</th>
-          <th>제품 수량</th>
-          <th>리뷰</th>
+          <td>상품</td>
+          <td>이름</td>
+          <td>수량</td>
+          <td>상품 평</td>
         </tr>
       </thead>
       <tbody>
