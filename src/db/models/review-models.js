@@ -11,6 +11,10 @@ export class ReviewModel {
   async findByProduct(productId) {
     return await Review.find({ productId: productId }).sort({ createdAt: 1 });
   }
+
+  async findByOrder(orderId) {
+    return await Review.find({ orderId: orderId }).sort({ createdAt: 1 });
+  }
   async findById(reviewId) {
     return await Review.findOne({ shortId: reviewId });
   }

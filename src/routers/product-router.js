@@ -114,7 +114,6 @@ productRouter.patch('/:productId', adminAuth, async function (req, res, next) {
       ...(categoryId && { categoryId }),
       ...(image && { image }),
       ...(detailImage && { detailImage }),
-      ...(quantity && { quantity }),
     };
 
     const updatedProductInfo = await productService.setProduct(productId, toUpdate);

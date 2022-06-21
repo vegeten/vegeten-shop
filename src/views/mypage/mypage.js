@@ -33,7 +33,6 @@ const imgData = new FormData();
 let newPasswordToggle = false;
 let changeUserFormFlag = false;
 
-
 const onModCancel = (e) => {
   e.preventDefault();
   changeUserFormFlag = false;
@@ -208,8 +207,6 @@ const registerNewReview = async (e, productId) => {
   } catch (err) {
     alert(err.message);
   }
-
-
 };
 
 const uploadImageToS3 = async () => {
@@ -312,7 +309,9 @@ const onDeleteOrder = async (orderId) => {
 };
 
 const onClickOrderList = (e) => {
-  if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review'))) return;
+  if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review')))
+    return;
+
 
   if (e.target.classList.contains('order-delete-button')) {
     const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
