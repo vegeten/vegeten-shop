@@ -324,7 +324,7 @@ const onClickOrderList = (e) => {
 
 const createOrderDetailListElement = (array) => {
   return array
-    .map(({ productId, productImg, productName, count }) => {
+    .map(({ productId, productImg, productName, count, reviewed }) => {
       return `
     <tr>
       <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
@@ -392,9 +392,9 @@ const createOrderListElement = (item) => {
 };
 
 const renderAllOrderList = (orderList) => {
-  if (!orderList.data.length) return;
+  if (!orderList.data.orders.length) return;
   orderWrapper.innerHTML = '';
-  orderList.data.forEach(({ products, totalPrice, shortId, createdAt }) => {
+  orderList.data.orders.forEach(({ products, totalPrice, shortId, createdAt }) => {
     const orders = createOrderListElement({ totalPrice, shortId, createdAt, products });
     orderWrapper.appendChild(orders);
   });
@@ -531,6 +531,7 @@ const submitModifyUserInfo = async (e) => {
 const getOrderList = async () => {
   try {
     const result = await Api.getYesToken('/api/orders');
+    console.log(result);
     renderAllOrderList(result);
   } catch (err) {
     console.log(err.message);
