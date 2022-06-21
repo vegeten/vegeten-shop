@@ -94,17 +94,34 @@ reviewRouter.get('/product/:productId', async (req, res, next) => {
       const jwtDecoded = jwt.verify(userToken, secretKey);
       currentUserId = jwtDecoded.userId;
     }
+
     const { productId } = req.params;
-    const reviews = await reviewService.getReviewsByProduct(productId);
+    let reviews = await reviewService.getReviewsByProduct(productId);
     let totalScore = 0;
     for (let i = 0; i < reviews.length; i++) {
       totalScore += reviews[i].score;
     }
     let averageScore = totalScore / reviews.length;
+
+    const page = Number(req.query.page || 1);
+    const perPage = Number(req.query.perPage || 9);
+
+    const reviewsPerPage = reviews.slice(perPage * (page - 1), perPage * (page - 1) + perPage);
+    const total = reviews.length;
+    const totalPage = Math.ceil(total / perPage);
+    reviews = reviewsPerPage;
+
     res.status(200).json({
       status: 200,
       message: '해당 상품 리뷰 목록 조회 성공',
-      data: { reviews, currentUserId, totalScore, averageScore },
+      data: {
+        currentUserId,
+        totalScore,
+        averageScore,
+        reviewCount: total,
+        totalPage: totalPage,
+        reviews,
+      },
     });
   } catch (error) {
     next(error);
