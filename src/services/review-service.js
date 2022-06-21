@@ -31,6 +31,14 @@ class ReviewService {
     return reviews;
   }
 
+  async getReviewsByOrder(orderId) {
+    const reviews = await this.reviewModel.findByOrder(orderId);
+    if (!orderId || orderId === null) {
+      throw new customError(404, '해당 id의 주문이 없습니다. 다시 한 번 확인해주세요.');
+    }
+    return reviews;
+  }
+
   async addReview(reviewInfo) {
     const createdNewReview = await this.reviewModel.create(reviewInfo);
     return createdNewReview;

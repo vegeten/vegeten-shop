@@ -16,6 +16,10 @@ const ReviewSchema = new Schema(
       type: String,
       required: true,
     },
+    orderId: {
+      type: String,
+      required: true,
+    },
     comment: {
       type: String,
       required: true,

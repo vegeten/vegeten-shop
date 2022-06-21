@@ -14,6 +14,12 @@ export class OrderModel {
   async create(orderInfo) {
     return await Order.create(orderInfo);
   }
+
+  async update({ orderId, update }) {
+    const filter = { shortId: orderId };
+    const option = { returnOriginal: false };
+    return await Order.findOneAndUpdate(filter, update, option);
+  }
   async delete(orderId) {
     return await Order.findOneAndDelete({ shortId: orderId });
   }

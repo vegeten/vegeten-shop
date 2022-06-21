@@ -38,7 +38,7 @@ async function getProductDetail() {
 const directBuyProduct = (buyUrlId) => {
   const buyQuantity = getNode('.quantity-count').value;
   getNode('.buyProduct').href = `/order?product=${buyUrlId}&amount=${buyQuantity}`;
-}
+};
 // 수량 증감 버튼 클릭 & 각 상품 총가격 계산 (상품 가격 * 수량)
 const handleProductQuantityClick = (e) => {
   const quantity = getNode('.quantity');
@@ -52,7 +52,7 @@ const handleProductQuantityClick = (e) => {
   }
   const productCost = getNode('#price').textContent;
   const buyQuantity = getNode('.quantity-count').value;
-  console.log('가격!!', productCost, buyQuantity)
+  console.log('가격!!', productCost, buyQuantity);
   productTotalCost.innerText = `${addCommas(convertToNumber(productCost) * buyQuantity)}원`;
   directBuyProduct(buyUrlId);
 };
@@ -68,7 +68,7 @@ const handleProductQuantityInput = (e) => {
 
   const productCost = getNode('#price').textContent;
   const buyQuantity = getNode('.quantity-count').value;
-  console.log('가격!!', productCost, buyQuantity)
+  console.log('가격!!', productCost, buyQuantity);
   productTotalCost.innerText = `${addCommas(convertToNumber(productCost) * buyQuantity)}원`;
   directBuyProduct(buyUrlId);
 };
@@ -212,17 +212,13 @@ function onToggleReview(e) {
   e.preventDefault();
   const newReviewBodyWrap = getNode('.new-review-body-wrap');
 
-  if (e.target.classList.contains('new-review')) {
-    newReviewBodyWrap.style.display = 'block';
-    newReview.style.display = 'none';
-  } else {
-    newReviewBodyWrap.style.display = 'none';
-    newReview.style.display = 'block';
-    imgPriview.src = '';
-    fileName.innerHTML = '파일 이름';
-    cancelImg.style.display = 'none';
-    if (imgData.has('image')) imgData.delete('image');
-  }
+  newReviewBodyWrap.style.display = 'none';
+  newReview.style.display = 'block';
+  imgPriview.src = '';
+  fileName.innerHTML = '파일 이름';
+  cancelImg.style.display = 'none';
+  if (imgData.has('image')) imgData.delete('image');
+
 }
 
 getProductDetail();
@@ -377,7 +373,6 @@ function buyProduct() {
   localStorage.setItem('buy', JSON.stringify(cartEntry));
 }
 function addAllEvents() {
-  newReview.addEventListener('click', onToggleReview);
   cancelReviewButton.addEventListener('click', onToggleReview);
   drawStar.addEventListener('input', drawStarInput);
   newReviewForm.addEventListener('submit', registerNewReview);
