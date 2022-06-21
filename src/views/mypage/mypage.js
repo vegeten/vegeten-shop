@@ -312,6 +312,7 @@ const onClickOrderList = (e) => {
   if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review')))
     return;
 
+
   if (e.target.classList.contains('order-delete-button')) {
     const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     onDeleteOrder(orderId);
