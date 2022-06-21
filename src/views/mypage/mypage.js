@@ -136,7 +136,7 @@ const renderUserInfo = (data) => {
   addressDetailInput.value = address2;
 };
 
-const createNewReviewModal = (productId) => {
+const createNewReviewModal = (productId, orderId) => {
   modalTitle.innerHTML = '';
   modalBody.innerHTML = '';
   modalTitle.innerHTML = '리뷰 등록';
@@ -186,12 +186,12 @@ const createNewReviewModal = (productId) => {
   const fileInput = getNode('.file-input');
   const imgCancel = getNode('.cancel-img');
   drawStar.addEventListener('input', drawStarInput);
-  newReviewForm.addEventListener('submit', (e) => registerNewReview(e, productId));
+  newReviewForm.addEventListener('submit', (e) => registerNewReview(e, productId, orderId));
   fileInput.addEventListener('change', changeImageFile);
   imgCancel.addEventListener('click', deletePreviewImg);
 };
 
-const registerNewReview = async (e, productId) => {
+const registerNewReview = async (e, productId, orderId) => {
   e.preventDefault();
   console.log(e.target);
   console.log(productId);
@@ -201,7 +201,7 @@ const registerNewReview = async (e, productId) => {
   const image = await uploadImageToS3();
 
   try {
-    await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
+    await Api.postYesToken(`/api/reviews/${orderId}/${productId}`, { comment, image, score });
     alert('리뷰가 등록되었습니다.');
     closeModal();
   } catch (err) {
@@ -312,13 +312,14 @@ const onClickOrderList = (e) => {
   if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review')))
     return;
 
-
   if (e.target.classList.contains('order-delete-button')) {
     const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     onDeleteOrder(orderId);
   } else {
-    const productId = e.target.parentNode.parentNode.querySelector('.product-id').innerText;
-    createNewReviewModal(productId);
+    const productIdLink = e.target.parentNode.parentNode.querySelector('.link-product').href.split('/');
+    const productId = productIdLink[productIdLink.length - 1];
+    const orderId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
+    createNewReviewModal(productId, orderId);
   }
 };
 
@@ -328,12 +329,20 @@ const createOrderDetailListElement = (array) => {
       return `
     <tr>
       <td ><img class="order-img" src=${productImg} alt="상품 이미지" /></td>
-      <td>${productName}</td>
+      <td><a class="link-product" href="/shop/${productId}">${productName}</a></td>
       <td>${count}개</td>
-      <td>
+      ${reviewed ?
+          `<td>
+        <button class="button is-small is-black modify-product-review">리뷰 수정</button>
+        <button class="button is-small is-black delete-product-review">리뷰 삭제</button>
+      </td>`
+          :
+          `<td>
         <button class="button is-small is-black create-product-review">리뷰 작성</button>
-      </td>
-      <td class="product-id" style="display:none;">${productId}</td>
+      </td>`
+        }
+      
+      <td class="product-id" style="display:none;"></td>
     </tr>
       `;
     })
