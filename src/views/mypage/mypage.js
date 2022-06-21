@@ -209,6 +209,18 @@ const registerNewReview = async (e, productId, orderId) => {
   }
 };
 
+const deleteReview = async (reviewId) => {
+  try {
+    await Api.deleteYesToken('/api/reviews', reviewId);
+    alert('리뷰가 삭제되었습니다.');
+  } catch (err) {
+    console.log(err.message);
+    alert(err.message);
+  } finally {
+    window.location.reload();
+  }
+};
+
 const uploadImageToS3 = async () => {
   if (!imgData.has('image')) return '';
   let imgPath = '';
@@ -309,18 +321,22 @@ const onDeleteOrder = async (orderId) => {
 };
 
 const onClickOrderList = (e) => {
-  if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review')))
+  if (!(e.target.classList.contains('order-delete-button') || e.target.classList.contains('create-product-review') || e.target.classList.contains('modify-product-review') || e.target.classList.contains('delete-product-review')))
     return;
 
   if (e.target.classList.contains('order-delete-button')) {
     const orderId = e.target.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     onDeleteOrder(orderId);
-  } else {
+  } else if (e.target.classList.contains('create-product-review')) {
     const productIdLink = e.target.parentNode.parentNode.querySelector('.link-product').href.split('/');
     const productId = productIdLink[productIdLink.length - 1];
     const orderId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     createNewReviewModal(productId, orderId);
-  }
+  } else if (e.target.classList.contains('modify-product-review')) {
+    console.log('리뷰 수정');
+  } else if (e.target.classList.contains('delete-product-review')) {
+    console.log('리뷰 삭제');
+  };
 };
 
 const createOrderDetailListElement = (array) => {
@@ -334,8 +350,8 @@ const createOrderDetailListElement = (array) => {
       ${reviewed ?
           `
           <td class="review-button-wrap">
-            <button class="button is-small  modify-product-review">리뷰 수정</button>
-            <button class="button is-small  delete-product-review">리뷰 삭제</button>
+            <button class="button is-small modify-product-review">리뷰 수정</button>
+            <button class="button is-small delete-product-review">리뷰 삭제</button>
           </td>
           `
           :
