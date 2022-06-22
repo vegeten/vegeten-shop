@@ -1,7 +1,7 @@
 import * as Api from '/api.js';
 import { convertToNumber, addCommas } from '../../useful-functions.js';
 import { getNode } from '../../useful-functions.js';
-import { renderNav } from '../../components/nav.js';
+import { renderNav } from '../../components/navigation.js';
 import renderFooter from '../../components/footer.js';
 
 const newReview = getNode('.new-review');
@@ -218,7 +218,6 @@ function onToggleReview(e) {
   fileName.innerHTML = '파일 이름';
   cancelImg.style.display = 'none';
   if (imgData.has('image')) imgData.delete('image');
-
 }
 
 getProductDetail();
