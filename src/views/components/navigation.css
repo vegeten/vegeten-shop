@@ -1,4 +1,4 @@
-nav {
+#navigation {
   position: fixed;
   top: 0;
   left: 0;
@@ -16,31 +16,32 @@ nav {
   padding-top: 12px;
 }
 
-nav > div > a {
+#navigation > div > a {
   align-items: center;
   padding: 8px 12px 0 12px;
 }
 
-ul {
+#list-container {
   display: flex;
   height: 100%;
 }
 
-ul li {
+#list-container li {
   display: flex;
 }
 
-nav > div > ul > li > a {
+#navigation > div > #list-container > li > a {
   padding: 8px 12px;
   display: flex;
   align-items: center;
+  color: #000;
 }
 
-nav > div > ul > li > a:hover {
+#navigation > div > #list-container > li > a:hover {
   color: #00ca71;
 }
 
-ul li > a:hover {
+#list-container li > a:hover {
   color: #000;
 }
 
@@ -81,6 +82,10 @@ ul li > a:hover {
   color: #000;
 }
 
+#dropdown > a {
+  color: #000;
+}
+
 #dropdown > a:hover {
   color: #00ca71;
 }
@@ -95,7 +100,7 @@ ul li > a:hover {
 }
 
 @media screen and (min-width: 1408px) {
-  nav > div {
+  #navigation > div {
     max-width: 1344px;
   }
 }

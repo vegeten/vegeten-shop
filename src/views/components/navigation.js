@@ -8,7 +8,7 @@ const navigation = (isLogin) => {
     <a href="/">
       <img src="/img/vegeten-logo2.png" width="200" alt="메인로고"/>
     </a>
-    <ul>
+    <ul id="list-container">
       <li><a href="/about">
         <span>About</span>
       </a></li>
@@ -65,8 +65,9 @@ const logOut = () => {
 const renderNav = () => {
   const { isLogin } = getAuthorizationObj();
   navigation(isLogin);
-  const logout = getNode('#logout-button');
-  logout.addEventListener('click', logOut);
+  {
+    isLogin && getNode('#logout-button').addEventListener('click', logOut);
+  }
 };
 
-export { renderNav };
+export { renderNav, logOut };

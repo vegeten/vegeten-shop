@@ -1,6 +1,6 @@
 import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
-import { renderNav } from '../components/nav.js';
+import { renderNav } from '../components/navigation.js';
 import renderFooter from '../components/footer.js';
 
 const searchInput = getNode('.search-input');
@@ -14,7 +14,7 @@ function searchProducts(e) {
   if (!value) return;
 
   getSearchResult(value);
-};
+}
 
 function productBySearchResult(target, count) {
   if (count) categoryTitle.innerHTML = `'${target}'에 대한 ${count}건의 검색 결과`;
@@ -38,23 +38,23 @@ async function getCategoriesFromApi() {
   // 카테고리 렌더링
   const categoryList = document.querySelector('#category-list');
   for (let i = 0; i < data.data.length; i++) {
-    // 상품목록 - 왼쪽 nav바 렌더링/모달 
-    if(data.data[i].active === 'active') {
+    // 상품목록 - 왼쪽 nav바 렌더링/모달
+    if (data.data[i].active === 'active') {
       categoryList.innerHTML += `<div class="category" id="${data.data[i]._id}">${data.data[i].label}</div>`;
     }
   }
-  // 카테고리별로 상품제목 바꾸기 
+  // 카테고리별로 상품제목 바꾸기
   productByCategory();
 }
 getCategoriesFromApi();
 
 // 카테고리별로 제목 바꾸기
 async function productByCategory() {
-  // 렌더링된 상품목록으로 title 변경하기 
+  // 렌더링된 상품목록으로 title 변경하기
   const categories = document.querySelectorAll('.category');
   for (let i = 0; i < categories.length; i++) {
     categories[i].onclick = async function (e) {
-      if (categories[i].textContent === "전체보기") {
+      if (categories[i].textContent === '전체보기') {
         location.reload();
       }
       let categoryName = categories[i].textContent;
@@ -67,7 +67,7 @@ async function productByCategory() {
 
       // 카테고리별 상품조회 api
       const datas = await Api.getNoToken('/api/categories/products', e.target.id);
-      console.log('확인확인',e.target, datas)
+      console.log('확인확인', e.target, datas);
       showProducts(datas.data, e.target.id);
       searchInput.value = '';
     };
@@ -76,7 +76,7 @@ async function productByCategory() {
 // 전체 상품조회하기 => 인자 api 통신을 받은 데이터, 카테고리명, 검색 키워드
 function showProducts(data, categoryId = '', keyword = '') {
   const productList = getNode('#product-list');
-  productList.innerHTML = "";
+  productList.innerHTML = '';
   data.products.map((product) => {
     let price = product.price.toLocaleString();
     productList.innerHTML += `<div class="item-card">
@@ -87,27 +87,27 @@ function showProducts(data, categoryId = '', keyword = '') {
       </a>
     </div>`;
   });
-  // 페이지네이션 
+  // 페이지네이션
   const pagenationList = getNode('.pagination-list');
-  pagenationList.innerHTML = "";
+  pagenationList.innerHTML = '';
   for (let i = 1; i <= data.totalPage; i++) {
     pagenationList.innerHTML += `<li><a class="pagination-link" aria-label="Goto page ${i}">${i}</a></li>`;
   }
-  // 페이지 네이션 링크 
+  // 페이지 네이션 링크
   const pagenationLink = document.querySelectorAll('.pagination-link');
   for (let i = 0; i < data.totalPage; i++) {
-    // 전체보기가 아닐떄 
-    // 카테고리 id 값으로 
+    // 전체보기가 아닐떄
+    // 카테고리 id 값으로
     if (categoryId === '검색') {
-      pagenationLink[i].addEventListener("click", () => {
+      pagenationLink[i].addEventListener('click', () => {
         getProductSearch(i + 1, keyword);
       });
     } else if (categoryId !== '') {
-      pagenationLink[i].addEventListener("click", () => {
+      pagenationLink[i].addEventListener('click', () => {
         getProductCategory(i + 1, categoryId);
       });
     } else {
-      pagenationLink[i].addEventListener("click", () => {
+      pagenationLink[i].addEventListener('click', () => {
         getProductAll(i + 1);
       });
     }

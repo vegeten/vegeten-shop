@@ -1,5 +1,5 @@
 import renderFooter from '../components/footer.js';
-import { renderNav } from '../components/nav.js';
+import { renderNav } from '../components/navigation.js';
 import { getNode, addCommas, getCookie, convertToNumber } from '../useful-functions.js';
 
 // 로컬스토리지에 있는 장바구니 가져오기
