@@ -1,19 +1,19 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired, adminAuth } from '../middlewares';
-import { reviewService, userService } from '../services';
+import { loginRequired, adminAuth, customError } from '../middlewares';
+import { reviewService, userService, orderService } from '../services';
 import jwt from 'jsonwebtoken';
-import { json } from 'express/lib/response';
 
 const reviewRouter = Router();
 
-reviewRouter.post('/:productId', loginRequired, async (req, res, next) => {
+// 리뷰 등록
+reviewRouter.post('/:orderId/:productId', loginRequired, async (req, res, next) => {
   try {
     if (is.emptyObject(req.body)) {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
-    const { productId } = req.params;
+    const { orderId, productId } = req.params;
     const userId = req.currentUserId;
     const user = await userService.getUser(userId);
     const { fullName } = user;
@@ -23,15 +23,33 @@ reviewRouter.post('/:productId', loginRequired, async (req, res, next) => {
       userId: userId,
       fullName: fullName,
       productId: productId,
+      orderId: orderId,
       comment: comment,
       image: image,
       score: score,
     };
     const addedReview = await reviewService.addReview(reviewInfo);
+    let order = await orderService.getOrder(orderId);
+    order.products.forEach((product) => {
+      if (product.productId === productId) {
+        if (product.review) {
+          throw new customError(403, 'Forbidden');
+        }
+        product.reviewed = true;
+      }
+    });
+    const { products, shortId } = order;
+    const toUpdate = {
+      ...(products && { products }),
+    };
+    console.log(products, shortId);
+    const updatedOrder = await orderService.setOrder(shortId, toUpdate);
+
     res.status(201).json({
       status: 201,
       message: '리뷰 추가 성공',
       data: addedReview,
+      order: updatedOrder,
     });
   } catch (error) {
     next(error);
@@ -51,6 +69,7 @@ reviewRouter.get('/', adminAuth, async (req, res, next) => {
   }
 });
 
+// 리뷰 ID로 조회
 reviewRouter.get('/:reviewId', async (req, res, next) => {
   try {
     const { reviewId } = req.params;
@@ -65,6 +84,7 @@ reviewRouter.get('/:reviewId', async (req, res, next) => {
   }
 });
 
+// 상품 ID로 조회
 reviewRouter.get('/product/:productId', async (req, res, next) => {
   try {
     let currentUserId = null;
@@ -91,9 +111,28 @@ reviewRouter.get('/product/:productId', async (req, res, next) => {
   }
 });
 
-reviewRouter.get('/user/:userId', async (req, res, next) => {
+// 주문 ID로 조회
+reviewRouter.get('/order/:orderId', loginRequired, async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const reviews = await reviewService.getReviewsByOrder(orderId);
+    res.status(200).json({
+      status: 200,
+      message: '해당 주문 리뷰 목록 조회 성공',
+      data: { reviews },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// 유저 ID로 조회
+reviewRouter.get('/user/:userId', loginRequired, async (req, res, next) => {
   try {
     const { userId } = req.params;
+    if (userId !== req.currentUserId) {
+      throw new customError(401, 'Unauthorized');
+    }
     const reviews = await reviewService.getReviewsByUser(userId);
     res.status(200).json({
       status: 200,
@@ -112,9 +151,7 @@ reviewRouter.patch('/:reviewId', loginRequired, async (req, res, next) => {
     const { comment, image, score } = req.body;
     const review = await reviewService.getReview(reviewId);
     if (review.userId !== userId) {
-      const e = new Error('자신의 리뷰만 수정할 수 있습니다.');
-      e.status = 500;
-      throw e;
+      throw new customError(401, 'Unauthorized');
     }
 
     if (is.emptyObject(req.body)) {
@@ -143,15 +180,25 @@ reviewRouter.delete('/:reviewId', loginRequired, async (req, res, next) => {
 
     const { reviewId } = req.params;
     const review = await reviewService.getReview(reviewId);
+    if (!review || review === undefined || review === null) {
+      throw new customError(404, 'Not found Error');
+    }
     if (review.userId !== userId) {
-      const e = new Error('자신의 리뷰만 삭제할 수 있습니다.');
-      e.status = 500;
-      throw e;
+      throw new customError(401, 'Unauthorized');
     }
     const deletedReview = await reviewService.deleteReview(reviewId);
+    let order = await orderService.getOrder(review.orderId);
+    order.products.forEach((product) => {
+      if (product.productId === review.productId) {
+        product.reviewed = false;
+      }
+    });
+    await orderService.setOrder(review.orderId, order);
+
     res.status(201).json({
       status: 200,
       message: '리뷰 삭제 완료',
+      data: review,
     });
   } catch (error) {
     next(error);

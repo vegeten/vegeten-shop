@@ -101,7 +101,7 @@ export async function updateProduct(req, res, next) {
     }
 
     const { productId } = req.params;
-    const { productName, price, description, company, categoryId, image, detailImage, quantity } = req.body;
+    const { productName, price, description, company, categoryId, image, detailImage } = req.body;
 
     const toUpdate = {
       ...(productName && { productName }),
@@ -111,7 +111,6 @@ export async function updateProduct(req, res, next) {
       ...(categoryId && { categoryId }),
       ...(image && { image }),
       ...(detailImage && { detailImage }),
-      ...(quantity && { quantity }),
     };
 
     const updatedProductInfo = await productService.setProduct(productId, toUpdate);

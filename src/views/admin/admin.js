@@ -336,18 +336,34 @@ closeProductEdit.addEventListener('click', () => {
 const productList = getNode('.productList');
 // 카테고리별 상품목록 + 페이네이션 하기- Api.get 통신
 async function getProductCategory(page, categoryName) {
-  const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`);
+  const datas = await fetch(`/api/categories/products/${categoryName}?page=${page}`,{
+    // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
   const data = await datas.json();
   showProducts(data.data, categoryName);
 }
 // 전체보기 상품목록 + 페이지네이션 - Api.get 통신
 async function getProductAll(page) {
-  const datas = await fetch(`/api/products/admin?page=${page}`);
+  const datas = await fetch(`/api/products/admin?page=${page}`,{
+    // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
+  console.log('에러체크', datas,)
   const data = await datas.json();
   showProducts(data.data);
 }
 async function getProductSearch(page, keyword) {
-  const datas = await fetch(`/api/search?keyword=${keyword}&page=${page}`);
+  const datas = await fetch(`/api/search?keyword=${keyword}&page=${page}`,{
+    // JWT 토큰을 헤더에 담아 백엔드 서버에 보냄.
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+    },
+  });
   const data = await datas.json();
   showProducts(data.data, '검색', keyword);
 }
@@ -359,12 +375,12 @@ async function showProducts(data, categoryId = '', keyword = '') {
     productList.innerHTML += ` <td><span class="${product.shortId} updateProdcutBtn material-icons open-modal">
     open_in_full</span></td><td>${product.productName}</td>
   <td>${product.company}</td>
-  <td>${addDate}</td>
   <td>${product.categoryId.label}</td>
+  <td>${addDate}</td>
   <td><div class="delProductBtn button is-danger is-small" id="${product.shortId}">삭제</td>`;
   });
-  // 페이지네이션
 
+  // 페이지네이션
   const pagenationList = getNode('.pagination-list');
   pagenationList.innerHTML = '';
   for (let i = 1; i <= data.totalPage; i++) {
@@ -523,6 +539,7 @@ function goBackEditModal() {
       <th>수정</th>
       <th>상품명</th>
       <th>제조사</th>
+      <th>카테고리</th>
       <th>등록일자</th>
       <th>삭제</th>
     </tr>
