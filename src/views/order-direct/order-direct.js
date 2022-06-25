@@ -182,7 +182,7 @@ async function postOrder() {
       productName: productInfo.productName,
       count: productCount,
       productPrice: productCount * productInfo.price,
-      reviewed: false,
+      reviewed: null,
     },
   ];
 
