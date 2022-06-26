@@ -1,5 +1,5 @@
 import renderFooter from '../components/footer.js';
-import { logOut, renderNav } from '../components/nav.js';
+import { logOut, renderNav } from '../components/navigation.js';
 import { addCommas, getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
