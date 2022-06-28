@@ -136,6 +136,64 @@ const renderUserInfo = (data) => {
   addressDetailInput.value = address2;
 };
 
+
+const modifyReviewModal = (reviewId) => {
+
+
+  modalTitle.innerHTML = '';
+  modalBody.innerHTML = '';
+  modalTitle.innerHTML = '리뷰 수정';
+  modalBody.innerHTML = `
+    <form class="mod-review-form" encType="multipart/form-data">
+      <div class="review-body">
+        <div class="review-info">
+          <div class="info-score">
+            <span class="star-input">
+              ★★★★★
+              <span>★★★★★</span>
+              <input class="draw-star" type="range" value="5" step="1" min="0" max="5">
+            </span>
+          </div>
+        </div>
+        <div class="review-content card">
+          <textarea class="review-text" placeholder="리뷰를 입력하세요."></textarea>
+        </div>
+        <div class="file is-boxed image-uploader">
+          <div class="img-preview-wrap">
+            <img class="img-preview" src="" />
+            <span class="material-icons cancel-img">
+              cancel
+            </span>
+          </div>
+          <label class="file-label">
+            <input class="file-input" type="file" accept="image/*" name="resume">
+            <span class="file-cta image-upload-button">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                사진 업로드
+              </span>
+            </span>
+          </label>
+        </div>
+        <div class="review-modify">
+          <button class="button is-medium review-submit-button" type="submit">작성 완료</button>
+        </div>
+      </div>
+    </form>
+  `;
+  modal.classList.add('is-active');
+  const drawStar = getNode('.draw-star');
+  const newReviewForm = getNode('.mod-review-form');
+  const fileInput = getNode('.file-input');
+  const imgCancel = getNode('.cancel-img');
+  drawStar.addEventListener('input', drawStarInput);
+  newReviewForm.addEventListener('submit', (e) => registerNewReview(e, reviewId));
+  fileInput.addEventListener('change', changeImageFile);
+  imgCancel.addEventListener('click', deletePreviewImg);
+};
+
 const createNewReviewModal = (productId, orderId) => {
   modalTitle.innerHTML = '';
   modalBody.innerHTML = '';
@@ -204,12 +262,15 @@ const registerNewReview = async (e, productId, orderId) => {
     await Api.postYesToken(`/api/reviews/${orderId}/${productId}`, { comment, image, score });
     alert('리뷰가 등록되었습니다.');
     closeModal();
+    window.location.reload();
   } catch (err) {
     alert(err.message);
   }
 };
 
 const deleteReview = async (reviewId) => {
+  const ok = window.confirm('리뷰를 정말 삭제하시겠습니까?');
+  if (!ok) return;
   try {
     await Api.deleteYesToken('/api/reviews', reviewId);
     alert('리뷰가 삭제되었습니다.');
@@ -280,33 +341,6 @@ const changeSubmitButton = (e) => {
   checkPasswordConfirmButton.addEventListener('click', checkUserPassword);
 };
 
-// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-const addAllEvents = () => {
-  getNode('#kakao_address').addEventListener('click', (e) => {
-    e.preventDefault();
-    new daum.Postcode({
-      oncomplete: function (data) {
-        addressCodeInput.value = data.zonecode;
-        addressTitleInput.value = data.address;
-        addressDetailInput.focus();
-      },
-    }).open();
-  });
-  const btnWithdraw = getNode('.btn-withdraw');
-
-  btnWithdraw.addEventListener('click', submitWithdrawUser);
-  btnPasswordConfirm.addEventListener('click', changeSubmitButton);
-  passwordToggle.addEventListener('click', onPasswordToggle);
-  fullNameInput.addEventListener('input', validationInput);
-  currentPasswordInput.addEventListener('input', validationInput);
-  newPasswordCheck.addEventListener('input', validationInput);
-  newPasswordInput.addEventListener('input', validationInput);
-  modalButton.addEventListener('click', closeModal);
-  modalBackground.addEventListener('click', closeModal);
-  btnModCancel.addEventListener('click', () => onModCancel);
-  orderList.addEventListener('click', onClickOrderList);
-};
-
 const onDeleteOrder = async (orderId) => {
   const ok = window.confirm('주문 내역을 정말 삭제하시겠습니까?');
   if (!ok) return;
@@ -333,9 +367,11 @@ const onClickOrderList = (e) => {
     const orderId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector('.order-id').innerText;
     createNewReviewModal(productId, orderId);
   } else if (e.target.classList.contains('modify-product-review')) {
-    console.log('리뷰 수정');
+    const reviewId = e.target.parentNode.dataset.id;
+    modifyReviewModal(reviewId);
   } else if (e.target.classList.contains('delete-product-review')) {
-    console.log('리뷰 삭제');
+    const reviewId = e.target.parentNode.dataset.id;
+    deleteReview(reviewId);
   };
 };
 
@@ -349,7 +385,7 @@ const createOrderDetailListElement = (array) => {
       <td>${count}개</td>
       ${reviewed ?
           `
-          <td class="review-button-wrap">
+          <td class="review-button-wrap" data-id="${reviewed}">
             <button class="button is-small modify-product-review">리뷰 수정</button>
             <button class="button is-small delete-product-review">리뷰 삭제</button>
           </td>
@@ -578,6 +614,33 @@ const checkUserPassword = async (e) => {
     alert(err.message);
     window.location.reload();
   }
+};
+
+// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
+const addAllEvents = () => {
+  getNode('#kakao_address').addEventListener('click', (e) => {
+    e.preventDefault();
+    new daum.Postcode({
+      oncomplete: function (data) {
+        addressCodeInput.value = data.zonecode;
+        addressTitleInput.value = data.address;
+        addressDetailInput.focus();
+      },
+    }).open();
+  });
+  const btnWithdraw = getNode('.btn-withdraw');
+
+  btnWithdraw.addEventListener('click', submitWithdrawUser);
+  btnPasswordConfirm.addEventListener('click', changeSubmitButton);
+  passwordToggle.addEventListener('click', onPasswordToggle);
+  fullNameInput.addEventListener('input', validationInput);
+  currentPasswordInput.addEventListener('input', validationInput);
+  newPasswordCheck.addEventListener('input', validationInput);
+  newPasswordInput.addEventListener('input', validationInput);
+  modalButton.addEventListener('click', closeModal);
+  modalBackground.addEventListener('click', closeModal);
+  btnModCancel.addEventListener('click', () => onModCancel);
+  orderList.addEventListener('click', onClickOrderList);
 };
 
 renderNav();
