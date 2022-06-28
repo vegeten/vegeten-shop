@@ -139,7 +139,6 @@ const renderUserInfo = (data) => {
 async function getProductReview(reviewId) {
   try {
     const result = await Api.getNoToken('/api/reviews', reviewId);
-    console.log(result.data);
     modifyReviewModal(result.data);
   } catch (err) {
     console.log(err.message);
@@ -196,7 +195,6 @@ const modifyReviewModal = (review) => {
   const newReviewForm = getNode('.mod-review-form');
   const fileInput = getNode('.file-input');
   const imgCancel = getNode('.cancel-img');
-  if (image) imgCancel.style.display = 'block';
   drawStar.addEventListener('input', drawStarInput);
   newReviewForm.addEventListener('submit', (e) => modifyReview(e, shortId));
   fileInput.addEventListener('change', changeImageFile);
@@ -621,7 +619,6 @@ const submitModifyUserInfo = async (e) => {
 const getOrderList = async () => {
   try {
     const result = await Api.getYesToken('/api/orders');
-    console.log(result);
     renderAllOrderList(result);
   } catch (err) {
     console.log(err.message);
