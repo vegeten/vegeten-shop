@@ -136,9 +136,17 @@ const renderUserInfo = (data) => {
   addressDetailInput.value = address2;
 };
 
+async function getProductReview(reviewId) {
+  try {
+    const review = await Api.getNoToken('/api/reviews', reviewId);
+    modifyReviewModal(review);
+  } catch (err) {
+    console.log(err.message);
+  }
+}
 
-const modifyReviewModal = (reviewId) => {
-
+const modifyReviewModal = (review) => {
+  const { comment, score, image } = review;
 
   modalTitle.innerHTML = '';
   modalBody.innerHTML = '';
@@ -151,16 +159,16 @@ const modifyReviewModal = (reviewId) => {
             <span class="star-input">
               ★★★★★
               <span>★★★★★</span>
-              <input class="draw-star" type="range" value="5" step="1" min="0" max="5">
+              <input class="draw-star" type="range" value="${score}" step="1" min="0" max="5">
             </span>
           </div>
         </div>
         <div class="review-content card">
-          <textarea class="review-text" placeholder="리뷰를 입력하세요."></textarea>
+          <textarea class="review-text" placeholder="리뷰를 입력하세요.">${comment}</textarea>
         </div>
         <div class="file is-boxed image-uploader">
           <div class="img-preview-wrap">
-            <img class="img-preview" src="" />
+            <img class="img-preview" src="${image}" />
             <span class="material-icons cancel-img">
               cancel
             </span>
@@ -368,7 +376,7 @@ const onClickOrderList = (e) => {
     createNewReviewModal(productId, orderId);
   } else if (e.target.classList.contains('modify-product-review')) {
     const reviewId = e.target.parentNode.dataset.id;
-    modifyReviewModal(reviewId);
+    getProductReview(reviewId);
   } else if (e.target.classList.contains('delete-product-review')) {
     const reviewId = e.target.parentNode.dataset.id;
     deleteReview(reviewId);
