@@ -138,19 +138,19 @@ const renderUserInfo = (data) => {
 
 async function getProductReview(reviewId) {
   try {
-    const review = await Api.getNoToken('/api/reviews', reviewId);
-    modifyReviewModal(review);
+    const result = await Api.getNoToken('/api/reviews', reviewId);
+    console.log(result.data);
+    modifyReviewModal(result.data);
   } catch (err) {
     console.log(err.message);
   }
 }
 
 const modifyReviewModal = (review) => {
-  const { comment, score, image } = review;
-
+  const { comment, score, image, shortId } = review;
   modalTitle.innerHTML = '';
   modalBody.innerHTML = '';
-  modalTitle.innerHTML = '리뷰 수정';
+  modalTitle.innerHTML = '내가 쓴 리뷰';
   modalBody.innerHTML = `
     <form class="mod-review-form" encType="multipart/form-data">
       <div class="review-body">
@@ -168,7 +168,7 @@ const modifyReviewModal = (review) => {
         </div>
         <div class="file is-boxed image-uploader">
           <div class="img-preview-wrap">
-            <img class="img-preview" src="${image}" />
+            <img class="img-preview" src='${image}' />
             <span class="material-icons cancel-img">
               cancel
             </span>
@@ -186,7 +186,7 @@ const modifyReviewModal = (review) => {
           </label>
         </div>
         <div class="review-modify">
-          <button class="button is-medium review-submit-button" type="submit">작성 완료</button>
+          <button class="button is-medium review-submit-button" type="submit">수정 완료</button>
         </div>
       </div>
     </form>
@@ -196,8 +196,9 @@ const modifyReviewModal = (review) => {
   const newReviewForm = getNode('.mod-review-form');
   const fileInput = getNode('.file-input');
   const imgCancel = getNode('.cancel-img');
+  if (image) imgCancel.style.display = 'block';
   drawStar.addEventListener('input', drawStarInput);
-  newReviewForm.addEventListener('submit', (e) => registerNewReview(e, reviewId));
+  newReviewForm.addEventListener('submit', (e) => modifyReview(e, shortId));
   fileInput.addEventListener('change', changeImageFile);
   imgCancel.addEventListener('click', deletePreviewImg);
 };
@@ -257,10 +258,27 @@ const createNewReviewModal = (productId, orderId) => {
   imgCancel.addEventListener('click', deletePreviewImg);
 };
 
+const modifyReview = async (e, reviewId) => {
+  e.preventDefault();
+
+  const score = e.target.querySelector('.draw-star').value;
+  const comment = e.target.querySelector('.review-text').value;
+  const image = await uploadImageToS3();
+  try {
+    const result = await Api.patchYesToken('/api/reviews', reviewId, {
+      comment,
+      image,
+      score,
+    });
+    alert(result.message);
+    window.location.reload();
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
 const registerNewReview = async (e, productId, orderId) => {
   e.preventDefault();
-  console.log(e.target);
-  console.log(productId);
 
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
