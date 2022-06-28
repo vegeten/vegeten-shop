@@ -4,11 +4,11 @@ const navigation = (isLogin) => {
   const $nav = getNode('#navigation');
 
   const template = `
-  <div id="nav-container">
-    <a href="/">
+  <div id="desktop-container" class="nav-container">
+    <a href="/" id="logo-container">
       <img src="/img/vegeten-logo2.png" width="200" alt="메인로고"/>
     </a>
-    <ul>
+    <ul id="list-container">
       <li><a href="/about">
         <span>About</span>
       </a></li>
@@ -39,20 +39,80 @@ const navigation = (isLogin) => {
             `
           : `
           <li><a href="/login"><span class="material-icons">
-          account_circle
-        </span></a></li>
+            account_circle
+          </span></a></li>
           <li><a href="/cart"><span class="material-icons">
-          shopping_bag
-        </span></a>
-        </li>
+            shopping_bag
+          </span></a></li>
           `
       }
     </ul>
+  </div>
+
+  <div id="mobile-container" class="nav-container">
+    <div class="item"><span id="hamburger-icon" class="material-icons">menu</span></div>
+    <a href="/" id="logo-container" class="item">
+      <img src="/img/vegeten-logo2.png" width="150" alt="메인로고"/>
+    </a>
+    <ul id="list-container" class="item">
+    ${
+      isLogin
+        ? `
+          <li><a href="/mypage">
+            <span class="material-icons">
+              account_circle
+            </span>
+          </a></li>
+          <li><a href="/cart">
+            <span class="material-icons">
+              shopping_bag
+            </span>
+          </a></li>
+          `
+        : `
+        <li><a href="/login"><span class="material-icons">
+          account_circle
+        </span></a></li>
+        <li><a href="/cart"><span class="material-icons">
+          shopping_bag
+        </span></a></li>
+        `
+    }
+    </ul>
+
+    <div id="side-background" >
+      <div id="side-navigation">
+        <a href="/" id="side-logo">
+          <img src="/img/vegeten-logo2.png" width="150" alt="메인로고"/>
+        </a>
+        <ul id="side-list">
+          <li><a href="/about">About</a></li>
+          <li><a href="/shop">Shop</a></li>
+        </ul>
+      </div>
+    </div>
+    
   </div>
   
   `;
 
   $nav.innerHTML = template;
+
+  const $hamburgerButton = getNode('#hamburger-icon');
+  const $sideNavigationBg = getNode('#side-background');
+  const $sideNavigation = getNode('#side-navigation');
+
+  if ($hamburgerButton) {
+    $hamburgerButton.addEventListener('click', () => {
+      $sideNavigationBg.style.width = '100vw';
+      $sideNavigation.style.transform = 'translateX(100vw)';
+    });
+
+    $sideNavigationBg.addEventListener('click', () => {
+      $sideNavigationBg.style.width = 0;
+      $sideNavigation.style.transform = 'translateX(-100vw)';
+    });
+  }
 };
 
 const logOut = () => {
@@ -65,8 +125,9 @@ const logOut = () => {
 const renderNav = () => {
   const { isLogin } = getAuthorizationObj();
   navigation(isLogin);
-  const logout = getNode('#logout-button');
-  logout.addEventListener('click', logOut);
+  {
+    isLogin && getNode('#logout-button').addEventListener('click', logOut);
+  }
 };
 
-export { renderNav };
+export { renderNav, logOut };

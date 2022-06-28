@@ -1,4 +1,4 @@
-nav {
+#navigation {
   position: fixed;
   top: 0;
   left: 0;
@@ -7,7 +7,7 @@ nav {
   height: 68px;
 }
 
-#nav-container {
+.nav-container {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -16,31 +16,36 @@ nav {
   padding-top: 12px;
 }
 
-nav > div > a {
+#logo-container {
+  line-height: 38px;
   align-items: center;
   padding: 8px 12px 0 12px;
 }
 
-ul {
+#logo-container > img {
+  vertical-align: bottom;
+}
+
+#list-container {
   display: flex;
   height: 100%;
 }
 
-ul li {
+#list-container li {
   display: flex;
 }
 
-nav > div > ul > li > a {
+#list-container > li > a {
   padding: 8px 12px;
   display: flex;
   align-items: center;
+  color: #000;
 }
-
-nav > div > ul > li > a:hover {
+#navigation > div > #list-container > li > a:hover {
   color: #00ca71;
 }
 
-ul li > a:hover {
+#list-container li > a:hover {
   color: #000;
 }
 
@@ -81,6 +86,10 @@ ul li > a:hover {
   color: #000;
 }
 
+#dropdown > a {
+  color: #000;
+}
+
 #dropdown > a:hover {
   color: #00ca71;
 }
@@ -94,8 +103,93 @@ ul li > a:hover {
   font-size: 30px;
 }
 
+#mobile-container {
+  display: none;
+}
+
 @media screen and (min-width: 1408px) {
-  nav > div {
+  #navigation > div {
     max-width: 1344px;
+  }
+}
+
+@media screen and (max-width: 510px) {
+  #desktop-container {
+    display: none;
+  }
+
+  #mobile-container {
+    display: flex;
+    padding: 12px 10px 0 10px;
+  }
+
+  .item {
+    flex: 1 1 0;
+  }
+
+  #hamburger-icon {
+    cursor: pointer;
+  }
+
+  #logo-container {
+    line-height: 38px;
+    padding: 0;
+    flex: 2 1 0;
+    text-align: center;
+  }
+
+  #logo-container > img {
+    vertical-align: bottom;
+  }
+
+  #list-container {
+    justify-content: flex-end;
+  }
+
+  #list-container > li > a {
+    padding: 5px;
+  }
+
+  /* 왼쪽 사이드 네비게이션 */
+  #side-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 1000vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+  }
+
+  #side-navigation {
+    position: absolute;
+    height: 1000vh;
+    top: 0;
+    left: -100vw;
+    width: 80vw;
+    background-color: #fff;
+    padding: 30px 20px;
+    z-index: 5;
+
+    transition: 0.5s;
+  }
+
+  #side-list {
+    padding-left: 10px;
+  }
+
+  #side-list > li {
+    margin-top: 30px;
+  }
+
+  #side-list > li > a {
+    display: inline-block;
+    text-decoration: none;
+    color: #000;
+    width: 100%;
+  }
+
+  #side-list > li > a:hover {
+    color: #00ca71;
   }
 }
