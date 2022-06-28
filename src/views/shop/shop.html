@@ -1,33 +1,29 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Team-Ten</title>
-  <!-- 폰트 -->
-  <link rel=“preconnect” href=“https://fonts.googleapis.com”>
-  <link rel=“preconnect” href=“https://fonts.gstatic.com” crossorigin>
-  <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
-  <!-- 아이콘 -->
-  <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- bulma css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-  <!-- 폰트 어썸: 아이콘 -->
-  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-  <!-- bulma css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-  <!-- 커스텀 css, js -->
-  <link rel="stylesheet" href="shop.css" />
-  <link rel="stylesheet" href="../components/navigation.css" />
-  <script src="shop.js" type="module" defer></script>
-</head>
-
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Team-Ten</title>
+    <!-- 폰트 -->
+    <link rel=“preconnect” href=“https://fonts.googleapis.com”> <link rel=“preconnect” href=“https://fonts.gstatic.com”
+    crossorigin> <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="shop.css" />
+    <script src="shop.js" type="module" defer></script>
+    <link rel="stylesheet" href="../components/navigation.css" />
+  </head>
 <body>
   <!-- 헤더 -->
-  
-  <nav id="navigation"></nav>
+  <nav id="navigation" style="background-color: #fff"></nav>
   <main>
     <nav class="category-nav">
       <div id="category-list">
@@ -49,23 +45,31 @@
             </button>
           </form>
         </div>
-      </div>
-      <div id="product-list">
-
-      </div>
-      <!-- pagination -->
-      <div class="bottom">
-        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-          <ul class="pagination-list">
-          </ul>
-        </nav>
-      </div>
-    </article>
-
-  </main>
-  <footer class="footer"></footer>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
-
+      </nav>
+      <!-- <h2>전체보기</h2> -->
+      <article class="container">
+        <div class="title-wrap">
+          <div class="title is-size-4 category-name">전체보기</div>
+          <div class="search-wrap">
+            <form>
+              <input class="is-medium search-input" type="text" placeholder="상품명을 입력하세요." />
+              <button class="is-medium search-button" type="submit">
+                <span class="material-icons"> search </span>
+              </button>
+            </form>
+          </div>
+        </div>
+        <div id="product-list"></div>
+        <!-- pagination -->
+        <div class="bottom">
+          <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+            <ul class="pagination-list"></ul>
+          </nav>
+        </div>
+      </article>
+    </main>
+    <footer class="footer"></footer>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  </body>
 </html>
