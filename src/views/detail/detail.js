@@ -74,120 +74,6 @@ const handleProductQuantityInput = (e) => {
 };
 productsContainer.addEventListener('input', handleProductQuantityInput);
 
-//리뷰
-function deletePreviewImg() {
-  imgPriview.src = '';
-  fileName.innerHTML = '파일 이름';
-  cancelImg.style.display = 'none';
-  if (imgData.has('image')) imgData.delete('image');
-}
-
-function changeImageFile(e) {
-  const imgName = e.target.files[0].name;
-  imgData.append('image', e.target.files[0]);
-  imgPriview.src = window.URL.createObjectURL(e.target.files[0]);
-  fileName.innerHTML = imgName;
-  cancelImg.style.display = 'block';
-}
-
-async function deleteReview(reviewId) {
-  try {
-    await Api.deleteYesToken('/api/reviews', reviewId);
-    alert('리뷰가 삭제되었습니다.');
-  } catch (err) {
-    console.log(err.message);
-    alert(err.message);
-  } finally {
-    window.location.reload();
-  }
-}
-
-async function registerModReview(e, reviewId) {
-  e.preventDefault();
-  const score = e.target.querySelector('.draw-star').value;
-  const comment = e.target.querySelector('.review-text').value;
-  const image = await uploadImageToS3();
-
-  try {
-    const result = await Api.patchYesToken('/api/reviews', reviewId, {
-      comment,
-      image,
-      score,
-    });
-    alert(result.message);
-    window.location.reload();
-  } catch (err) {
-    alert(err.message);
-  }
-}
-
-function modReviewForm(target) {
-  const reviewId = target.querySelector('.review-id').innerText;
-  const score = target.querySelector('.review-score-value').innerText;
-  const comment = target.querySelector('.content-review').innerText;
-  const imgSrc = target.querySelector('.img-review').src;
-  const newReviewBodyWrap = getNode('.new-review-body-wrap');
-  newReviewBodyWrap.style.display = 'block';
-  newReviewBodyWrap.querySelector('.draw-star').value = score;
-  newReviewBodyWrap.querySelector('.star-input span').style.width = `${score * 20}%`;
-  newReviewBodyWrap.querySelector('.review-text').innerText = comment;
-  newReviewBodyWrap.querySelector('.file-name').innerText = imgSrc;
-  getNode('.new-review-form').removeEventListener('submit', registerNewReview);
-
-  getNode('.new-review-form').addEventListener('submit', (e) => registerModReview(e, reviewId));
-
-  newReviewBodyWrap.querySelector('.review-text').focus();
-}
-
-function getReviewButton(e) {
-  e.preventDefault();
-  if (e.target.classList.contains('modify-button')) {
-    modReviewForm(e.target.parentNode.parentNode);
-  } else if (e.target.classList.contains('delete-button')) {
-    const reviewId = e.target.parentNode.parentNode.querySelector('.review-id').innerHTML;
-    deleteReview(reviewId);
-  } else return;
-}
-
-async function uploadImageToS3() {
-  if (!imgData.has('image')) return '';
-  try {
-    const uploadResult = await fetch('/api/images/upload', {
-      method: 'POST',
-      body: imgData,
-    });
-
-    const result = await uploadResult.json();
-    return result.imagePath;
-  } catch (err) {
-    console.log(err.message);
-  } finally {
-    if (imgData.has('image')) imgData.delete('image');
-  }
-
-  return '';
-}
-
-async function registerNewReview(e) {
-  e.preventDefault();
-  const score = e.target.querySelector('.draw-star').value;
-  const comment = e.target.querySelector('.review-text').value;
-  const image = await uploadImageToS3();
-
-  try {
-    await Api.postYesToken(`/api/reviews/${productId}`, { comment, image, score });
-    alert('리뷰가 등록되었습니다.');
-  } catch (err) {
-    alert(err.message);
-  } finally {
-    window.location.reload();
-  }
-}
-
-function drawStarInput(e) {
-  const starInput = getNode('.star-input span');
-  starInput.style.width = `${e.target.value * 20}%`;
-}
 
 async function getProductReview() {
   try {
@@ -206,18 +92,6 @@ async function getProductReview() {
   } catch (err) {
     console.log(err.message);
   }
-}
-
-function onToggleReview(e) {
-  e.preventDefault();
-  const newReviewBodyWrap = getNode('.new-review-body-wrap');
-
-  newReviewBodyWrap.style.display = 'none';
-  newReview.style.display = 'block';
-  imgPriview.src = '';
-  fileName.innerHTML = '파일 이름';
-  cancelImg.style.display = 'none';
-  if (imgData.has('image')) imgData.delete('image');
 }
 
 getProductDetail();
@@ -244,24 +118,9 @@ function createScoreElement(score) {
   return stars.join('');
 }
 
-function checkUser(userId, currentUserId) {
-  return userId === currentUserId;
-}
-
-function checkUsersReview(userId, currentUserId) {
-  const result = checkUser(userId, currentUserId);
-  const buttonWrap = `
-    <button class="button is-medium is-warning modify-button">수정</button>
-    <button class="button is-medium is-danger delete-button">삭제</button>
-  `;
-  if (result) return buttonWrap;
-  return '';
-}
-
-function createReviewBodyElement(review, currentUserId) {
-  const { userId, fullName, comment, image, score, createdAt, shortId } = review;
+function createReviewBodyElement(review) {
+  const { fullName, comment, image, score, createdAt, shortId } = review;
   const scoreElement = createScoreElement(score);
-  const modifyButton = checkUsersReview(userId, currentUserId);
   const form = document.createElement('form');
 
   form.classList = 'review-body card';
@@ -285,9 +144,6 @@ function createReviewBodyElement(review, currentUserId) {
   <div class="review-image">
     <img class="img-review" src="${image}">
   </div>
-  <div class="review-modify">
-    ${modifyButton}
-  </div>
   `;
 
   return form;
@@ -309,7 +165,7 @@ function renderProductReview(items) {
   const reviewScore = createReviewScoreElement(items.reviews.length, items.averageScore);
   reviewScoreWrap.innerHTML = reviewScore;
   items.reviews.forEach((item) => {
-    const reviewBody = createReviewBodyElement(item, items.currentUserId);
+    const reviewBody = createReviewBodyElement(item);
     reviewBodyWrap.appendChild(reviewBody);
   });
 }
@@ -340,9 +196,9 @@ function addToCart() {
   for (let i = 0; i < existCartEntry.length; i++) {
     if (existCartEntry[i].productId === cartEntry.productId) {
       existCartEntry[i].count = Number(existCartEntry[i].count) + selected;
-      if(existCartEntry[i].count > 99) {
+      if (existCartEntry[i].count > 99) {
         existCartEntry[i].count = 99;
-        alert("이미 99개의 상품이 장바구니에 담겨있습니다.")
+        alert("이미 99개의 상품이 장바구니에 담겨있습니다.");
       }
       localStorage.setItem('cart', JSON.stringify(existCartEntry));
       check = false;
