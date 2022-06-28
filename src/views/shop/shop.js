@@ -1,6 +1,6 @@
 import * as Api from '/api.js';
 import { getNode } from '../useful-functions.js';
-import { renderNav } from '../components/nav.js';
+import { renderNav } from '../components/navigation.js';
 import renderFooter from '../components/footer.js';
 
 const searchInput = getNode('.search-input');
