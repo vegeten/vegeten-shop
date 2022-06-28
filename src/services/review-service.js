@@ -65,6 +65,14 @@ class ReviewService {
     }
     return review;
   }
+
+  async deleteReviewsByOrder(orderId) {
+    let toDeleteReviews = await reviewModel.deletesByOrderId(orderId);
+    if (!toDeleteReviews || toDeleteReviews === null) {
+      throw new customError(404, '해당 id의 주문이 없습니다. 다시 한 번 확인해주세요;');
+    }
+    return toDeleteReviews;
+  }
 }
 const reviewService = new ReviewService(reviewModel);
 export { reviewService };

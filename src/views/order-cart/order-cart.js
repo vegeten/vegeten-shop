@@ -181,7 +181,7 @@ async function postOrder() {
       productName: product.productName,
       count: product.count,
       productPrice: product.count * product.price,
-      reviewed: false,
+      reviewed: null,
     });
   });
   const orderInfo = {
