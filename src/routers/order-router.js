@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { orderService, productService, reviewService } from '../services';
 import { loginRequired, adminAuth } from '../middlewares';
 import { customError } from '../middlewares/error/customError';
+import { promise } from 'bcrypt/promises';
 const orderRouter = Router();
 
 // 주문 목록 조회 (/api/orders/list) ⇒ admin 한정
@@ -35,14 +36,16 @@ orderRouter.get('/list', adminAuth, async (req, res, next) => {
 // 유저별(본인) 주문 조회 (/api/orders)
 orderRouter.get('/', loginRequired, async (req, res, next) => {
   try {
-    let orders = await orderService.getOrdersByUser(req.currentUserId);
+    const userId = req.currentUserId;
+    let orders = await orderService.getOrdersByUser(userId);
+
     //pagination
     const page = Number(req.query.page || 1);
     const perPage = Number(req.query.perPage || 9);
-
     const ordersPerPage = orders.slice(perPage * (page - 1), perPage * (page - 1) + perPage);
     const total = orders.length;
     const totalPage = Math.ceil(total / perPage);
+
     orders = ordersPerPage;
     res.status(200).json({
       status: 200,
@@ -86,7 +89,10 @@ orderRouter.delete('/:orderId', loginRequired, async function (req, res, next) {
   try {
     const { orderId } = req.params;
     // 특정 id에 맞는 주문 정보를 얻음
-    const deleteOrder = await orderService.deleteOrder(orderId);
+    const [deleteOrder, deleteReviews] = await Promise.all([
+      orderService.deleteOrder(orderId),
+      reviewService.deleteReviewsByOrder(orderId),
+    ]);
     // 사용자 정보를 JSON 형태로 프론트에 보냄
     res.status(200).json({
       status: 200,

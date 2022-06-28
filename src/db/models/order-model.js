@@ -6,10 +6,10 @@ export class OrderModel {
     return await Order.find({}).sort({ createdAt: -1 });
   }
   async findByUser(userId) {
-    return await Order.find({ userId: userId });
+    return await Order.find({ userId: userId }).sort({ createdAt: -1 });
   }
   async findById(orderId) {
-    return await Order.findOne({ shortId: orderId });
+    return await Order.findOne({ shortId: orderId }).sort({ createdAt: -1 });
   }
   async create(orderInfo) {
     return await Order.create(orderInfo);
