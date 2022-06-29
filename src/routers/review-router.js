@@ -190,9 +190,9 @@ reviewRouter.patch('/:reviewId', loginRequired, async (req, res, next) => {
       throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
     }
     const toUpdate = {
-      ...(comment && { comment }),
-      ...(image && { image }),
-      ...(score && { score }),
+      comment: comment,
+      image: image,
+      score: score,
     };
 
     const updatedReview = await reviewService.setReview(reviewId, toUpdate);
