@@ -9,11 +9,11 @@ const navigation = (isLogin) => {
       <img src="/img/vegeten-logo2.png" width="200" alt="메인로고"/>
     </a>
     <ul id="list-container">
-      <li><a href="/about">
-        <span>About</span>
-      </a></li>
       <li><a href="/shop">
         <span>Shop</span>
+      </a></li>
+      <li><a href="/about">
+        <span>About</span>
       </a></li>
       ${
         isLogin
