@@ -139,67 +139,12 @@ const renderUserInfo = (data) => {
 async function getProductReview(reviewId) {
   try {
     const result = await Api.getNoToken('/api/reviews', reviewId);
+    console.log(result.data);
     modifyReviewModal(result.data);
   } catch (err) {
     console.log(err.message);
   }
 }
-
-const modifyReviewModal = (review) => {
-  const { comment, score, image, shortId } = review;
-  modalTitle.innerHTML = '';
-  modalBody.innerHTML = '';
-  modalTitle.innerHTML = '내가 쓴 리뷰';
-  modalBody.innerHTML = `
-    <form class="mod-review-form" encType="multipart/form-data">
-      <div class="review-body">
-        <div class="review-info">
-          <div class="info-score">
-            <span class="star-input">
-              ★★★★★
-              <span>★★★★★</span>
-              <input class="draw-star" type="range" value="${score}" step="1" min="0" max="5">
-            </span>
-          </div>
-        </div>
-        <div class="review-content card">
-          <textarea class="review-text" placeholder="리뷰를 입력하세요.">${comment}</textarea>
-        </div>
-        <div class="file is-boxed image-uploader">
-          <div class="img-preview-wrap">
-            <img class="img-preview" src='${image}' />
-            <span class="material-icons cancel-img">
-              cancel
-            </span>
-          </div>
-          <label class="file-label">
-            <input class="file-input" type="file" accept="image/*" name="resume">
-            <span class="file-cta image-upload-button">
-              <span class="file-icon">
-                <i class="fas fa-upload"></i>
-              </span>
-              <span class="file-label">
-                사진 업로드
-              </span>
-            </span>
-          </label>
-        </div>
-        <div class="review-modify">
-          <button class="button is-medium review-submit-button" type="submit">수정 완료</button>
-        </div>
-      </div>
-    </form>
-  `;
-  modal.classList.add('is-active');
-  const drawStar = getNode('.draw-star');
-  const newReviewForm = getNode('.mod-review-form');
-  const fileInput = getNode('.file-input');
-  const imgCancel = getNode('.cancel-img');
-  drawStar.addEventListener('input', drawStarInput);
-  newReviewForm.addEventListener('submit', (e) => modifyReview(e, shortId));
-  fileInput.addEventListener('change', changeImageFile);
-  imgCancel.addEventListener('click', deletePreviewImg);
-};
 
 const createNewReviewModal = (productId, orderId) => {
   modalTitle.innerHTML = '';
@@ -256,18 +201,86 @@ const createNewReviewModal = (productId, orderId) => {
   imgCancel.addEventListener('click', deletePreviewImg);
 };
 
-const modifyReview = async (e, reviewId) => {
+const modifyReviewModal = (review) => {
+  const { comment, score, image, shortId } = review;
+  modalTitle.innerHTML = '';
+  modalBody.innerHTML = '';
+  modalTitle.innerHTML = '내가 쓴 리뷰';
+  modalBody.innerHTML = `
+    <form class="mod-review-form" encType="multipart/form-data">
+      <div class="review-body">
+        <div class="review-info">
+          <div class="info-score">
+            <span class="star-input">
+              ★★★★★
+              <span>★★★★★</span>
+              <input class="draw-star" type="range" value='${score}' step="1" min="0" max="5">
+            </span>
+          </div>
+        </div>
+        <div class="review-content card">
+          <textarea class="review-text" placeholder="리뷰를 입력하세요.">${comment}</textarea>
+        </div>
+        <div class="file is-boxed image-uploader">
+          <div class="img-preview-wrap">
+            <img class="img-preview" src='${image}'/>
+            <span class="material-icons cancel-img">
+              cancel
+            </span>
+          </div>
+          <label class="file-label">
+            <input class="file-input" type="file" accept="image/*" name="resume">
+            <span class="file-cta image-upload-button">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">
+                사진 업로드
+              </span>
+            </span>
+          </label>
+        </div>
+        <div class="review-modify">
+          <button class="button is-medium review-submit-button" type="submit">수정 완료</button>
+        </div>
+      </div>
+    </form>
+  `;
+  modal.classList.add('is-active');
+  const drawStar = getNode('.draw-star');
+  const newReviewForm = getNode('.mod-review-form');
+  const stars = getNode('.star-input span');
+  const fileInput = getNode('.file-input');
+  const imgCancel = getNode('.cancel-img');
+  if (image) imgCancel.style.display = 'block';
+  stars.style.width = `${score * 20}%`;
+  drawStar.addEventListener('input', drawStarInput);
+  newReviewForm.addEventListener('submit', (e) => modifyReview(e, image, shortId));
+  fileInput.addEventListener('change', changeImageFile);
+  imgCancel.addEventListener('click', deletePreviewImg);
+};
+
+const modifyReview = async (e, defaultImage = '', reviewId) => {
   e.preventDefault();
 
   const score = e.target.querySelector('.draw-star').value;
   const comment = e.target.querySelector('.review-text').value;
-  const image = await uploadImageToS3();
+  const preview = e.target.querySelector('.img-preview').src;
+  const image = await uploadImageToS3(); // '' or s3 경로 이미지 수정 => ok 이미지 삭제 => '' 이미지 유지 => 기존 값
+  const body = {
+    comment,
+    score
+  };
+  if (image) {
+    body.image = image;
+  } else if (defaultImage && (window.location.href === preview)) {
+    body.image = '';
+  };
+
+  console.log(body);
+
   try {
-    const result = await Api.patchYesToken('/api/reviews', reviewId, {
-      comment,
-      image,
-      score,
-    });
+    const result = await Api.patchYesToken('/api/reviews', reviewId, body);
     alert(result.message);
     window.location.reload();
   } catch (err) {
