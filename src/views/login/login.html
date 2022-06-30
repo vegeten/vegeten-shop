@@ -1,91 +1,76 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VEGETEN Shop</title>
-    <!-- 폰트 -->
-    <link rel=“preconnect” href=“https://fonts.googleapis.com”> <link rel=“preconnect” href=“https://fonts.gstatic.com”
-    crossorigin> <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
-    <!-- 아이콘 -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <!-- bulma css 관련 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-    <!-- 폰트 어썸: 아이콘 -->
-    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-    <!-- 커스텀 css, js -->
-    <link rel="stylesheet" href="login.css" />
-    <script src="login.js" type="module" defer></script>
-    <link rel="stylesheet" href="../components/navigation.css" />
-  </head>
 
-  <body>
-    <!-- 헤더 -->
-    <nav id="navigation" style="background-color: #fff"></nav>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VEGETEN Shop</title>
+  <!-- 폰트 -->
+  <link rel=“preconnect” href=“https://fonts.googleapis.com”>
+  <link rel=“preconnect” href=“https://fonts.gstatic.com” crossorigin>
+  <link href=“https://fonts.googleapis.com/css2?family=Roboto&display=swap” rel=“stylesheet”>
+  <!-- 아이콘 -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- bulma css 관련 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 폰트 어썸: 아이콘 -->
+  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+  <!-- 커스텀 css, js -->
+  <link rel="stylesheet" href="login.css" />
+  <script src="login.js" type="module" defer></script>
+  <link rel="stylesheet" href="../components/navigation.css" />
+</head>
 
-    <!-- 로그인 폼(Form) -->
-    <div class="login-form-container">
-      <form class="box login-form-box has-background-light" id="loginForm">
-        <div class="field">
-          <label for="emailInput">이메일</label>
-          <div class="control">
-            <input
-              class="input is-medium"
-              id="emailInput"
-              type="email"
-              placeholder="이메일을 입력해주세요."
-              autocomplete="off"
-            />
-          </div>
-        </div>
-        <div class="field">
-          <label for="passwordInput">비밀번호</label>
-          <div class="control">
-            <input
-              class="input is-medium"
-              id="passwordInput"
-              type="password"
-              placeholder="비밀번호를 입력해주세요."
-              autocomplete="off"
-            />
-          </div>
-        </div>
-        <div class="btn-wrapper">
-          <div>
-            <button class="button is-midium mb-3" id="submitButton">로그인하기</button>
-          </div>
-          <div>
-            <a class="button is-white is-midium" id="registerButton" href="/register"> 회원가입하기 </a>
-          </div>
-        </div>
-        <div class="reset-password">
-          <a class="reset-password-title">비밀번호를 잃어버리셨나요?</a>
-        </div>
-      </form>
-    </div>
+<body>
+  <!-- 헤더 -->
+  <nav id="navigation" style="background-color: #fff"></nav>
 
-    <div class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title"></p>
-          <button class="delete close-button" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <!-- <div class="confirm-circle scale-in-center">
-          <span class="cofirm-icon material-icons">
-            check_circle_outline
-          </span>
-        </div> -->
-        </section>
-        <footer class="modal-card-foot">
-          <!-- <a class="button is-black" href="/shop">쇼핑 하러가기</a>
-        <a class="button is-white" href="/">홈 화면으로가기</a> -->
-        </footer>
+  <!-- 로그인 폼(Form) -->
+  <div class="login-form-container">
+    <form class="box login-form-box has-background-light" id="loginForm">
+      <div class="field">
+        <label for="emailInput">이메일</label>
+        <div class="control">
+          <input class="input is-medium" id="emailInput" type="email" placeholder="이메일을 입력해주세요." autocomplete="off" />
+        </div>
       </div>
-    </div>
+      <div class="field">
+        <label for="passwordInput">비밀번호</label>
+        <div class="control">
+          <input class="input is-medium" id="passwordInput" type="password" placeholder="비밀번호를 입력해주세요."
+            autocomplete="off" />
+        </div>
+      </div>
+      <div class="btn-wrapper">
+        <div>
+          <button class="btn-login" id="submitButton">로그인하기</button>
+        </div>
+        <div>
+          <a class="btn-register" id="registerButton" href="/register"> 회원가입하기 </a>
+        </div>
+      </div>
+      <div class="reset-password">
+        <a class="reset-password-title">비밀번호를 잃어버리셨나요?</a>
+      </div>
+    </form>
+  </div>
 
-    <footer class="footer"></footer>
-  </body>
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"></p>
+        <button class="delete close-button" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+      </section>
+      <footer class="modal-card-foot">
+      </footer>
+    </div>
+  </div>
+
+  <footer class="footer"></footer>
+</body>
+
 </html>

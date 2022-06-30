@@ -52,8 +52,8 @@ const createModalElement = (status, title) => {
         </div>
       `;
       modalCardFooter.innerHTML = `
-        <a class="button loginSuccessedButton" id="goShopping" href="/shop">쇼핑 하러가기</a>
-        <a class="button loginSuccessedButton id="goHome" is-white" href="/">홈 화면으로가기</a>
+        <a class="btn-shopping loginSuccessedButton" id="goShopping" href="/shop">쇼핑 하러가기</a>
+        <a class="btn-gohome loginSuccessedButton" id="goHome" href="/">홈 화면으로가기</a>
       `;
       break;
     case modalStatus.loginFail:
@@ -67,7 +67,7 @@ const createModalElement = (status, title) => {
       break;
     case modalStatus.reset:
       const button = document.createElement('button');
-      button.classList = 'button resetPwdButton';
+      button.classList = 'resetPwdButton';
       button.innerHTML = '비밀번호 초기화';
       button.addEventListener('click', resetPassword);
 
@@ -91,7 +91,7 @@ const createModalElement = (status, title) => {
         </div>
       `;
       modalCardFooter.innerHTML = `
-        <a class="button is-black" href="/login">로그인 페이지로 가기</a>
+        <a class="btn-goLogin" href="/login">로그인 페이지로 가기</a>
       `;
       break;
     case modalStatus.resetFail:
