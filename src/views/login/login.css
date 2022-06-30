@@ -37,6 +37,11 @@
   display: none;
 }
 
+.modal-card {
+  border-radius: 5px;
+  width: 500px;
+}
+
 .modal-card-body {
   display: flex;
   flex-direction: column;
@@ -82,42 +87,82 @@
   }
 }
 
-#submitButton {
-  background-color: #00ca71;
-  border: none;
-  color: #fff;
-  width: 120px;
+.btn-login,
+.btn-register,
+.btn-shopping,
+.btn-gohome,
+.btn-goLogi,
+.resetPwdButton {
+  border-width: 1px;
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+  font-size: 1.1rem;
 }
 
-#registerButton {
-  width: 120px;
+.btn-login {
+  margin-bottom: 1rem;
 }
 
-#registerButton:hover {
+.btn-shopping {
+  margin-right: 40%;
+}
+
+.btn-login,
+.btn-gohome,
+.btn-goLogin {
+  border: 1px solid transparent;
   background-color: #fff;
+  border-color: #dbdbdb;
+  color: #363636;
+  border-radius: 2px;
 }
 
-#goShopping {
-  background-color: #00ca71;
-  border: none;
-  color: #fff;
-  margin-right: 30px;
-}
-
-.loginSuccessedButton {
-  width: 140px;
-}
-
-#goHome:hover {
-  background-color: #fff;
-}
-
+.btn-register,
+.btn-shopping,
 .resetPwdButton {
   background-color: #00ca71;
-  border: none;
+  border-color: transparent;
   color: #fff;
+  border-radius: 2px;
 }
 
-.resetPwdButton:hover {
-  color: #fff;
+@media screen and (max-width:1023px) {}
+
+@media screen and (max-width:510px) {
+  .login-form-box {
+    width: 20rem;
+  }
+
+  .input {
+    font-size: 1rem !important;
+  }
+
+  .btn-login {
+    margin-bottom: 0.8rem;
+  }
+
+  .modal-card {
+    border-radius: 5px;
+    width: 340px;
+  }
+
+  .modal-card-title {
+    font-size: 1.25rem !important;
+  }
+
+  .btn-login,
+  .btn-register,
+  .btn-shopping,
+  .btn-gohome,
+  .btn-goLogin,
+  .resetPwdButton {
+    font-size: 0.9rem;
+  }
+
 }
