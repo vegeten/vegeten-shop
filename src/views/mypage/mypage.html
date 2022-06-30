@@ -26,7 +26,7 @@
 
 <body>
   <!-- 헤더 -->
-  <nav id="navigation" style="background-color: #fff"></nav>
+  <nav id="navigation"></nav>
 
   <main class="main-wrapper" aria-label="main contents">
     <div class="order-list-form-container">
@@ -91,7 +91,7 @@
           <label class="label-input" for="address-search">우편번호</label>
           <div class="addr-wrap control">
             <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" disabled />
-            <button id="kakao_address" class="button is-medium is-responsive change-form">주소찾기</button>
+            <button id="kakao_address" class="find-address change-form">주소찾기</button>
           </div>
         </div>
 
@@ -111,7 +111,7 @@
 
         <!-- 비밀번호 변경 -->
         <div id="passwd-modify-button-wrap">
-          <button class="button is-medium is-warning passwd-modify hide">비밀번호 변경</button>
+          <button class="passwd-modify hide">비밀번호 변경</button>
         </div>
 
         <div id="password-modify-msg" class="is-danger help">
@@ -143,10 +143,10 @@
         </div>
 
         <div class="btn-wrapper">
-          <button class="button is-danger is-medium mt-3 mb-3 btn-withdraw">탈퇴하기</button>
-          <div class="btn-mod-wrapper mt-3 mb-3">
-            <button class="button is-danger is-medium btn-mod-cancel change-form">취소</button>
-            <button class="button is-warning is-medium ml-3 btn-password-confirm" type="submit" id="submitButton">
+          <button class="btn-withdraw">탈퇴하기</button>
+          <div class="btn-mod-wrapper">
+            <button class=" btn-mod-cancel change-form">취소</button>
+            <button class=" btn-password-confirm" type="submit" id="submitButton">
               회원 정보 수정
             </button>
           </div>
