@@ -1,140 +1,116 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VEGETEN Shop</title>
-    <!-- 아이콘 -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <!-- bulma css 관련 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-    <!-- 폰트 어썸: 아이콘 -->
-    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-    <!-- 구글 OAuth -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <!-- 카카오 OAuth -->
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-    <!-- 커스텀 css, js -->
-    <link rel="stylesheet" href="register.css" />
-    <script src="register.js" type="module" defer></script>
-    <link rel="stylesheet" href="../components/navigation.css" />
-  </head>
-  <body>
-    <!-- 헤더 -->
-    <nav id="navigation" style="background-color: #fff"></nav>
 
-    <!-- 회원가입 폼(Form) -->
-    <div class="register-user-form-container">
-      <form class="box register-user-form-box has-background-light" id="registerUserForm">
-        <div class="field">
-          <label for="fullNameInput">이름</label>
-          <div class="control">
-            <input
-              class="input is-medium"
-              id="fullNameInput"
-              type="text"
-              placeholder="이름을 입력해주세요."
-              autocomplete="off"
-            />
-            <div id="name-msg" class="help is-danger">
-              <span>이름을 입력해주세요.</span>
-            </div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VEGETEN Shop</title>
+  <!-- 아이콘 -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/vegeten-favicon.png" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <!-- bulma css 관련 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+  <!-- 폰트 어썸: 아이콘 -->
+  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+  <!-- 구글 OAuth -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- 카카오 OAuth -->
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <!-- 커스텀 css, js -->
+  <link rel="stylesheet" href="register.css" />
+  <script src="register.js" type="module" defer></script>
+  <link rel="stylesheet" href="../components/navigation.css" />
+</head>
+
+<body>
+  <!-- 헤더 -->
+  <nav id="navigation" style="background-color: #fff"></nav>
+
+  <!-- 회원가입 폼(Form) -->
+  <div class="register-user-form-container">
+    <form class="box register-user-form-box has-background-light" id="registerUserForm">
+      <div class="field">
+        <label for="fullNameInput">이름</label>
+        <div class="control">
+          <input class="input is-medium" id="fullNameInput" type="text" placeholder="이름을 입력해주세요." autocomplete="off" />
+          <div id="name-msg" class="help is-danger">
+            <span>이름을 입력해주세요.</span>
           </div>
         </div>
-
-        <div class="field">
-          <label for="emailInput">이메일</label>
-          <div class="control emailWrap">
-            <div class="emailInputWrap">
-              <input
-                class="input is-medium"
-                id="emailInput"
-                type="email"
-                placeholder="이메일을 입력해주세요."
-                autocomplete="off"
-              />
-              <div id="email-msg" class="help is-danger">
-                <span>이메일을 입력해주세요.</span>
-              </div>
-            </div>
-            <button class="button is-middle sendMail">인증하기</button>
-          </div>
-        </div>
-
-        <div class="field emailAuthNumberWrap hide">
-          <label for="emailAuthNumber">이메일 인증번호</label>
-          <div class="control">
-            <input
-              class="input is-medium"
-              id="emailAuthNumber"
-              type="text"
-              placeholder="인증번호를 입력해주세요."
-              autocomplete="off"
-            />
-
-            <div id="emailAuth-msg" class="help is-danger">
-              <span>이메일 인증번호를 입력해주세요.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="passwordInput">비밀번호</label>
-          <div class="control">
-            <input
-              class="input is-medium"
-              id="passwordInput"
-              type="password"
-              placeholder="영문, 숫자, 특수문자 포함 8 ~ 15자"
-              autocomplete="off"
-            />
-            <div id="password-msg" class="help is-danger">
-              <span>비밀번호를 입력해주세요.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="field mb-5">
-          <label for="passwordConfirmInput">비밀번호 확인</label>
-          <div class="control">
-            <input
-              class="input is-medium"
-              id="passwordConfirmInput"
-              type="password"
-              placeholder="비밀번호확인을 입력해주세요."
-              autocomplete="off"
-            />
-            <div id="password-check-msg" class="help is-danger">
-              <span>비밀번호확인을 입력해주세요.</span>
-            </div>
-          </div>
-        </div>
-        <div class="btn-wrapper">
-          <button class="button is-black is-midium mb-3" id="submitButton">회원가입하기</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="modal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title"></p>
-          <button class="delete close-button" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="confirm-circle scale-in-center">
-            <span class="cofirm-icon material-icons"> </span>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <a class="button is-white" id="goHome" href="/">홈 화면으로가기</a>
-          <a class="button" id="goLogin" href="/login">로그인 하러가기</a>
-        </footer>
       </div>
-    </div>
 
-    <footer class="footer"></footer>
-  </body>
+      <div class="field">
+        <label for="emailInput">이메일</label>
+        <div class="control emailWrap">
+          <div class="emailInputWrap">
+            <input class="input is-medium" id="emailInput" type="email" placeholder="이메일을 입력해주세요." autocomplete="off" />
+            <div id="email-msg" class="help is-danger">
+              <span>이메일을 입력해주세요.</span>
+            </div>
+          </div>
+          <button class="sendMail">인증하기</button>
+        </div>
+      </div>
+
+      <div class="field emailAuthNumberWrap hide">
+        <label for="emailAuthNumber">이메일 인증번호</label>
+        <div class="control">
+          <input class="input is-medium" id="emailAuthNumber" type="text" placeholder="인증번호를 입력해주세요."
+            autocomplete="off" />
+
+          <div id="emailAuth-msg" class="help is-danger">
+            <span>이메일 인증번호를 입력해주세요.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="passwordInput">비밀번호</label>
+        <div class="control">
+          <input class="input is-medium" id="passwordInput" type="password" placeholder="영문, 숫자, 특수문자 포함 8 ~ 15자"
+            autocomplete="off" />
+          <div id="password-msg" class="help is-danger">
+            <span>비밀번호를 입력해주세요.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field mb-5">
+        <label for="passwordConfirmInput">비밀번호 확인</label>
+        <div class="control">
+          <input class="input is-medium" id="passwordConfirmInput" type="password" placeholder="비밀번호확인을 입력해주세요."
+            autocomplete="off" />
+          <div id="password-check-msg" class="help is-danger">
+            <span>비밀번호확인을 입력해주세요.</span>
+          </div>
+        </div>
+      </div>
+      <div class="btn-wrapper">
+        <button class="btn-register" id="submitButton">회원가입하기</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"></p>
+        <button class="delete close-button" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="confirm-circle scale-in-center">
+          <span class="cofirm-icon material-icons"> </span>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <a class="btn-gohome" id="goHome" href="/">홈 화면으로가기</a>
+        <a class="btn-gologin" id="goLogin" href="/login">로그인 하러가기</a>
+      </footer>
+    </div>
+  </div>
+
+  <footer class="footer"></footer>
+</body>
+
 </html>

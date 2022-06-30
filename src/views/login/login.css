@@ -132,8 +132,6 @@
   border-radius: 2px;
 }
 
-@media screen and (max-width:1023px) {}
-
 @media screen and (max-width:510px) {
   .login-form-box {
     width: 20rem;
