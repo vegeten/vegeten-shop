@@ -63,7 +63,7 @@ const changeSubmitButton = (e) => {
       </div>
     </div>
     <div id="password-footer">
-      <button class="button check-password-confirm-button">확인</button>
+      <button class="check-password-confirm-button">확인</button>
     </div>
   `;
 
@@ -112,7 +112,7 @@ const createNewReviewModal = (productId, orderId) => {
           </label>
         </div>
         <div class="review-modify">
-          <button class="button is-medium review-submit-button" type="submit">작성 완료</button>
+          <button class="review-submit-button" type="submit">작성 완료</button>
         </div>
       </div>
     </form>
@@ -169,7 +169,7 @@ const modifyReviewModal = (review) => {
           </label>
         </div>
         <div class="review-modify">
-          <button class="button is-medium review-submit-button" type="submit">수정 완료</button>
+          <button class="review-submit-button" type="submit">수정 완료</button>
         </div>
       </div>
     </form>
@@ -383,7 +383,7 @@ const createOrderListElement = (item) => {
     </table>
     <div class="order-info-2">
       <div class="order-delete">
-        <button class="order-delete-button button is-small is-danger">주문 취소</button>
+        <button class="order-delete-button">주문 취소</button>
       </div>
       <div class="order-price">
         <div><strong>총 금액: ${addCommas(totalPrice)}</strong></div>
@@ -408,14 +408,14 @@ const createOrderDetailListElement = (array) => {
       ${reviewed ?
           `
           <td class="review-button-wrap" data-id="${reviewed}">
-            <button class="button is-small modify-product-review">리뷰 수정</button>
-            <button class="button is-small delete-product-review">리뷰 삭제</button>
+            <button class="modify-product-review">리뷰 수정</button>
+            <button class="delete-product-review">리뷰 삭제</button>
           </td>
           `
           :
           `
           <td>
-            <button class="button is-small create-product-review">리뷰 작성</button>
+            <button class="create-product-review">리뷰 작성</button>
           </td>
           `
         }
