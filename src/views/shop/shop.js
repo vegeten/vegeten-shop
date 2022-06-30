@@ -9,7 +9,7 @@ const categoryTitle = document.querySelector('.category-name');
 
 function searchProducts(e) {
   e.preventDefault();
-  const value = searchInput.value;
+  const value = searchInput.value.trim();
 
   if (!value) return;
 
