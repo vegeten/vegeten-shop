@@ -4,17 +4,7 @@ import { getNode } from '../../useful-functions.js';
 import { renderNav } from '../../components/navigation.js';
 import renderFooter from '../../components/footer.js';
 
-const newReview = getNode('.new-review');
-const cancelReviewButton = getNode('.cancel-button');
-const drawStar = getNode('.draw-star');
-const newReviewForm = getNode('.new-review-form');
 const reviewBodyWrap = getNode('.review-body-wrap');
-const fileInput = getNode('.file-input');
-const imgPriview = getNode('.img-preview');
-const fileName = getNode('.file-name');
-const cancelImg = getNode('.cancel-img');
-const imgData = new FormData();
-
 const productsContainer = getNode('#products-container');
 
 // url 주소로 현재 상품 id 알아내기
@@ -232,15 +222,6 @@ function buyProduct() {
   // 'cart' 라는 key값에 넣어주기
   localStorage.setItem('buy', JSON.stringify(cartEntry));
 }
-function addAllEvents() {
-  cancelReviewButton.addEventListener('click', onToggleReview);
-  drawStar.addEventListener('input', drawStarInput);
-  newReviewForm.addEventListener('submit', registerNewReview);
-  reviewBodyWrap.addEventListener('click', getReviewButton);
-  fileInput.addEventListener('change', changeImageFile);
-  cancelImg.addEventListener('click', deletePreviewImg);
-}
 
 renderNav();
 renderFooter();
-addAllEvents();

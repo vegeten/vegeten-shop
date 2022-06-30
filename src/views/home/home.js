@@ -35,7 +35,7 @@ const prevSlideEvent = () => {
 };
 
 const createItemListElement = (item) => {
-  const { shortId, image, productName, price } = item;
+  const { shortId, image, productName } = item;
   const li = document.createElement('li');
   li.classList.add('item-card');
   li.innerHTML = `
@@ -74,7 +74,7 @@ function addAllEvents() {
 }
 
 function scrollEvents() {
-  const navBar = document.querySelector('.navbar');
+  const navBar = document.querySelector('#navigation');
   window.addEventListener('scroll', () => {
     if (document.documentElement.scrollTop > 100) {
       navBar.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
