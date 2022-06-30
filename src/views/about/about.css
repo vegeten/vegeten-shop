@@ -10,16 +10,16 @@
   justify-content: space-around;
   /* height: 2; */
 }
+
 .aboutVegan {
   height: 621px;
   overflow: hidden;
   width: 1200px;
   border-radius: 40px;
   margin: 10% 0;
-}
-.aboutVegan {
   object-fit: fill;
 }
+
 .main-introduction {
   display: flex;
   align-items: center;
@@ -43,11 +43,13 @@
 .introduction-contents {
   font-size: 1.5rem;
 }
+
 .vegetenCrew {
   margin-top: 40%;
   margin-bottom: 25%;
   width: 270px;
 }
+
 .main-grid-contents {
   display: flex;
   justify-content: center;
@@ -75,4 +77,62 @@
 
 .contents img {
   object-fit: cover;
+}
+
+@media screen and (max-width:1023px) {
+  .main-introduction {
+    margin-top: 2rem;
+  }
+
+  .aboutVegan {
+    height: 400px;
+    width: 700px;
+    margin: 15% 0;
+  }
+
+  .middle-logo {
+    width: 180px;
+  }
+
+  .introduction-contents {
+    font-size: 1.25rem;
+  }
+
+  .contents {
+    width: 100%;
+    height: 40%;
+    height: auto;
+    overflow: hidden;
+  }
+}
+
+@media screen and (max-width:510px) {
+  .main-introduction {
+    margin-top: 2rem;
+  }
+
+  .aboutVegan {
+    height: 220px;
+    width: 350px;
+    margin: 20% 0;
+  }
+
+  .middle-logo {
+    width: 110px;
+  }
+
+  .introduction-contents {
+    font-size: 1rem;
+  }
+
+  .vegetenCrew {
+    width: 170px
+  }
+
+  .contents {
+    width: 100%;
+    height: 40%;
+    height: auto;
+    overflow: hidden;
+  }
 }
