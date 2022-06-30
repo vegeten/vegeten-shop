@@ -15,9 +15,8 @@ const navigation = (isLogin) => {
       <li><a href="/about">
         <span>About</span>
       </a></li>
-      ${
-        isLogin
-          ? `
+      ${isLogin
+      ? `
             <li id="nav-mypage"><a href="/mypage">
               <span class="material-icons">
                 account_circle
@@ -27,7 +26,7 @@ const navigation = (isLogin) => {
               </span></a>
               <div id="dropdown">
                 <a href="/mypage">My Page</a>
-                <span id="logout-button">Log Out</span>
+                <span class="logout-button">Log Out</span>
               </div>
             </li>
             <li><a href="/cart">
@@ -37,7 +36,7 @@ const navigation = (isLogin) => {
             </a>
             </li>
             `
-          : `
+      : `
           <li><a href="/login"><span class="material-icons">
             account_circle
           </span></a></li>
@@ -45,7 +44,7 @@ const navigation = (isLogin) => {
             shopping_bag
           </span></a></li>
           `
-      }
+    }
     </ul>
   </div>
 
@@ -55,9 +54,8 @@ const navigation = (isLogin) => {
       <img src="/img/vegeten-logo2.png" width="150" alt="메인로고"/>
     </a>
     <ul id="list-container" class="item">
-    ${
-      isLogin
-        ? `
+    ${isLogin
+      ? `
           <li><a href="/mypage">
             <span class="material-icons">
               account_circle
@@ -69,7 +67,7 @@ const navigation = (isLogin) => {
             </span>
           </a></li>
           `
-        : `
+      : `
         <li><a href="/login"><span class="material-icons">
           account_circle
         </span></a></li>
@@ -88,6 +86,7 @@ const navigation = (isLogin) => {
         <ul id="side-list">
           <li><a href="/about">About</a></li>
           <li><a href="/shop">Shop</a></li>
+          <li><a class="logout-button">Log Out</a></li>
         </ul>
       </div>
     </div>
@@ -126,7 +125,7 @@ const renderNav = () => {
   const { isLogin } = getAuthorizationObj();
   navigation(isLogin);
   {
-    isLogin && getNode('#logout-button').addEventListener('click', logOut);
+    isLogin && document.querySelectorAll('.logout-button').forEach(item => item.addEventListener('click', logOut));
   }
 };
 

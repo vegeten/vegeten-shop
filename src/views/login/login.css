@@ -150,6 +150,10 @@
     width: 340px;
   }
 
+  .btn-shopping {
+    margin-right: 20%;
+  }
+
   .modal-card-title {
     font-size: 1.25rem !important;
   }
