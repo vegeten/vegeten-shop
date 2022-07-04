@@ -86,11 +86,10 @@ const navigation = (isLogin) => {
         <ul id="side-list">
           <li><a href="/about">About</a></li>
           <li><a href="/shop">Shop</a></li>
-          <li><a class="logout-button">Log Out</a></li>
+          ${isLogin ? `<li> <a class="logout-button">Log Out</a></li>` : ``}
         </ul>
       </div>
     </div>
-    
   </div>
   
   `;
