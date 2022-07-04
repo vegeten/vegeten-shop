@@ -218,7 +218,6 @@ reviewRouter.delete('/:reviewId', loginRequired, async (req, res, next) => {
     if (review.userId !== userId) {
       throw new customError(401, 'Unauthorized');
     }
-    const deletedReview = await reviewService.deleteReview(reviewId);
     let order = await orderService.getOrder(review.orderId);
     order.products.forEach((product) => {
       if (product.productId === review.productId) {

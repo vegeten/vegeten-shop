@@ -36,7 +36,7 @@ export const getNode = (selector) => {
 // JWT 토큰 여부로 로그인 상태를 판단하여 객체로 전달해줌.
 export const getAuthorizationObj = () => {
   return {
-    isLogin: document.cookie.indexOf('refreshToken') === -1 ? false : true,
+    isLogin: localStorage.getItem('accessToken') ? true : false,
   };
 };
 
@@ -80,15 +80,12 @@ export const checkToken = async () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          Refresh: `Bearer ${getCookie('refreshToken')}`,
         },
       });
       // json() 할 때는 await 필요 없을 듯
       const result = await res.json();
-      console.log(result);
-      if (!result.refresh) return false;
-      else if (!result.access) {
-        console.log('액세스토큰 갱신!!');
+
+      if (!result.access) {
         localStorage.setItem('accessToken_exp', result.data.exp);
         localStorage.setItem('accessToken', result.data.newAccessToken);
         return true;

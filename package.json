@@ -35,6 +35,8 @@
     "@babel/node": "^7.16.8",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/nanoid": "^3.0.0",
     "nodemon": "^2.0.15"
   }

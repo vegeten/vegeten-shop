@@ -5,7 +5,7 @@ import { checkToken, deleteCookie, getCookie } from './useful-functions.js';
 async function getYesToken(endpoint, params = '') {
   const status = await checkToken();
   if (!status) {
-    deleteCookie('refreshToken');
+    // deleteCookie('refreshToken');
     alert('로그인이 필요합니다.');
     window.location.href = '/login';
     return;

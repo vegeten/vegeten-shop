@@ -1,13 +1,9 @@
-import { promisify } from 'util';
 import jwt from 'jsonwebtoken';
 import { userService } from '../services';
 const secret = process.env.JWT_SECRET_KEY;
-// import { redisClient } from './redis';
 
 const sign = (user) => {
-  // access token 발급
   const payload = {
-    // access token에 들어갈 payload
     userId: user.shortId,
     role: user.role,
   };
@@ -15,7 +11,7 @@ const sign = (user) => {
   return jwt.sign(payload, secret, {
     // secret으로 sign하여 발급하고 return
     algorithm: 'HS256', // 암호화 알고리즘
-    expiresIn: '1h', // 유효기간
+    expiresIn: '3s', // 유효기간
   });
 };
 
@@ -39,35 +35,39 @@ const verify = (token) => {
 const refresh = async (userId) => {
   const refreshToken = jwt.sign({}, secret, {
     algorithm: 'HS256',
-    expiresIn: '14d',
+    expiresIn: '10s',
   });
 
-  await userService.setUserPartially(
+  userService.setUserPartially(
     { userId },
     {
       refresh: refreshToken,
     }
   );
+
   return refreshToken;
 };
 
 const refreshVerify = async (token, userId) => {
-  try {
+  const isVaildate = verify(token);
+  // 토큰이 만료되었을 때
+  if (!isVaildate.ok && isVaildate.message === 'jwt expired') {
     const user = await userService.getUser(userId);
     const savedRefreshToken = user.refresh;
-    if (token === savedRefreshToken) {
-      try {
-        const decoded = jwt.verify(token, secret);
-        return true;
-      } catch (error) {
-        return false;
-      }
-    } else {
-      return false;
+    console.log('saved: ', savedRefreshToken);
+
+    // 저장된 토큰과 같으면 새로운 토큰 보냄
+    if (savedRefreshToken === token) {
+      const newRefreshToken = refresh(userId);
+      console.log('새로운 refresh token 발급');
+      return newRefreshToken;
     }
-  } catch (err) {
+    // 저장된 토큰과 같지 않으면
     return false;
   }
+  // 토큰이 유효할 때 기존 토큰 보냄
+
+  return token;
 };
 
 export { sign, verify, refresh, refreshVerify, secret };
