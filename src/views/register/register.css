@@ -78,11 +78,6 @@
   display: none;
 }
 
-#submitButton {
-  background-color: #00ca71;
-  font-weight: 400;
-}
-
 .emailWrap {
   display: flex;
   justify-content: space-between;
@@ -90,7 +85,7 @@
   align-items: center;
 }
 
-.emailWrap > div {
+.emailWrap>div {
   width: 70%;
 }
 
@@ -98,28 +93,74 @@
   display: none;
 }
 
-#goLogin {
-  background-color: #00ca71;
-  border: none;
-  color: #fff;
+.btn-gohome,
+.btn-gologin,
+.btn-register,
+.sendMail {
+  border-width: 1px;
+  cursor: pointer;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap;
+  font-size: 1.1rem;
 }
 
-#goHome {
-  margin-right: 30px;
-}
-
-#goHome:hover {
+.btn-login,
+.btn-gohome {
+  border: 1px solid transparent;
   background-color: #fff;
+  border-color: #dbdbdb;
+  color: #363636;
+  border-radius: 2px;
+}
+
+.btn-register,
+.btn-gologin {
+  background-color: #00ca71;
+  border-color: transparent;
+  color: #fff;
+  border-radius: 2px;
+}
+
+.btn-gohome {
+  margin-right: 40%;
 }
 
 .sendMail {
-  height: 40px;
-  font-weight: 400;
-  border: none;
   background-color: #ffe08a;
-  /* color: #fff !important; */
+  border-color: transparent;
+  color: black;
+  border-radius: 2px;
 }
 
-/* .sendMail:hover {
-  background-color: #ffe08a;
-} */
+
+@media screen and (max-width:510px) {
+  .register-user-form-box {
+    width: 20rem;
+  }
+
+  .input {
+    font-size: 1rem !important;
+  }
+
+  .modal-card {
+    border-radius: 5px;
+    width: 340px;
+  }
+
+  .modal-card-title {
+    font-size: 1.25rem !important;
+  }
+
+  .btn-gohome,
+  .btn-gologin,
+  .btn-register,
+  .sendMail {
+    font-size: 0.9rem;
+  }
+
+}

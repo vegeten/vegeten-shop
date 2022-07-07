@@ -14,12 +14,12 @@ const addLogOutEvent = (isLogin) => {
   }
 };
 
-const nav = (isLogin, isAdmin) => {
+const nav = (isLogin) => {
   const $navbar = getNode('.navbar');
   $navbar.style.cssText = 'position:fixed;top:0;width:100%';
   const template = `
   <div class="container mt-3">
-    <div cit lass="navbar-brand">
+    <div class="navbar-brand">
       <a class="navbar-item" href="/">
         <img src="/img/vegeten-logo2.png" width="200" style="max-height:2.5em" alt="LOGO" />
       </a>
@@ -83,8 +83,8 @@ const nav = (isLogin, isAdmin) => {
 };
 
 const renderNav = () => {
-  const { isLogin, isAdmin } = getAuthorizationObj();
-  nav(isLogin, isAdmin);
+  const { isLogin } = getAuthorizationObj();
+  nav(isLogin);
   addLogOutEvent(isLogin);
 };
 

@@ -1,7 +1,7 @@
 import * as Api from '/api.js';
 import { validateEmail, getAuthorizationObj, getNode } from '/useful-functions.js';
 import renderFooter from '../components/footer.js';
-import { renderNav } from '../components/nav.js';
+import { renderNav } from '../components/navigation.js';
 
 window.onpageshow = function (event) {
   if (event.persisted) {

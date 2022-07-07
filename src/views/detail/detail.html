@@ -19,10 +19,11 @@
   <!-- 커스텀 css, js -->
   <link rel="stylesheet" href="detail.css" />
   <script src="detail.js" type="module" defer></script>
+  <link rel="stylesheet" href="../../components/navigation.css" />
 </head>
 
 <body>
-  <nav class="navbar" role="navigation" aria-label="main navigation"></nav>
+  <nav id="navigation" style="background-color: #fff"></nav>
   <article class="container">
     <!-- 대표상품 설명 -->
     <div class="intro-item">
@@ -42,28 +43,24 @@
         </div>
         <hr />
         <!-- 수량선택 -->
-        <div class="product-count">
-          <div>수량선택</div>
-          <div class="select">
-            <select id="total-count">
-              <option selected>1개</option>
-              <option>2개</option>
-              <option>3개</option>
-              <option>4개</option>
-              <option>5개</option>
-              <option>6개</option>
-              <option>7개</option>
-              <option>8개</option>
-              <option>9개</option>
-              <option>10개</option>
-            </select>
+
+        <div id="products-container">
+          <div class="product-count">
+            <div>수량선택</div>
+            <div class="product-quantity">
+              <div class="counter-wrap">
+                <button class="decrease-button count counter-button">-</button>
+                <input class="quantity count quantity-count" type="number" value="1" />
+                <button class="increase-button count counter-button">+</button>
+              </div>
+            </div>
           </div>
-        </div>
-        <!-- 수량선택 끝 -->
-        <!-- 총액 -->
-        <div class="total-price">
-          <div>총 금액</div>
-          <div id="totalPrice"></div>
+          <!-- 수량선택 끝 -->
+          <!-- 총액 -->
+          <div class="total-price">
+            <div>총 금액</div>
+            <div id="totalPrice"></div>
+          </div>
         </div>
         <!-- 버튼 -->
         <div class="button-group">
@@ -107,53 +104,7 @@
               <span class="review-score">0 / 5.0</span>
               <span class="review-count">(0개의 후기)</span>
             </div>
-            <button class="new-review button is-medium">리뷰쓰기</button>
           </div>
-        </div>
-        <!-- 리뷰 작성 -->
-        <div class="new-review-body-wrap">
-          <form class="new-review-form" encType="multipart/form-data">
-            <div class="review-body card">
-              <div class="review-info">
-                <div class="info-score">
-                  <span class="star-input">
-                    ★★★★★
-                    <span>★★★★★</span>
-                    <input class="draw-star" type="range" value="5" step="1" min="0" max="5">
-                  </span>
-                </div>
-              </div>
-              <div class="review-content">
-                <textarea class="review-text" placeholder="리뷰를 입력하세요."></textarea>
-              </div>
-              <div class="file has-name image-uploader">
-                <div class="img-preview-wrap">
-                  <img class="img-preview" src="" />
-                  <span class="material-icons cancel-img">
-                    cancel
-                  </span>
-                </div>
-                <label class="file-label">
-                  <input class="file-input" type="file" accept="image/*" name="resume">
-                  <span class="file-cta">
-                    <span class="file-icon">
-                      <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">
-                      사진 업로드
-                    </span>
-                  </span>
-                  <span class="file-name">
-                    파일 이름
-                  </span>
-                </label>
-              </div>
-              <div class="review-modify">
-                <button class="button is-medium review-submit-button" type="submit">완료</button>
-                <button class="button is-medium is-danger cancel-button">취소</button>
-              </div>
-            </div>
-          </form>
         </div>
       </div>
       <!-- 상품 리뷰 -->

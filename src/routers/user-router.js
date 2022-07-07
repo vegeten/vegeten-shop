@@ -61,7 +61,7 @@ const userRouter = Router();
 //refresh
 userRouter.get('/refresh', refresh_);
 
-// 회원가입 (/api/users/register)
+// 이메일 인증
 userRouter.post('/register/send-mail', async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -84,6 +84,7 @@ userRouter.post('/register/send-mail', async (req, res, next) => {
   }
 });
 
+// 회원가입 (/api/users/register)
 userRouter.post('/register', async (req, res, next) => {
   try {
     if (is.emptyObject(req.body)) {

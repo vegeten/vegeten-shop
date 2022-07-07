@@ -31,6 +31,9 @@ class OrderService {
     const createdNewOrder = await this.orderModel.create(orderInfo);
     return createdNewOrder;
   }
+  async setOrder(orderId, orderInfo) {
+    return await this.orderModel.update({ orderId, update: orderInfo });
+  }
 
   async deleteOrder(orderId) {
     let order = await this.orderModel.delete(orderId);
