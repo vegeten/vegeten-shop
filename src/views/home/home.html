@@ -19,34 +19,30 @@
   <!-- 커스텀 css, js -->
   <link rel="stylesheet" href="home.css" />
   <script src="home.js" type="module" defer></script>
+  <link rel="stylesheet" href="../components/navigation.css" />
 </head>
 
 <body>
   <main class="main-wrapper" aria-label="main contents">
-    <nav class="navbar" role="navigation" aria-label="main navigation">
-    </nav>
-    <article class="main- thumnail" aria-label="main thumnail">
+    <nav id="navigation"></nav>
+    <article class="main-thumnail" aria-label="main thumnail">
       <div class="carousel-container">
         <div class="carousel-slide">
-          <img src="/img/background2.png" alt="image-1" id="last">
-          <img src="/img/background1.png" alt="image-2">
-          <img src="/img/background3.png" alt="image-3" id="first">
+          <img src="/img/background2.png" alt="image-1" id="last" />
+          <img src="/img/background1.png" alt="image-2" />
+          <img src="/img/background3.png" alt="image-3" id="first" />
         </div>
         <button id="prevBtn">
-          <span class="material-icons">
-            arrow_back_ios
-          </span>
+          <span class="material-icons"> arrow_back_ios </span>
         </button>
         <button id="nextBtn">
-          <span class="material-icons">
-            arrow_forward_ios
-          </span>
+          <span class="material-icons"> arrow_forward_ios </span>
         </button>
       </div>
     </article>
     <article class="main-introduction" aria-label="main introduction">
       <div class="introduction-wrapper">
-        <img src="/img/vegeten-logo.png" alt="" width="200px">
+        <img class="middle-logo" src="/img/vegeten-logo.png" alt="" width="200px" />
         <p class="introduction-contents">채식주의자분들을 위한</p>
         <p class="introduction-contents"><strong>비건샵</strong>인 VEGETEN 입니다.</p>
         <p class="introduction-contents">VEGAN 라이프를 함께해봐요!</p>
@@ -54,15 +50,12 @@
     </article>
     <article class="main-new" aria-label="main new items">
       <div class="new-wrapper">
-        <span class="new-title"><img src="/img/newGoods.png" alt=""></span>
-        <ul class="item-list">
-        </ul>
+        <span class="new-title"><img class="new-goods-logo" src="/img/newGoods.png" alt="" /></span>
+        <ul class="item-list"></ul>
       </div>
     </article>
   </main>
-  <footer class="footer">
-  </footer>
-
+  <footer class="footer"></footer>
 </body>
 
 </html>

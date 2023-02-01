@@ -8,8 +8,9 @@ a {
 
 .navbar {
   background-color: rgba(255, 255, 255, 0);
-  color:  white;
+  color: white;
 }
+
 .main-wrapper {
   display: flex;
   flex-direction: column;
@@ -19,16 +20,15 @@ a {
 }
 
 .main-thumnail {
-  margin-top: 5rem;
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 400px;
+  height: 850px;
 }
 
 .carousel-container {
   width: 100%;
-  height: 700px;
+  height: 850px;
   overflow: hidden;
   position: relative;
 }
@@ -36,9 +36,9 @@ a {
 .carousel-slide {
   display: flex;
 }
+
 .carousel-slide img {
   display: block;
-  /* display: flex; */
   width: 100%;
   height: auto;
 }
@@ -93,6 +93,7 @@ a {
   top: 50px;
   left: -110px;
 }
+
 .introduction-wrapper .title {
   font-size: 2rem;
 }
@@ -154,4 +155,66 @@ a {
 .item-card .productName {
   margin-top: 1rem;
   font-weight: 700;
+}
+
+@media screen and (max-width:1023px) {
+  .main-thumnail {
+    height: auto;
+  }
+
+  .carousel-container {
+    height: auto;
+  }
+
+  .middle-logo {
+    width: 180px !important;
+  }
+
+  .main-introduction {
+    margin-top: 3rem;
+  }
+
+  .main-new {
+    margin-top: 3rem;
+  }
+}
+
+@media screen and (max-width:510px) {
+  .main-thumnail {
+    height: auto;
+  }
+
+  .carousel-container {
+    height: auto;
+  }
+
+  .middle-logo {
+    width: 110px !important;
+    margin-bottom: 1rem;
+  }
+
+  .main-introduction {
+    margin-top: 2rem;
+  }
+
+  .new-goods-logo {
+    width: 170px
+  }
+
+  .introduction-contents {
+    font-size: 1rem;
+  }
+
+  .main-new {
+    margin-top: 2rem;
+  }
+
+  .item-list .item-card {
+    width: 200px;
+    height: 300px;
+  }
+
+  .item-card .productName {
+    font-size: 1rem;
+  }
 }

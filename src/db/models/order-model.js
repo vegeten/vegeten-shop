@@ -6,13 +6,19 @@ export class OrderModel {
     return await Order.find({}).sort({ createdAt: -1 });
   }
   async findByUser(userId) {
-    return await Order.find({ userId: userId });
+    return await Order.find({ userId: userId }).sort({ createdAt: -1 });
   }
   async findById(orderId) {
-    return await Order.findOne({ shortId: orderId });
+    return await Order.findOne({ shortId: orderId }).sort({ createdAt: -1 });
   }
   async create(orderInfo) {
     return await Order.create(orderInfo);
+  }
+
+  async update({ orderId, update }) {
+    const filter = { shortId: orderId };
+    const option = { returnOriginal: false };
+    return await Order.findOneAndUpdate(filter, update, option);
   }
   async delete(orderId) {
     return await Order.findOneAndDelete({ shortId: orderId });

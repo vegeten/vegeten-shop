@@ -37,7 +37,6 @@ export const getNode = (selector) => {
 export const getAuthorizationObj = () => {
   return {
     isLogin: document.cookie.indexOf('refreshToken') === -1 ? false : true,
-    isAdmin: false,
   };
 };
 

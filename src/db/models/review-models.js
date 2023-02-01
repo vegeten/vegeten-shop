@@ -3,13 +3,17 @@ import { ReviewSchema } from '../schemas/review-schema';
 const Review = model('reviews', ReviewSchema);
 export class ReviewModel {
   async findAll() {
-    return await Review.find({}).sort({ createdAt: 1 });
+    return await Review.find({}).sort({ createdAt: -1 });
   }
   async findByUser(userId) {
-    return await Review.find({ userId: userId }).sort({ createdAt: 1 });
+    return await Review.find({ userId: userId }).sort({ createdAt: -1 });
   }
   async findByProduct(productId) {
-    return await Review.find({ productId: productId }).sort({ createdAt: 1 });
+    return await Review.find({ productId: productId }).sort({ createdAt: -1 });
+  }
+
+  async findByOrder(orderId) {
+    return await Review.find({ orderId: orderId }).sort({ createdAt: -1 });
   }
   async findById(reviewId) {
     return await Review.findOne({ shortId: reviewId });
@@ -24,6 +28,10 @@ export class ReviewModel {
   }
   async delete(reviewId) {
     return await Review.findOneAndDelete({ shortId: reviewId });
+  }
+
+  async deletesByOrderId(orderId) {
+    return await Review.deleteMany({ orderId: orderId });
   }
 }
 const reviewModel = new ReviewModel();

@@ -1,5 +1,5 @@
 import renderFooter from '../components/footer.js';
-import { renderNav } from '../components/nav.js';
+import { renderNav } from '../components/navigation.js';
 import { getNode } from '../useful-functions.js';
 import * as Api from '/api.js';
 
@@ -35,7 +35,7 @@ const prevSlideEvent = () => {
 };
 
 const createItemListElement = (item) => {
-  const { shortId, image, productName, price } = item;
+  const { shortId, image, productName } = item;
   const li = document.createElement('li');
   li.classList.add('item-card');
   li.innerHTML = `
@@ -74,18 +74,16 @@ function addAllEvents() {
 }
 
 function scrollEvents() {
-  const navBar = document.querySelector('.navbar')
-  window.addEventListener("scroll", () => {
-    if(document.documentElement.scrollTop >100) {
-      navBar.style.backgroundColor = "rgba(255, 255, 255, 0.7)"
+  const navBar = document.querySelector('#navigation');
+  window.addEventListener('scroll', () => {
+    if (document.documentElement.scrollTop > 100) {
+      navBar.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
     } else {
-      navBar.style.backgroundColor = "rgba(255, 255, 255, 0)"
-      
+      navBar.style.backgroundColor = 'rgba(255, 255, 255, 0)';
     }
-
-  })
+  });
 }
-scrollEvents()
+scrollEvents();
 renderNav();
 renderFooter();
 addAllEvents();

@@ -21,11 +21,12 @@
   <script src="mypage.js" type="module" defer></script>
   <!-- 다음 API js -->
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <link rel="stylesheet" href="../components/navigation.css" />
 </head>
 
 <body>
   <!-- 헤더 -->
-  <nav class="navbar" role="navigation" aria-label="main navigation"></nav>
+  <nav id="navigation"></nav>
 
   <main class="main-wrapper" aria-label="main contents">
     <div class="order-list-form-container">
@@ -90,7 +91,7 @@
           <label class="label-input" for="address-search">우편번호</label>
           <div class="addr-wrap control">
             <input class="input is-medium address-code" id="address-search" type="text" autocomplete="off" disabled />
-            <button id="kakao_address" class="button is-medium is-responsive change-form">주소찾기</button>
+            <button id="kakao_address" class="find-address change-form">주소찾기</button>
           </div>
         </div>
 
@@ -110,7 +111,7 @@
 
         <!-- 비밀번호 변경 -->
         <div id="passwd-modify-button-wrap">
-          <button class="button is-medium is-warning passwd-modify hide">비밀번호 변경</button>
+          <button class="passwd-modify hide">비밀번호 변경</button>
         </div>
 
         <div id="password-modify-msg" class="is-danger help">
@@ -142,10 +143,10 @@
         </div>
 
         <div class="btn-wrapper">
-          <button class="button is-danger is-medium mt-3 mb-3 btn-withdraw">탈퇴하기</button>
-          <div class="btn-mod-wrapper mt-3 mb-3">
-            <button class="button is-danger is-medium btn-mod-cancel change-form">취소</button>
-            <button class="button is-warning is-medium ml-3 btn-password-confirm" type="submit" id="submitButton">
+          <button class="btn-withdraw">탈퇴하기</button>
+          <div class="btn-mod-wrapper">
+            <button class=" btn-mod-cancel change-form">취소</button>
+            <button class=" btn-password-confirm" type="submit" id="submitButton">
               회원 정보 수정
             </button>
           </div>
@@ -158,23 +159,10 @@
     <div class="modal-background"></div>
     <div class="modal-card">
       <header class="modal-card-head">
-        <p class="modal-card-title">비밀번호 확인</p>
+        <p class="modal-card-title"></p>
         <button class="delete close-button" aria-label="close"></button>
       </header>
-      <form>
-        <section class="modal-card-body">
-          <div class="field">
-            <label class="checkPassword" for="checkPassword">비밀번호</label>
-            <div class="control">
-              <input class="input is-medium passwd checkPasswordInput" id="checkPassword" type="password"
-                placeholder="현재 비밀번호를 입력해주세요." />
-            </div>
-          </div>
-          <div id="password-footer">
-            <button class="button check-password-confirm-button">확인</button>
-          </div>
-        </section>
-      </form>
+      <section class="modal-card-body"></section>
     </div>
   </div>
 
